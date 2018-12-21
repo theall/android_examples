@@ -730,9 +730,10 @@ public class SnakeView extends TileView implements SurfaceHolder.Callback,
 				update();
 				
 				mCanvas = mSurfaceHolder.lockCanvas();
-				render(mCanvas);
-				drawControl(mCanvas);
-				if (mCanvas != null) {
+				if(mCanvas != null)
+				{
+					render(mCanvas);
+					drawControl(mCanvas);
 					mSurfaceHolder.unlockCanvasAndPost(mCanvas);
 				}
 				Thread.sleep(1000 / 60);

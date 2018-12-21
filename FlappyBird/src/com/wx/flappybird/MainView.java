@@ -15,11 +15,10 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
-import com.wx.flappybird.GameState;
 
 public class MainView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
 	private static final int FPS = 90;
@@ -475,8 +474,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback, Run
 		mScreenHeight = h;
 	}
 
-	private void drawRecycleBitmaps(Canvas mCanvas, Bitmap bitmap, int count,
-			int y) {
+	private void drawRecycleBitmaps(Canvas mCanvas, Bitmap bitmap, int count, int y) {
 		int bitmapWidth = bitmap.getWidth();
 		int startX = mMapOffsetX % bitmapWidth;
 		for (int i = 0; i < count; i++) {
@@ -500,6 +498,9 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback, Run
 
 		try {
 			mCanvas = mSurfaceHolder.lockCanvas();
+			if(mCanvas==null)
+				return;
+			
 			mCanvas.drawColor(0xFF4EC0CA);
 			
 			// land
@@ -528,7 +529,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback, Run
 			if (mGameState == GameState.READY) {
 				bmp = mSplashBitmap;
 				x = (int) (mBird.rect.x - mMapOffsetX);
-				y = 150;
+				y = (mScreenHeight - mSplashBitmap.getHeight()) / 2;;
 			} else if (mGameState == GameState.GAMEOVER) {
 				x = (mScreenWidth - mScoreBoardBitmap.getWidth()) / 2;
 				y = (mScreenHeight - mScoreBoardBitmap.getHeight()) / 2;
@@ -553,7 +554,6 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback, Run
 				mCanvas.drawBitmap(mReplayButton.bitmap, mReplayButton.rect.x, mReplayButton.rect.y, mPaint);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
             if (mCanvas != null) {
@@ -564,7 +564,6 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback, Run
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		// TODO Auto-generated method stub
 		if(mGameState==GameState.READY)
         {
             mGameState = GameState.RUNNING;
@@ -591,11 +590,18 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback, Run
 
 	public void run() {
 		try {
+			long time = System.currentTimeMillis();
+			int execCount = 0;
+			float fps = 0;
 			while (true) {
 				update();
 				drawing();
 				mFrameCounter += 1;
-				Thread.sleep(1000 / FPS);
+				Thread.sleep(1000/FPS);
+				execCount++;
+				long diff = System.currentTimeMillis() - time;
+				fps = (float)execCount*1000/diff;
+				Log.i("fps", String.format("%f", fps));
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();

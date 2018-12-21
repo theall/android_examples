@@ -156,6 +156,9 @@ public class TileView extends SurfaceView {
 	}
 
 	public void render(Canvas canvas) {
+		if(canvas == null)
+			return;
+		
 		canvas.drawColor(0xFFFFFFFF);
 		for (int x = 0; x < mXTileCount; x += 1) {
 			for (int y = 0; y < mYTileCount; y += 1) {
