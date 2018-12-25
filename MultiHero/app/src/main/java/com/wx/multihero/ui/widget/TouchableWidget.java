@@ -27,6 +27,12 @@ public abstract class TouchableWidget extends Widget implements Touchable {
         mTouchedSoundEffect = soundEffect;
     }
 
+    public void touched() {
+        if(mCallback != null) {
+            mCallback.selected(mId);
+        }
+    }
+
     public int processTouchEvent(MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
@@ -40,9 +46,7 @@ public abstract class TouchableWidget extends Widget implements Touchable {
                 }
             } else if(action == MotionEvent.ACTION_UP) {
                 mFingerDown = false;
-                if(mCallback != null) {
-                    mCallback.selected(mId);
-                }
+                touched();
             }
         } else {
             mFingerDown = false;

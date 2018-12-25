@@ -40,6 +40,8 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
 	public TitleScene(Callback callback, SceneType sceneType, Notify notify) {
 		super(sceneType, notify);
 		mCallback = callback;
+
+		mBackgroundSound = AssetsLoader.loadSound("sound/title");
 	}
 
 	public void loadAssets() {
@@ -72,8 +74,10 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
 		rect.right = rect.left + maxStringWidth;
 		rect.top = titleStubHeight;
 		rect.bottom = rect.top + memuHeight;
+		int soundId = AssetsLoader.loadSound("sound/blocked");
 		for(int i=0;i<5;i++) {
 			MenuItem mi = new MenuItem(i, rect, mMenuList[i], this);
+			mi.setTouchedSoundEffect(soundId);
 			rect.offset(0, menuTotalHeight);
 			mMenuItems.add(mi);
 		}

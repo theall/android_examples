@@ -4,6 +4,7 @@ import com.wx.multihero.base.SceneType;
 import com.wx.multihero.ui.widget.PictureItem;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 
@@ -15,11 +16,14 @@ public class MapChooseScene extends BaseScene {
 	public MapChooseScene(SceneType sceneType, Notify notify) {
 		super(sceneType, notify);
 
+
 	}
 
 	public void render(Canvas canvas, Paint paint) {
-		// TODO Auto-generated method stub
-		
+	    canvas.drawColor(Color.BLUE);
+		for(PictureItem pi : mMapThumbList) {
+		    pi.render(canvas, paint);
+        }
 	}
 
 	public int processTouchEvent(MotionEvent event) {

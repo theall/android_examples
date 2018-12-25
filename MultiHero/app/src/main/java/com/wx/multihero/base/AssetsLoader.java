@@ -59,10 +59,10 @@ public class AssetsLoader implements Runnable {
     public static int loadSound(String fileName) {
         if(mSoundPool==null || mAssetManager==null)
             return -1;
-        String soundPrefix = ASSETS_SOUND + "/";
         String actualFileName = fileName;
-        if(!fileName.startsWith(soundPrefix))
-        	actualFileName = soundPrefix + actualFileName;
+//        String soundPrefix = ASSETS_SOUND + "/";
+//        if(!fileName.startsWith(soundPrefix))
+//        	actualFileName = soundPrefix + actualFileName;
         if(!fileName.endsWith(".mp3"))
         	actualFileName += ".mp3";
         Integer soundIdObject = mStringSoundMap.get(actualFileName);
@@ -84,9 +84,9 @@ public class AssetsLoader implements Runnable {
 
     public static Bitmap loadBitmap(String fileName) {
     	String actualFileName = fileName;
-    	String gfxPrefix = ASSETS_GFX + "/";
-        if(!fileName.startsWith(gfxPrefix))
-        	actualFileName = gfxPrefix + actualFileName;
+//    	String gfxPrefix = ASSETS_GFX + "/";
+//        if(!fileName.startsWith(gfxPrefix))
+//        	actualFileName = gfxPrefix + actualFileName;
         if(!fileName.endsWith(".png"))
         	actualFileName += ".png";
         Bitmap bmp = mStringBitmapMap.get(actualFileName);
@@ -108,6 +108,17 @@ public class AssetsLoader implements Runnable {
             e.printStackTrace();
         }
         return bmp;
+    }
+
+    public static InputStream loadFile(String fileName) {
+        try {
+            return mAssetManager.open(fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void run() {

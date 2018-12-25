@@ -16,6 +16,14 @@ public class PictureItem extends Widget {
         mBitmap = bitmap;
     }
 
+    public Bitmap getBitmap() {
+        return mBitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        mBitmap = bitmap;
+    }
+
     public void setHCenter(Boolean center) {
         if(mBitmap == null)
             return;

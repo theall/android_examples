@@ -16,9 +16,6 @@ public class MenuItem extends TouchableWidget {
         mText = new Text(id, rect);
         mText.setText(text);
         mText.center();
-
-        int soundId = AssetsLoader.loadSound("blocked");
-        setTouchedSoundEffect(soundId);
     }
 
     public void render(Canvas canvas, Paint paint) {

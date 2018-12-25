@@ -37,7 +37,9 @@ public class SoundPlayer {
     }
 
     public static void playAudio(int id) {
-        mBackgroundStreamId = mSoundPool.play(id, 1.0f, 1.0f, 100, -1, 1f);
+        if (id != -1) {
+            mBackgroundStreamId = mSoundPool.play(id, 1.0f, 1.0f, 100, -1, 1f);
+        }
     }
     
     public static void playSound(int id) {

@@ -53,7 +53,6 @@ public class MainView extends SurfaceView implements
 	private AssetsLoader mAssetsLoader;
 	private SurfaceHolder mSurfaceHolder;
 	private Canvas mCanvas;
-	private int mSndTitle;
 	
 	private TriggersManager mTriggersManager = new TriggersManager();
 
@@ -83,9 +82,6 @@ public class MainView extends SurfaceView implements
 		mAssetsLoader.asycLoad();
 		mBigFont.loadAssets();
 		mTitleScene.loadAssets();
-		
-		// sound resources
-		mSndTitle = AssetsLoader.loadSound("title");
 	}
 	
 	private void init() {
@@ -267,10 +263,13 @@ public class MainView extends SurfaceView implements
 		}
 	}
 
-	public void requestExit(SceneType sceneType) {
+	public void back(SceneType sceneType) {
 		if(sceneType == SceneType.LOADING) {
 			mSceneStack.clearPush(mTitleScene);
-			SoundPlayer.playAudio(mSndTitle);
 		}
+	}
+
+	public void next(SceneType sceneType, int parameter) {
+
 	}
 }

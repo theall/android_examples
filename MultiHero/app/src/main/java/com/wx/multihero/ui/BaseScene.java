@@ -2,6 +2,7 @@ package com.wx.multihero.ui;
 
 import android.graphics.RectF;
 
+import com.wx.multihero.base.SoundPlayer;
 import com.wx.multihero.ui.widget.Touchable;
 import com.wx.multihero.ui.widget.Renderable;
 import com.wx.multihero.base.SceneType;
@@ -10,9 +11,11 @@ public abstract class BaseScene implements Renderable, Touchable {
     protected SceneType mSceneType;
     public static RectF mScreenRect;
     protected Notify mNotify;
+    protected int mBackgroundSound = -1;
 
     public interface Notify {
-        void requestExit(SceneType sceneType);
+        void back(SceneType sceneType);
+        void next(SceneType sceneType, int parameter);
     }
 
     public static void setResolution(int screenWidth, int screenHeight) {
@@ -26,5 +29,12 @@ public abstract class BaseScene implements Renderable, Touchable {
 
     public SceneType getSceneType() {
         return mSceneType;
+    }
+
+    public void playBackgoundSound(boolean interrupt) {
+        if(interrupt) {
+            SoundPlayer.stopAudio();
+        }
+        SoundPlayer.playAudio(mBackgroundSound);
     }
 }

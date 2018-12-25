@@ -24,4 +24,20 @@ public abstract class Widget implements Renderable {
     public boolean touchTest(float x, float y) {
         return mBoundingRect.contains(x, y);
     }
+
+    public RectF getBoundingRect() {
+        return mBoundingRect;
+    }
+
+    public void setBoundingRect(RectF rect) {
+        mBoundingRect.set(rect);
+    }
+
+    public RectF getDrawingRect() {
+        return mDrawingRect;
+    }
+
+    public void setDrawingRect(RectF rect) {
+        mDrawingRect.set(rect);
+    }
 }
