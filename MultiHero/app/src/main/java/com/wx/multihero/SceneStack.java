@@ -20,17 +20,25 @@ public class SceneStack implements Renderable, Touchable {
 
     public int clearPush(BaseScene scene) {
         mSceneStack.clear();
-        mSceneStack.push(scene);
-        return mSceneStack.size();
+        return push(scene);
     }
 
     public int push(BaseScene scene) {
-        mSceneStack.push(scene);
+        if(scene != null) {
+            scene.shiftIn();
+            mSceneStack.push(scene);
+        }
+
         return mSceneStack.size();
     }
 
     public BaseScene pop() {
-        return mSceneStack.pop();
+        BaseScene scene = mSceneStack.firstElement();
+        if(scene != null) {
+            mSceneStack.pop();
+            scene.shiftOut();
+        }
+        return scene;
     }
 
     public BaseScene top() {

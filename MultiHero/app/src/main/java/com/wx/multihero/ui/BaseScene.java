@@ -18,6 +18,11 @@ public abstract class BaseScene implements Renderable, Touchable {
         void next(SceneType sceneType, int parameter);
     }
 
+    public abstract void shiftIn();
+    public abstract void shiftOut();
+
+    public abstract void loadAssets();
+
     public static void setResolution(int screenWidth, int screenHeight) {
         mScreenRect = new RectF(0, 0, screenWidth, screenHeight);
     }

@@ -2,6 +2,8 @@ package com.wx.multihero.entity;
 
 import android.graphics.Bitmap;
 
+import com.wx.multihero.base.AssetsLoader;
+
 import java.io.InputStream;
 
 public class Map {
@@ -14,9 +16,18 @@ public class Map {
     }
 
     public Map(String assetFileName) {
-
+        load(assetFileName);
     }
 
+    public void load(String assetFileName) {
+        InputStream inputStream = AssetsLoader.loadFile(assetFileName);
+        if(inputStream != null)
+        {
+            assetFileName = assetFileName.replace(".dat", ".jpg");
+            mThumbBitmap = AssetsLoader.loadBitmap(assetFileName);
+            parseMapData(inputStream);
+        }
+    }
     public Bitmap getThumbBitmap() {
         return mThumbBitmap;
     }

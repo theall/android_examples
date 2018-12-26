@@ -17,15 +17,16 @@ import com.wx.multihero.base.BigFont;
 import com.wx.multihero.base.GameState;
 import com.wx.multihero.base.SceneType;
 import com.wx.multihero.base.SoundPlayer;
+import com.wx.multihero.entity.MapSetManager;
 import com.wx.multihero.entity.TriggersManager;
 import com.wx.multihero.ui.BaseScene;
 import com.wx.multihero.ui.LoadingScene;
+import com.wx.multihero.ui.MapChooseScene;
 import com.wx.multihero.ui.TitleScene;
 
 public class MainView extends SurfaceView implements
 		SurfaceHolder.Callback,
 		Runnable,
-		TitleScene.Callback,
 		BaseScene.Notify
 {
 	public static Context context = null;
@@ -60,7 +61,9 @@ public class MainView extends SurfaceView implements
     private SceneStack mSceneStack = new SceneStack();
 	private LoadingScene mLoadingScene;
 	private TitleScene mTitleScene;
+	private MapChooseScene mMapChooseScene;
 	private BigFont mBigFont = new BigFont();
+    private MapSetManager mMapSetManager;
 
 	public MainView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -82,6 +85,7 @@ public class MainView extends SurfaceView implements
 		mAssetsLoader.asycLoad();
 		mBigFont.loadAssets();
 		mTitleScene.loadAssets();
+		mMapChooseScene.loadAssets();
 	}
 	
 	private void init() {
@@ -91,15 +95,16 @@ public class MainView extends SurfaceView implements
         setFocusable(true);
         setFocusableInTouchMode(true);
         setKeepScreenOn(true);
-        
+
         screenWidth = getResources().getDisplayMetrics().widthPixels;
 		screenHeight = getResources().getDisplayMetrics().heightPixels;
 		BaseScene.setResolution(screenWidth, screenHeight);
 		mLoadingScene = new LoadingScene(SceneType.LOADING, this);
-        mTitleScene = new TitleScene(this, SceneType.TITLE, this);
+        mAssetsLoader = new AssetsLoader(this.getContext(), SoundPlayer.initialize(), mLoadingScene);
 
+        mTitleScene = new TitleScene(SceneType.TITLE, this);
+        mMapChooseScene = new MapChooseScene(SceneType.MAP_CHOOSE, this);
         mSceneStack.clearPush(mLoadingScene);
-		mAssetsLoader = new AssetsLoader(this.getContext(), SoundPlayer.initialize(), mLoadingScene);
 	}
 
 	private void autopilot() {
@@ -132,7 +137,7 @@ public class MainView extends SurfaceView implements
 		mVelocity = 0;
 		
 		mGameState = GameState.READY;
-		mSceneState = SceneType.MAIN;
+		mSceneState = SceneType.GAME;
 	}
 
 	public GameState getGameState() {
@@ -249,27 +254,54 @@ public class MainView extends SurfaceView implements
 		
 	}
 
-	public void menuSelected(TitleScene.MenuID id) {
-		switch (id) {
-			case ADV:
-				break;
-			case VS:
-				break;
-			case EXIT:
-				System.exit(0);
-				break;
-			default:
-				break;
-		}
-	}
-
 	public void back(SceneType sceneType) {
-		if(sceneType == SceneType.LOADING) {
-			mSceneStack.clearPush(mTitleScene);
-		}
-	}
+        if (sceneType == SceneType.LOADING) {
+
+        } else if (sceneType == SceneType.TITLE) {
+
+        } else if (sceneType == SceneType.GAME) {
+
+        } else if (sceneType == SceneType.OPTION) {
+
+        } else if (sceneType == SceneType.OVER) {
+
+        } else if (sceneType == SceneType.CREDIT) {
+
+        } else {
+
+        }
+    }
 
 	public void next(SceneType sceneType, int parameter) {
+        if(sceneType == SceneType.LOADING) {
+            mSceneStack.clearPush(mTitleScene);
+        } else if(sceneType == SceneType.TITLE) {
+            TitleScene.MenuID id = TitleScene.MenuID.values()[parameter];
+            switch (id) {
+                case ADV:
+                    mSceneStack.clearPush(mMapChooseScene);
+                    break;
+                case VS:
+                    mSceneStack.clearPush(mMapChooseScene);
+                    break;
+                case OPTION:
+                    break;
+                case EXIT:
+                    System.exit(0);
+                    break;
+                default:
+                    break;
+            }
+        } else if(sceneType == SceneType.GAME) {
 
+        } else if(sceneType == SceneType.OPTION) {
+
+        } else if(sceneType == SceneType.OVER) {
+
+        } else if(sceneType == SceneType.CREDIT) {
+
+        } else {
+
+        }
 	}
 }

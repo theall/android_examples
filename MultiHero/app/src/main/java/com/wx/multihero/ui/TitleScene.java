@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import com.wx.multihero.base.AssetsLoader;
 import com.wx.multihero.base.BigFont;
 import com.wx.multihero.base.SceneType;
+import com.wx.multihero.base.SoundPlayer;
 import com.wx.multihero.base.Utils;
 import com.wx.multihero.ui.widget.MenuItem;
 import com.wx.multihero.ui.widget.PictureItem;
@@ -20,7 +21,7 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
 	private PictureItem mTitlePicture;
 	private static final String mMenuList[] = {"ADVENTURE MODE","VS MODE","OPTIONS","CREDITS","EXIT"};
 
-	public enum MenuID {
+    public enum MenuID {
 	    ADV,
         VS,
         OPTION,
@@ -31,17 +32,9 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
 	private static final float MENU_DEFAULT_SPACE = 20.0f;
 	private ArrayList<MenuItem> mMenuItems = new ArrayList<MenuItem>();
 
-	public interface Callback {
-		void menuSelected(MenuID id);
-	}
-
-	private Callback mCallback = null;
-
-	public TitleScene(Callback callback, SceneType sceneType, Notify notify) {
+	public TitleScene(SceneType sceneType, Notify notify) {
 		super(sceneType, notify);
-		mCallback = callback;
-
-		mBackgroundSound = AssetsLoader.loadSound("sound/title");
+		mBackgroundSound = AssetsLoader.loadSound("sound/title.mp3");
 	}
 
 	public void loadAssets() {
@@ -53,7 +46,7 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
         {
             mTitlePicture = new PictureItem(0,
                     new RectF(0,0,screenWidth,titleStubHeight),
-                    AssetsLoader.loadBitmap("stuff/title.png"));
+                    AssetsLoader.loadBitmap("gfx/stuff/title.png"));
             mTitlePicture.center();
         }
 		float remainHeight = screenHeight - titleStubHeight;
@@ -74,7 +67,7 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
 		rect.right = rect.left + maxStringWidth;
 		rect.top = titleStubHeight;
 		rect.bottom = rect.top + memuHeight;
-		int soundId = AssetsLoader.loadSound("sound/blocked");
+		int soundId = AssetsLoader.loadSound("sound/blocked.mp3");
 		for(int i=0;i<5;i++) {
 			MenuItem mi = new MenuItem(i, rect, mMenuList[i], this);
 			mi.setTouchedSoundEffect(soundId);
@@ -84,11 +77,9 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
 	}
 
 	public void selected(int id) {
-		if(mCallback != null)
-		{
-			MenuID menuID = MenuID.values()[id];
-			mCallback.menuSelected(menuID);
-		}
+		if(mNotify != null) {
+		    mNotify.next(mSceneType, id);
+        }
 	}
 
 	public int processTouchEvent(MotionEvent event) {
@@ -107,5 +98,13 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
 		for(MenuItem mi : mMenuItems) {
 			mi.render(canvas, paint);
 		}
+	}
+
+	public void shiftIn() {
+        playBackgoundSound(false);
+	}
+
+	public void shiftOut() {
+
 	}
 }

@@ -18,4 +18,16 @@ public class GameScene extends BaseScene {
     public int processTouchEvent(MotionEvent event) {
         return 0;
     }
+
+    public void shiftIn() {
+
+    }
+
+    public void shiftOut() {
+
+    }
+
+    public void loadAssets() {
+
+    }
 }

@@ -40,7 +40,19 @@ public class LoadingScene extends BaseScene implements AssetsLoader.LoaderNotify
     public void onProgress(int loadedSize, int totalSize) {
         mProgressBar.setProgress((float)loadedSize / totalSize);
         if(loadedSize==totalSize && mNotify!=null) {
-            mNotify.back(mSceneType);
+            mNotify.next(mSceneType, 0);
         }
+    }
+
+    public void shiftIn() {
+
+    }
+
+    public void shiftOut() {
+
+    }
+
+    public void loadAssets() {
+
     }
 }

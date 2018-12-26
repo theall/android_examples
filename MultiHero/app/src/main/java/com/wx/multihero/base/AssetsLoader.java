@@ -22,6 +22,7 @@ public class AssetsLoader implements Runnable {
     private static SoundPool mSoundPool = null;
     private static final String ASSETS_GFX = "gfx";
     private static final String ASSETS_SOUND = "sound";
+    private static final String ASSETS_MAPS = "maps";
     private int mAssetsTotalCount = 0;
     private int mAssetsLoadedCount = 0;
 
@@ -52,6 +53,39 @@ public class AssetsLoader implements Runnable {
         }
     }
 
+    public static ArrayList<String> getFileNameList(String path, String ext) {
+        String fileNames[] = new String[0];
+        try {
+            fileNames = mAssetManager.list(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ArrayList<String> fileNameList = new ArrayList<String>();
+        ext = ext.toLowerCase();
+        for(int i=0;i<fileNames.length;i++) {
+            String fileName = fileNames[i];
+            fileName = fileName.trim().toLowerCase();
+            if(fileName.endsWith(ext)) {
+                fileNameList.add(fileNames[i]);
+            }
+        }
+        return fileNameList;
+    }
+
+    public static ArrayList<String> getFileNameList(String path){
+        String fileNames[] = new String[0];
+        try {
+            fileNames = mAssetManager.list(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ArrayList<String> fileNameList = new ArrayList<String>();
+        for(int i=0;i<fileNames.length;i++) {
+            fileNameList.add(fileNames[i]);
+        }
+        return fileNameList;
+    }
+
     public void asycLoad() {
         new Thread(this).start();
     }
@@ -63,8 +97,8 @@ public class AssetsLoader implements Runnable {
 //        String soundPrefix = ASSETS_SOUND + "/";
 //        if(!fileName.startsWith(soundPrefix))
 //        	actualFileName = soundPrefix + actualFileName;
-        if(!fileName.endsWith(".mp3"))
-        	actualFileName += ".mp3";
+//        if(!fileName.endsWith(".mp3"))
+//        	actualFileName += ".mp3";
         Integer soundIdObject = mStringSoundMap.get(actualFileName);
         if(soundIdObject != null)
             return soundIdObject.intValue();
@@ -87,8 +121,8 @@ public class AssetsLoader implements Runnable {
 //    	String gfxPrefix = ASSETS_GFX + "/";
 //        if(!fileName.startsWith(gfxPrefix))
 //        	actualFileName = gfxPrefix + actualFileName;
-        if(!fileName.endsWith(".png"))
-        	actualFileName += ".png";
+//        if(!fileName.endsWith(".png"))
+//        	actualFileName += ".png";
         Bitmap bmp = mStringBitmapMap.get(actualFileName);
         if(bmp != null)
             return bmp;
@@ -127,6 +161,7 @@ public class AssetsLoader implements Runnable {
             ArrayList<String> fileList = new ArrayList<String>();
             findFiles(fileList, ASSETS_GFX);
             findFiles(fileList, ASSETS_SOUND);
+            findFiles(fileList, ASSETS_MAPS);
             mAssetsTotalCount = fileList.size();
             for(String fileName : fileList) {
                 if(fileName.endsWith("mp3")) {

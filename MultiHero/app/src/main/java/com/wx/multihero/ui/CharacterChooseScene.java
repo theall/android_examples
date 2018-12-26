@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 
 import com.wx.multihero.base.SceneType;
+import com.wx.multihero.entity.MapSetManager;
 import com.wx.multihero.ui.BaseScene;
 
 public class CharacterChooseScene extends BaseScene {
@@ -24,4 +25,15 @@ public class CharacterChooseScene extends BaseScene {
 		return 0;
 	}
 
+	public void shiftIn() {
+
+	}
+
+	public void shiftOut() {
+
+	}
+
+	public void loadAssets() {
+
+	}
 }

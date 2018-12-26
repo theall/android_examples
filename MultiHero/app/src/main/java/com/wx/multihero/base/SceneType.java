@@ -4,8 +4,10 @@ public enum SceneType {
     INVALID,
 	LOADING,
 	TITLE,
-	MAIN,
+	GAME,
 	OPTION,
+	CHARACTER,
+	MAP_CHOOSE,
 	OVER,
 	CREDIT
 }
