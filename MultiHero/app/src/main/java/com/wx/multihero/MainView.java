@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 import com.wx.multihero.base.AssetsLoader;
 import com.wx.multihero.base.BigFont;
@@ -20,6 +21,7 @@ import com.wx.multihero.base.SoundPlayer;
 import com.wx.multihero.entity.MapSetManager;
 import com.wx.multihero.entity.TriggersManager;
 import com.wx.multihero.ui.BaseScene;
+import com.wx.multihero.ui.CharacterChooseScene;
 import com.wx.multihero.ui.LoadingScene;
 import com.wx.multihero.ui.MapChooseScene;
 import com.wx.multihero.ui.TitleScene;
@@ -61,6 +63,7 @@ public class MainView extends SurfaceView implements
     private SceneStack mSceneStack = new SceneStack();
 	private LoadingScene mLoadingScene;
 	private TitleScene mTitleScene;
+    private CharacterChooseScene mCharacterChooseScene;
 	private MapChooseScene mMapChooseScene;
 	private BigFont mBigFont = new BigFont();
     private MapSetManager mMapSetManager;
@@ -85,6 +88,7 @@ public class MainView extends SurfaceView implements
 		mAssetsLoader.asycLoad();
 		mBigFont.loadAssets();
 		mTitleScene.loadAssets();
+        mCharacterChooseScene.loadAssets();
 		mMapChooseScene.loadAssets();
 	}
 	
@@ -103,6 +107,7 @@ public class MainView extends SurfaceView implements
         mAssetsLoader = new AssetsLoader(this.getContext(), SoundPlayer.initialize(), mLoadingScene);
 
         mTitleScene = new TitleScene(SceneType.TITLE, this);
+        mCharacterChooseScene = new CharacterChooseScene(SceneType.CHARACTER, this);
         mMapChooseScene = new MapChooseScene(SceneType.MAP_CHOOSE, this);
         mSceneStack.clearPush(mLoadingScene);
 	}
@@ -254,11 +259,18 @@ public class MainView extends SurfaceView implements
 		
 	}
 
+	public void back() {
+	    back(mSceneStack.getTopSceneType());
+    }
 	public void back(SceneType sceneType) {
         if (sceneType == SceneType.LOADING) {
 
         } else if (sceneType == SceneType.TITLE) {
 
+        } else if(sceneType == SceneType.CHARACTER) {
+            mSceneStack.clearPush(mTitleScene);
+        } else if(sceneType == SceneType.MAP_CHOOSE) {
+            mSceneStack.clearPush(mCharacterChooseScene);
         } else if (sceneType == SceneType.GAME) {
 
         } else if (sceneType == SceneType.OPTION) {
@@ -279,10 +291,10 @@ public class MainView extends SurfaceView implements
             TitleScene.MenuID id = TitleScene.MenuID.values()[parameter];
             switch (id) {
                 case ADV:
-                    mSceneStack.clearPush(mMapChooseScene);
+                    mSceneStack.clearPush(mCharacterChooseScene);
                     break;
                 case VS:
-                    mSceneStack.clearPush(mMapChooseScene);
+                    mSceneStack.clearPush(mCharacterChooseScene);
                     break;
                 case OPTION:
                     break;
@@ -292,6 +304,8 @@ public class MainView extends SurfaceView implements
                 default:
                     break;
             }
+        } else if(sceneType == SceneType.CHARACTER) {
+            mSceneStack.clearPush(mMapChooseScene);
         } else if(sceneType == SceneType.GAME) {
 
         } else if(sceneType == SceneType.OPTION) {

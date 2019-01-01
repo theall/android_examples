@@ -1,6 +1,7 @@
 package com.wx.multihero.ui.widget;
 
 import android.graphics.RectF;
+import android.os.Bundle;
 import android.view.MotionEvent;
 
 import com.wx.multihero.base.SoundPlayer;
@@ -10,7 +11,7 @@ public abstract class TouchableWidget extends Widget implements Touchable {
     private int mTouchedSoundEffect = -1;
 
     public interface Callback {
-        void selected(int id);
+        void selected(int id, Bundle parameters);
     }
     private Callback mCallback = null;
 
@@ -29,8 +30,12 @@ public abstract class TouchableWidget extends Widget implements Touchable {
 
     public void touched() {
         if(mCallback != null) {
-            mCallback.selected(mId);
+            mCallback.selected(mId, getParameters());
         }
+    }
+
+    public Bundle getParameters() {
+        return new Bundle();
     }
 
     public int processTouchEvent(MotionEvent event) {

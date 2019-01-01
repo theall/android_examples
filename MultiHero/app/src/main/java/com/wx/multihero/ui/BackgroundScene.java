@@ -23,8 +23,8 @@ public class BackgroundScene extends BaseScene {
     }
 
     public void loadAssets() {
-        mBackgoundBitmap = AssetsLoader.loadBitmap(String.format("gfx/stuff/backg1.png"));
-        mTileBitmap = AssetsLoader.loadBitmap(String.format("gfx/stuff/bg.png"));
+        mBackgoundBitmap = AssetsLoader.loadBitmap(String.format("gfx/ui/backg1.png"));
+        mTileBitmap = AssetsLoader.loadBitmap(String.format("gfx/ui/bg.png"));
     }
 
     public void render(Canvas canvas, Paint paint) {

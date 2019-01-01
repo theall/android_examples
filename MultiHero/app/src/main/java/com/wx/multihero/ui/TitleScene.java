@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 
@@ -46,7 +47,7 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
         {
             mTitlePicture = new PictureItem(0,
                     new RectF(0,0,screenWidth,titleStubHeight),
-                    AssetsLoader.loadBitmap("gfx/stuff/title.png"));
+                    AssetsLoader.loadBitmap("gfx/ui/title.png"));
             mTitlePicture.center();
         }
 		float remainHeight = screenHeight - titleStubHeight;
@@ -76,7 +77,7 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
 		}
 	}
 
-	public void selected(int id) {
+	public void selected(int id, Bundle parameters) {
 		if(mNotify != null) {
 		    mNotify.next(mSceneType, id);
         }

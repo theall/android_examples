@@ -47,6 +47,13 @@ public class MainActivity extends Activity {
     }
 
     @Override
+    public void onBackPressed() {
+        if(mMainView != null) {
+            mMainView.back();
+        }
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         //Store the game state
         outState.putBundle(ICICLE_KEY, mMainView.saveState());

@@ -40,4 +40,25 @@ public abstract class Widget implements Renderable {
     public void setDrawingRect(RectF rect) {
         mDrawingRect.set(rect);
     }
+
+    public void moveTo(float x, float y) {
+        if(mBoundingRect == null)
+            return;
+
+        float dx = x - mBoundingRect.left;
+        float dy = y - mBoundingRect.top;
+        mBoundingRect.offset(dx, dy);
+
+        if(mDrawingRect != null) {
+            mDrawingRect.offset(dx, dy);
+        }
+    }
+
+    public void offset(float dx, float dy) {
+        if(mBoundingRect != null)
+            mBoundingRect.offset(dx, dy);
+
+        if(mDrawingRect != null)
+            mDrawingRect.offset(dx, dy);
+    }
 }

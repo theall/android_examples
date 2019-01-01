@@ -36,6 +36,11 @@ public class Button extends TouchableWidget implements Renderable,Touchable {
         mText.setText(text);
     }
 
+    public void setBitmaps(Bitmap normal) {
+        mNormal = normal;
+        mDown = normal;
+    }
+
     public void setBitmaps(Bitmap normal, Bitmap down) {
         mNormal = normal;
         mDown = down;
