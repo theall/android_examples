@@ -3,7 +3,9 @@ package com.wx.multihero.entity;
 import android.graphics.Bitmap;
 
 import com.wx.multihero.base.AssetsLoader;
+import com.wx.multihero.base.Utils;
 
+import java.io.File;
 import java.io.InputStream;
 
 public class Map {
@@ -16,6 +18,7 @@ public class Map {
     }
 
     public Map(String assetFileName) {
+        mMapName = Utils.extractFileName(assetFileName);
         load(assetFileName);
     }
 

@@ -58,11 +58,13 @@ public class Button extends TouchableWidget implements Renderable,Touchable {
         if(bitmap != null) {
             canvas.drawBitmap(bitmap, mBoundingRect.left, mBoundingRect.top, paint);
         }
-
-        mText.render(canvas, paint);
+        if(mText != null) {
+            mText.render(canvas, paint);
+        }
     }
 
     public int processTouchEvent(MotionEvent event) {
+        super.processTouchEvent(event);
         return 0;
     }
 }

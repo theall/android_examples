@@ -11,17 +11,18 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Toast;
 
 import com.wx.multihero.base.AssetsLoader;
 import com.wx.multihero.base.BigFont;
 import com.wx.multihero.base.GameState;
 import com.wx.multihero.base.SceneType;
 import com.wx.multihero.base.SoundPlayer;
-import com.wx.multihero.entity.MapSetManager;
+import com.wx.multihero.base.Utils;
+import com.wx.multihero.entity.ModManager;
 import com.wx.multihero.entity.TriggersManager;
 import com.wx.multihero.ui.BaseScene;
 import com.wx.multihero.ui.CharacterChooseScene;
+import com.wx.multihero.ui.GameScene;
 import com.wx.multihero.ui.LoadingScene;
 import com.wx.multihero.ui.MapChooseScene;
 import com.wx.multihero.ui.TitleScene;
@@ -65,8 +66,9 @@ public class MainView extends SurfaceView implements
 	private TitleScene mTitleScene;
     private CharacterChooseScene mCharacterChooseScene;
 	private MapChooseScene mMapChooseScene;
+	private GameScene mGameScene;
 	private BigFont mBigFont = new BigFont();
-    private MapSetManager mMapSetManager;
+    private ModManager mMapSetManager;
 
 	public MainView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -102,6 +104,7 @@ public class MainView extends SurfaceView implements
 
         screenWidth = getResources().getDisplayMetrics().widthPixels;
 		screenHeight = getResources().getDisplayMetrics().heightPixels;
+		Utils.setResolution(screenWidth, screenHeight);
 		BaseScene.setResolution(screenWidth, screenHeight);
 		mLoadingScene = new LoadingScene(SceneType.LOADING, this);
         mAssetsLoader = new AssetsLoader(this.getContext(), SoundPlayer.initialize(), mLoadingScene);
@@ -109,6 +112,7 @@ public class MainView extends SurfaceView implements
         mTitleScene = new TitleScene(SceneType.TITLE, this);
         mCharacterChooseScene = new CharacterChooseScene(SceneType.CHARACTER, this);
         mMapChooseScene = new MapChooseScene(SceneType.MAP_CHOOSE, this);
+		mGameScene = new GameScene(SceneType.GAME, this);
         mSceneStack.clearPush(mLoadingScene);
 	}
 
@@ -306,6 +310,8 @@ public class MainView extends SurfaceView implements
             }
         } else if(sceneType == SceneType.CHARACTER) {
             mSceneStack.clearPush(mMapChooseScene);
+		} else if(sceneType == SceneType.MAP_CHOOSE) {
+        	mSceneStack.clearPush(mGameScene);
         } else if(sceneType == SceneType.GAME) {
 
         } else if(sceneType == SceneType.OPTION) {

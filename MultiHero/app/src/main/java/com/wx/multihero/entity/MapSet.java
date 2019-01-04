@@ -1,6 +1,7 @@
 package com.wx.multihero.entity;
 
 import com.wx.multihero.base.AssetsLoader;
+import com.wx.multihero.base.Utils;
 
 import java.util.ArrayList;
 
@@ -10,9 +11,10 @@ public class MapSet {
     private ArrayList<Map> mMapList = new ArrayList<Map>();
 
     public MapSet(String path) {
+        mName = Utils.extractFileName(path);
         ArrayList<String> mapFileNameList = AssetsLoader.getFileNameList(path, ".dat");
         for(String mapName : mapFileNameList) {
-            Map map = new Map(path + "/" + mapName);
+            Map map = new Map(Utils.merge(path, mapName));
             mMapList.add(map);
         }
     }
