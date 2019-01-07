@@ -5,8 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
-import com.wx.multihero.base.BigFont;
-
 public class PictureItem extends Widget {
     private Bitmap mBitmap;
 
@@ -22,6 +20,12 @@ public class PictureItem extends Widget {
 
     public void setBitmap(Bitmap bitmap) {
         mBitmap = bitmap;
+        if(mBoundingRect.isEmpty()) {
+            mBoundingRect.left = 0;
+            mBoundingRect.top = 0;
+            mBoundingRect.right = bitmap.getWidth();
+            mBoundingRect.bottom = bitmap.getHeight();
+        }
     }
 
     public void setHCenter(Boolean center) {
@@ -52,5 +56,9 @@ public class PictureItem extends Widget {
         if(mBitmap != null) {
             canvas.drawBitmap(mBitmap, mDrawingRect.left, mDrawingRect.top, paint);
         }
+    }
+
+    public void positionChanged(float dx, float dy) {
+        center();
     }
 }

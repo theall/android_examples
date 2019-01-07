@@ -14,7 +14,6 @@ import android.view.SurfaceView;
 
 import com.wx.multihero.base.AssetsLoader;
 import com.wx.multihero.base.BigFont;
-import com.wx.multihero.base.GameState;
 import com.wx.multihero.base.SceneType;
 import com.wx.multihero.base.SoundPlayer;
 import com.wx.multihero.base.Utils;
@@ -26,6 +25,7 @@ import com.wx.multihero.ui.GameScene;
 import com.wx.multihero.ui.LoadingScene;
 import com.wx.multihero.ui.MapChooseScene;
 import com.wx.multihero.ui.TitleScene;
+import com.wx.multihero.variability.Game;
 
 public class MainView extends SurfaceView implements
 		SurfaceHolder.Callback,
@@ -42,14 +42,13 @@ public class MainView extends SurfaceView implements
 	private int mFrameCounter;
 	public static int screenWidth;
 	public static int screenHeight;
-	private GameState mGameState;
+	private Game mGame;
 	private SceneType mSceneState;
 	private int mScore;
 	private int mHighScore;
 	private float mVelocity;
 	private float mGravity;
 	private boolean mFlyOver;
-	private boolean mAutoPilot = true;
 
 	private int mMapOffsetX;
 	
@@ -96,6 +95,7 @@ public class MainView extends SurfaceView implements
 	
 	private void init() {
 		context = getContext();
+		Utils.setContext(context);
 		mSurfaceHolder = getHolder();
         mSurfaceHolder.addCallback(this);
         setFocusable(true);
@@ -116,26 +116,15 @@ public class MainView extends SurfaceView implements
         mSceneStack.clearPush(mLoadingScene);
 	}
 
-	private void autopilot() {
-		if (!mAutoPilot)
-			return;	
-	}
-
 	private void gameOver() {
-		mGameState = GameState.GAMEOVER;
+		mGame.setState(Game.State.OVER);
 		if (mScore > mHighScore) {
 			mHighScore = mScore;
 		}
 	}
 
 	public void update() {
-		if (mGameState == GameState.RUNNING || mGameState == GameState.GAMEOVER) {
-			
-		}
-
-		if (mGameState == GameState.RUNNING) {
-			autopilot();
-		}
+		mGame.step();
 	}
 
 	private void initNewGame() {
@@ -144,17 +133,11 @@ public class MainView extends SurfaceView implements
 		mGravity = GRAVITY;
 		mMapOffsetX = 0;
 		mVelocity = 0;
-		
-		mGameState = GameState.READY;
 		mSceneState = SceneType.GAME;
-	}
-
-	public GameState getGameState() {
-		return mGameState;
-	}
-
-	public void setGameState(GameState gameState) {
-		mGameState = gameState;
+		if(mGame==null) {
+			mGame = new Game();
+		}
+		mGame.reset();
 	}
 
 	public Bundle saveState() {
@@ -163,7 +146,7 @@ public class MainView extends SurfaceView implements
 	}
 
 	public void restoreState(Bundle icicle) {
-		setGameState(GameState.PAUSED);
+		mGame.setState(Game.State.PAUSED);
 	}
 
 	@Override
@@ -215,22 +198,6 @@ public class MainView extends SurfaceView implements
 		if(topSceneType == SceneType.TITLE) {
 
 		}
-		if(mGameState==GameState.READY)
-        {
-            mGameState = GameState.RUNNING;
-        }
-        else if(mGameState==GameState.RUNNING)
-        {
-        	if(mAutoPilot) {
-        		mAutoPilot = false;
-        	}
-        }
-        else if(mGameState==GameState.GAMEOVER)
-        {
-            float x = event.getX();
-            float y = event.getY();
-            
-        }
 		return true;
 	}
 
@@ -323,5 +290,9 @@ public class MainView extends SurfaceView implements
         } else {
 
         }
+	}
+
+	public void setGameState(Game.State state) {
+		mGame.setState(state);
 	}
 }

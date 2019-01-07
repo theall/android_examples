@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.util.Log;
 
 
 @SuppressLint("DefaultLocale") 
@@ -23,7 +24,10 @@ public class BigFont {
 	public void loadAssets() {
 		for(int i=0;i<36;i++) {
 			Bitmap bitmap = AssetsLoader.loadBitmap(String.format("gfx/fonts/l1_%d.png", i));
-			mStringBitmapMap.put(charList.substring(i, i+1), bitmap);
+			String character = charList.substring(i, i+1);
+			mStringBitmapMap.put(character, bitmap);
+            character = character.toLowerCase();
+            mStringBitmapMap.put(character, bitmap);
 		}
 	}
 	
@@ -56,7 +60,12 @@ public class BigFont {
 				stringWidth += SPACE_CHAR_DEFAULT_WIDTH;
 			} else {
 				Bitmap bitmap = mStringBitmapMap.get(string.substring(i, i+1));
-				stringWidth += bitmap.getWidth();
+				if(bitmap != null) {
+					stringWidth += bitmap.getWidth();
+				} else {
+					Log.e("MultiHero", "Invalid bitmap!");
+				}
+
 			}
 		}
 		return stringWidth;

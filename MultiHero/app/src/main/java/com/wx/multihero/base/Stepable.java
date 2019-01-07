@@ -1,4 +1,4 @@
-package com.wx.multihero.variability;
+package com.wx.multihero.base;
 
 public interface Stepable {
     void step();

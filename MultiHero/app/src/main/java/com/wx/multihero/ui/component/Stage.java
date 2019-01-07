@@ -6,8 +6,8 @@ import android.graphics.RectF;
 
 import com.wx.multihero.ui.widget.Widget;
 
-public class Platform extends Widget {
-    public Platform(int id, RectF boundingRect) {
+public class Stage extends Widget {
+    public Stage(int id, RectF boundingRect) {
         super(id, boundingRect);
     }
 

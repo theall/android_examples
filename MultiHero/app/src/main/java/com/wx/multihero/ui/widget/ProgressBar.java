@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
+import com.wx.multihero.base.Renderable;
+
 public class ProgressBar extends Widget implements Renderable {
     private float mProgress;
     public ProgressBar(int id, RectF boundingRect) {

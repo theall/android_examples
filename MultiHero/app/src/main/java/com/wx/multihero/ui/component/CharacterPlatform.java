@@ -8,16 +8,16 @@ import com.wx.multihero.ui.widget.TouchableWidget;
 
 public class CharacterPlatform extends TouchableWidget {
     private RoundBoard mRoundBoard;
-    private Platform mPlatform;
+    private Stage mStage;
     public CharacterPlatform(int id, RectF boundingRect, Callback callback) {
         super(id, boundingRect, callback);
         mRoundBoard = new RoundBoard(id, null);
-        mPlatform = new Platform(id, null);
+        mStage = new Stage(id, null);
     }
 
     public void render(Canvas canvas, Paint paint) {
-        if(mPlatform != null) {
-            mPlatform.render(canvas, paint);
+        if(mStage != null) {
+            mStage.render(canvas, paint);
         }
         if(mRoundBoard != null) {
             mRoundBoard.render(canvas, paint);
@@ -25,7 +25,7 @@ public class CharacterPlatform extends TouchableWidget {
     }
 
     public void loadAssets() {
-        mPlatform.loadAssets();
+        mStage.loadAssets();
         mRoundBoard.loadAssets();
     }
 }

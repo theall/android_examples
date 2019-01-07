@@ -5,17 +5,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
-import com.wx.multihero.base.AssetsLoader;
-import com.wx.multihero.base.BigFont;
-
 public class MenuItem extends TouchableWidget {
-    private Text mText;
+    private BitmapText mText;
     public MenuItem(int id, RectF rect, String text, Callback callback) {
         super(id, rect, callback);
         mDrawingRect = new RectF(rect);
-        mText = new Text(id, rect);
+        mText = new BitmapText(id, rect);
         mText.setText(text);
-        mText.center();
     }
 
     public void render(Canvas canvas, Paint paint) {
@@ -27,5 +23,9 @@ public class MenuItem extends TouchableWidget {
             paint.setStyle(oldStyle);
         }
         mText.render(canvas, paint);
+    }
+
+    public void positionChanged(float dx, float dy) {
+        mText.offset(dx, dy);
     }
 }

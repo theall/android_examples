@@ -4,12 +4,14 @@ import android.graphics.RectF;
 
 import com.wx.multihero.base.SoundPlayer;
 import com.wx.multihero.ui.widget.Touchable;
-import com.wx.multihero.ui.widget.Renderable;
+import com.wx.multihero.base.Renderable;
 import com.wx.multihero.base.SceneType;
+import com.wx.multihero.variability.Game;
 
 public abstract class BaseScene implements Renderable, Touchable {
     protected SceneType mSceneType;
     public static RectF mScreenRect;
+    public static Game mGame;
     protected Notify mNotify;
     protected int mBackgroundSound = -1;
 

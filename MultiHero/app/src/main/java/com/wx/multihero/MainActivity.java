@@ -5,7 +5,7 @@ package com.wx.multihero;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.wx.multihero.base.GameState;
+import com.wx.multihero.variability.Game;
 
 public class MainActivity extends Activity {
     private MainView mMainView;
@@ -27,14 +27,14 @@ public class MainActivity extends Activity {
 
         if (savedInstanceState == null) {
             // We were just launched -- set up a new game
-            mMainView.setGameState(GameState.READY);
+            mMainView.setGameState(Game.State.READY);
         } else {
             // We are being restored
             Bundle map = savedInstanceState.getBundle(ICICLE_KEY);
             if (map != null) {
                 mMainView.restoreState(map);
             } else {
-                mMainView.setGameState(GameState.PAUSED);
+                mMainView.setGameState(Game.State.PAUSED);
             }
         }
     }
@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
     protected void onPause() {
         super.onPause();
         // Pause the game along with the activity
-        mMainView.setGameState(GameState.PAUSED);
+        mMainView.setGameState(Game.State.PAUSED);
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.wx.multihero.ui.widget;
 
 import android.graphics.RectF;
 
+import com.wx.multihero.base.Renderable;
+
 public abstract class Widget implements Renderable {
     protected RectF mBoundingRect;
     protected RectF mDrawingRect;
@@ -30,7 +32,10 @@ public abstract class Widget implements Renderable {
     }
 
     public void setBoundingRect(RectF rect) {
+        float dx = rect.left - mBoundingRect.left;
+        float dy = rect.top - mBoundingRect.top;
         mBoundingRect.set(rect);
+        positionChanged(dx, dy);
     }
 
     public RectF getDrawingRect() {
@@ -52,6 +57,7 @@ public abstract class Widget implements Renderable {
         if(mDrawingRect != null) {
             mDrawingRect.offset(dx, dy);
         }
+        positionChanged(dx, dy);
     }
 
     public void offset(float dx, float dy) {
@@ -60,5 +66,9 @@ public abstract class Widget implements Renderable {
 
         if(mDrawingRect != null)
             mDrawingRect.offset(dx, dy);
+
+        positionChanged(dx, dy);
     }
+
+    public abstract void positionChanged(float dx, float dy);
 }

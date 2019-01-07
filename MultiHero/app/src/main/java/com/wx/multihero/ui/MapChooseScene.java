@@ -9,12 +9,11 @@ import com.wx.multihero.entity.Mod;
 import com.wx.multihero.entity.ModManager;
 import com.wx.multihero.ui.widget.Button;
 import com.wx.multihero.ui.widget.PictureItem;
-import com.wx.multihero.ui.widget.Text;
+import com.wx.multihero.ui.widget.BitmapText;
 import com.wx.multihero.ui.widget.TouchableWidget;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
@@ -24,23 +23,23 @@ import java.util.ArrayList;
 
 public class MapChooseScene extends BaseScene implements TouchableWidget.Callback {
 	private ArrayList<PictureItem> mMapThumbList = new ArrayList<PictureItem>();
-    private Text mMapSetName;
+    private BitmapText mModName;
     private Button mBtnBack;
+    private BackgroundScene mBackgroundScene;
     private static float SPACE_COLUMN = 20;
     private static float SPACE_ROW = 10;
     private final int ID_BACK = 1;
 	public MapChooseScene(SceneType sceneType, Notify notify) {
 		super(sceneType, notify);
 
-        mMapSetName = new Text(0, new RectF());
+        mModName = new BitmapText(0, new RectF());
         mBtnBack = new Button(ID_BACK, null, this);
+        mBackgroundScene = new BackgroundScene(SceneType.INVALID, null);
 	}
 
 	private void setMapSet(MapSet mapSet) {
 	    if(mapSet == null)
 	        return;
-
-        mMapSetName.setText(mapSet.getName());
 
         mMapThumbList.clear();
         if(mapSet.getMapCount() < 1)
@@ -81,7 +80,8 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
     }
 
 	public void render(Canvas canvas, Paint paint) {
-	    canvas.drawColor(Color.BLUE);
+	    //canvas.drawColor(Color.BLUE);
+        mBackgroundScene.render(canvas, paint);
 		for(PictureItem pi : mMapThumbList) {
 		    pi.render(canvas, paint);
         }
@@ -102,10 +102,12 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
 	}
 
     public void loadAssets() {
+	    mBackgroundScene.loadAssets();
         ModManager.load();
         Mod mod = ModManager.getMod(1);
+        mModName.setText(mod.getName());
         if(mod != null) {
-            setMapSet(mod.getAdvMaps());
+            setMapSet(mod.getVsMaps());
         }
 
         Bitmap backBitmap = AssetsLoader.loadBitmap("gfx/ui/backward.png");

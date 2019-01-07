@@ -5,7 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 
-import com.wx.multihero.ui.widget.Renderable;
+import com.wx.multihero.base.Renderable;
 import com.wx.multihero.base.SceneType;
 import com.wx.multihero.ui.widget.Touchable;
 import com.wx.multihero.ui.BaseScene;

@@ -1,4 +1,4 @@
-package com.wx.multihero.ui.widget;
+package com.wx.multihero.base;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

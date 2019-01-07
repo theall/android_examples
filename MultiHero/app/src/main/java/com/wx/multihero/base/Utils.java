@@ -1,11 +1,15 @@
 package com.wx.multihero.base;
 
+import android.app.Application;
+import android.content.Context;
+
 public class Utils {
 	public static final float BASE_SCREEN_WIDTH = 800.0f;
 	public static final float BASE_SCREEN_HEIGHT = 480f;
 	public static final float GOLD_LINE = 0.628f;
 	private static float mScreenWidth = BASE_SCREEN_WIDTH;
 	private static float mScreenHeight = BASE_SCREEN_HEIGHT;
+	private static Context mContext = null;
 
 	public static float getScreenWidth() {
 		return mScreenWidth;
@@ -49,4 +53,14 @@ public class Utils {
         index++;
         return fileFullName.substring(index);
     }
+    public static String getStringFromResourceId(int id) {
+		if(mContext != null) {
+			return mContext.getResources().getString(id);
+		}
+		return "";
+	}
+
+	public static void setContext(Context context) {
+		mContext = context;
+	}
 }

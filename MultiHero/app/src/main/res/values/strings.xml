@@ -2,7 +2,8 @@
 <resources>
 
     <string name="app_name">MultiHero</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-
+    <string name="team_attack">Team Attack</string>
+    <string name="game_mode">GAME MODE</string>
+    <string name="lives">LIVES</string>
+    <string name="items">ITEMS</string>
 </resources>
