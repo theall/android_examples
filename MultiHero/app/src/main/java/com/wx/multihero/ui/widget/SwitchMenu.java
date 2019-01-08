@@ -70,11 +70,7 @@ public class SwitchMenu extends TouchableWidget implements TouchableWidget.Callb
         }
     }
 
-    @Override
-    public void moveTo(float x, float y) {
-        float dx = x - mBoundingRect.left;
-        float dy = y - mBoundingRect.top;
-        super.moveTo(x, y);
+    public void positionChanged(float dx, float dy) {
         mBackground.offset(dx, dy);
         mBtnLeft.offset(dx, dy);
         mBtnRight.offset(dx, dy);

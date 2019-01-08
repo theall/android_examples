@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
+import com.wx.multihero.base.Utils;
 import com.wx.multihero.ui.widget.TouchableWidget;
 
 public class CharacterPlatform extends TouchableWidget {
@@ -25,7 +26,17 @@ public class CharacterPlatform extends TouchableWidget {
     }
 
     public void loadAssets() {
-        mStage.loadAssets();
         mRoundBoard.loadAssets();
+        mStage.loadAssets();
+        RectF roundBoardRect = mRoundBoard.getBoundingRect();
+        setBoundingRect(roundBoardRect);
+
+        RectF stageRect = mStage.getBoundingRect();
+        mStage.moveTo((roundBoardRect.width()-stageRect.width())/2, roundBoardRect.bottom + Utils.getRealHeight(20));
+    }
+
+    public void positionChanged(float dx, float dy) {
+        mRoundBoard.offset(dx, dy);
+        mStage.offset(dx, dy);
     }
 }

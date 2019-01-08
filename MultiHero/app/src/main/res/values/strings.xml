@@ -6,4 +6,6 @@
     <string name="game_mode">GAME MODE</string>
     <string name="lives">LIVES</string>
     <string name="items">ITEMS</string>
+    <string name="player">PLAYER</string>
+    <string name="team">TEAM</string>
 </resources>

@@ -8,7 +8,7 @@ import android.view.MotionEvent;
 
 import com.wx.multihero.base.Renderable;
 
-public class Button extends TouchableWidget implements Renderable,Touchable {
+public class Button extends TouchableWidget implements Renderable {
     private Bitmap mNormal;
     private Bitmap mDown;
     private PrimitiveText mText;

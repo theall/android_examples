@@ -46,14 +46,7 @@ public class ActorBoard extends TouchableWidget {
         mForeground.render(canvas, paint);
     }
 
-    @Override
-    public void moveTo(float x, float y) {
-        if(mBoundingRect == null)
-            return;
-        float dx = x - mBoundingRect.left;
-        float dy = y - mBoundingRect.top;
-        super.moveTo(x, y);
-
+    public void positionChanged(float dx, float dy) {
         if(mBackground.getBoundingRect() != null) {
             mBackground.offset(dx, dy);
         }

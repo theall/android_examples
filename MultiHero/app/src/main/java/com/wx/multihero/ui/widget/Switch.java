@@ -51,4 +51,8 @@ public class Switch extends TouchableWidget {
         }
     }
 
+    public void positionChanged(float dx, float dy) {
+        mBackgroundPicture.offset(dx, dy);
+        mSliderPicture.offset(dx, dy);
+    }
 }

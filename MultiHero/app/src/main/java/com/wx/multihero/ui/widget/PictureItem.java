@@ -19,6 +19,9 @@ public class PictureItem extends Widget {
     }
 
     public void setBitmap(Bitmap bitmap) {
+        if(bitmap == null)
+            return;
+
         mBitmap = bitmap;
         if(mBoundingRect.isEmpty()) {
             mBoundingRect.left = 0;
@@ -40,6 +43,9 @@ public class PictureItem extends Widget {
     }
 
     public void setVCenter(Boolean center) {
+        if(mBitmap == null)
+            return;
+
         if(center) {
             mDrawingRect.top = mBoundingRect.top + (mBoundingRect.height() - mBitmap.getHeight()) / 2;
         } else {

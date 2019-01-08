@@ -29,4 +29,8 @@ public class ProgressBar extends Widget implements Renderable {
         paint.setStyle(oldStyle);
         paint.setColor(oldColor);
     }
+
+    public void positionChanged(float dx, float dy) {
+
+    }
 }

@@ -30,16 +30,18 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
     private ArrayList<ActorBoard> mBoards = new ArrayList<ActorBoard>();
     private ArrayList<CharacterPlatform> mPlatforms = new ArrayList<CharacterPlatform>();
 
-    private final int ID_ITEMS = 1;
-    private final int ID_NEXT = 2;
-    private final int ID_BACK = 3;
-    private final int ID_LIVES = 4;
-    private final int ID_TEAM_ATTACK = 5;
-    private final int ID_GAME_MODE = 6;
-    private final int ID_BOARD = 7;
-    private final int ID_PLATFORM = 8;
-    private final int BORAD_COUNT = 10;
-    private final int PLATFORM_COUNT = 4;
+    private static final int ID_ITEMS = 1;
+    private static final int ID_NEXT = 2;
+    private static final int ID_BACK = 3;
+    private static final int ID_LIVES = 4;
+    private static final int ID_TEAM_ATTACK = 5;
+    private static final int ID_GAME_MODE = 6;
+    private static final int ID_BOARD = 7;
+    private static final int ID_PLATFORM = 8;
+    private static final int BORAD_COUNT = 10;
+    private static final int PLATFORM_COUNT = 10;
+    private static final float PLATFORM_SPACE_HORIZONTAL = 10;
+    private static final float PLATFORM_SPACE_VERTICAL = 5;
 
 	public CharacterChooseScene(SceneType sceneType, Notify notify) {
 		super(sceneType, notify);
@@ -125,9 +127,10 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
         mBtnItems.moveTo(r.left, r.top);
 
         Bitmap boardBackground = AssetsLoader.loadBitmap("gfx/ui/board3.png");
+        // compute total width of board list
+        float actorBoardTotalWidth = BORAD_COUNT * boardBackground.getWidth();
         float boardWidth = boardBackground.getWidth();
-        float margin = Utils.getRealWidth(20);
-        r.left = margin;
+        r.left = (mScreenRect.width() - actorBoardTotalWidth) / 2;
         r.top = r.bottom + Utils.getRealHeight(10);
         for(int i=0;i<BORAD_COUNT;i++) {
             ActorBoard b = mBoards.get(i);
@@ -135,19 +138,28 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
             b.setBitmaps(boardBackground, foreground);
             b.moveTo(r.left, r.top);
             r.left += boardBackground.getWidth();
-            if(r.left+margin >mScreenRect.width()) {
-                r.left = margin;
-                r.top += boardBackground.getHeight() + Utils.getRealHeight(5);
-            }
         }
 
         // platforms
-        r.top += Utils.getRealHeight(10);
         for(CharacterPlatform cp : mPlatforms) {
             cp.loadAssets();
-            cp.moveTo(r.left, r.top);
         }
 
+        float platformHorizontalSpace = Utils.getRealWidth(PLATFORM_SPACE_HORIZONTAL);
+        int platformsPerRow = PLATFORM_COUNT / 2;
+        float platformTotalWidth = (mPlatforms.get(0).getBoundingRect().width() + platformHorizontalSpace) * platformsPerRow - platformHorizontalSpace;
+        r.left = (mScreenRect.width() - platformTotalWidth) / 2;
+        r.top += boardBackground.getHeight() + Utils.getRealHeight(PLATFORM_SPACE_VERTICAL);
+        int index = 0;
+        for(CharacterPlatform cp : mPlatforms) {
+            cp.moveTo(r.left, r.top);
+            r.left += cp.getBoundingRect().width() + platformHorizontalSpace;
+            index++;
+            if(index == platformsPerRow) {
+                r.left = (mScreenRect.width() - platformTotalWidth) / 2;
+                r.top += cp.getBoundingRect().height();
+            }
+        }
 
         Bitmap backBitmap = AssetsLoader.loadBitmap("gfx/ui/backward.png");
         r.left = Utils.getRealWidth(10);
