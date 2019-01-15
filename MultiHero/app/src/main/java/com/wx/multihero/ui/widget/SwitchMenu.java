@@ -5,22 +5,19 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.view.MotionEvent;
 
 import com.wx.multihero.base.Utils;
 
 public class SwitchMenu extends TouchableWidget implements TouchableWidget.Callback{
     private PrimitiveText mText;
-    private Button mBtnLeft;
-    private Button mBtnRight;
+    protected Button mBtnLeft;
+    protected Button mBtnRight;
     private PictureItem mBackground;
 
-    public enum ButtonType {
-        LEFT,
-        RIGHT
-    }
     private static final int ID_TEXT = 1;
-    private static final int ID_BUTTON_LEFT = 2;
-    private static final int ID_BUTTON_RIGHT = 3;
+    public static final int ID_BUTTON_LEFT = 2;
+    public static final int ID_BUTTON_RIGHT = 3;
 
     public SwitchMenu(int id, RectF boundingRect, Callback callback) {
         super(id, boundingRect, callback);
@@ -37,6 +34,19 @@ public class SwitchMenu extends TouchableWidget implements TouchableWidget.Callb
 
     public Button getRightButton() {
         return mBtnRight;
+    }
+
+    public void setTouchedSoundEffect(int soundEffect) {
+        mBtnLeft.setTouchedSoundEffect(soundEffect);
+        mBtnRight.setTouchedSoundEffect(soundEffect);
+    }
+
+    @Override
+    public int processTouchEvent(MotionEvent event) {
+        int r = 0;
+        r |= mBtnLeft.processTouchEvent(event);
+        r |= mBtnRight.processTouchEvent(event);
+        return  r;
     }
 
     public void selected(int id, Bundle parameters) {

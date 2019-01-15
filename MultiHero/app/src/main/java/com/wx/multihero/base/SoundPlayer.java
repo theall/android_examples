@@ -38,6 +38,9 @@ public class SoundPlayer {
 
     public static void playAudio(int id) {
         if (id != -1) {
+            if(mBackgroundStreamId  != -1) {
+                mSoundPool.pause(mBackgroundStreamId);
+            }
             mBackgroundStreamId = mSoundPool.play(id, 1.0f, 1.0f, 100, -1, 1f);
         }
     }

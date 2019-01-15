@@ -4,9 +4,11 @@
     <string name="app_name">超级大乱斗</string>
     <string name="team_attack">攻击队友</string>
     <string name="game_mode">游戏模式</string>
-    <string name="lives">生命</string>
-    <string name="items">使用物品</string>
+    <string name="lifes">生命</string>
+    <string name="use_items">使用物品</string>
     <string name="player">玩家</string>
     <string name="team">队伍</string>
+    <string name="on">开</string>
+    <string name="off">关</string>
 
 </resources>

@@ -13,12 +13,12 @@ import com.wx.multihero.ui.widget.ColorButton;
 import com.wx.multihero.ui.widget.PrimitiveText;
 import com.wx.multihero.ui.widget.TouchableWidget;
 
-public class TeamButton extends TouchableWidget implements Renderable,TouchableWidget.Callback{
+public class TeamBrick extends TouchableWidget implements Renderable,TouchableWidget.Callback{
     private PrimitiveText mLabel;
     private PrimitiveText mTextNone;
     private ColorButton mBtnColor;
 
-    public TeamButton(int id, RectF boundingRect, Callback callback) {
+    public TeamBrick(int id, RectF boundingRect, Callback callback) {
         super(id, boundingRect, callback);
 
         mLabel = new PrimitiveText(0, boundingRect);

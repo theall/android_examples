@@ -18,7 +18,7 @@ public class RoundBoard extends Widget {
     private PictureItem mActorHumen;
     private PictureItem mActorUnknown;
     private PrimitiveText mPlayerName;
-    private TeamButton mBtnTeam;
+    private TeamBrick mBtnTeam;
     private static final int ID_TEAM = 1;
     private static final int ID_ACTOR_TYPE = 2;
 
@@ -30,7 +30,7 @@ public class RoundBoard extends Widget {
         mActorHumen = new PictureItem(ID_ACTOR_TYPE, null, null);
         mActorUnknown = new PictureItem(ID_ACTOR_TYPE, null, null);
         mPlayerName = new PrimitiveText(0, null);
-        mBtnTeam = new TeamButton(ID_TEAM, null, null);
+        mBtnTeam = new TeamBrick(ID_TEAM, null, null);
     }
 
     public void render(Canvas canvas, Paint paint) {

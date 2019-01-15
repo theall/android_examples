@@ -13,19 +13,22 @@ import com.wx.multihero.base.SceneType;
 import com.wx.multihero.base.Utils;
 import com.wx.multihero.ui.component.ActorBoard;
 import com.wx.multihero.ui.component.CharacterPlatform;
+import com.wx.multihero.ui.component.LifeSwitchButton;
+import com.wx.multihero.ui.component.TeamAttackButton;
+import com.wx.multihero.ui.component.UseItemButton;
 import com.wx.multihero.ui.widget.Button;
-import com.wx.multihero.ui.widget.SwitchMenu;
 import com.wx.multihero.ui.widget.TouchableWidget;
+import com.wx.multihero.variability.Game;
 
 import java.util.ArrayList;
 
 public class CharacterChooseScene extends BaseScene implements TouchableWidget.Callback {
-    private Button mBtnTeamAttack;
-	private Button mBtnItems;
+    private TeamAttackButton mBtnTeamAttack;
+	private UseItemButton mBtnUseItems;
 	private Button mBtnBack;
 	private Button mBtnNext;
 	private Button mBtnMode;
-	private SwitchMenu mSMLives;
+	private LifeSwitchButton mBtnLifes;
 	private BackgroundScene mBackgroundScene;
     private ArrayList<ActorBoard> mBoards = new ArrayList<ActorBoard>();
     private ArrayList<CharacterPlatform> mPlatforms = new ArrayList<CharacterPlatform>();
@@ -41,15 +44,22 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
     private static final int BORAD_COUNT = 10;
     private static final int PLATFORM_COUNT = 10;
     private static final float PLATFORM_SPACE_HORIZONTAL = 10;
-    private static final float PLATFORM_SPACE_VERTICAL = 5;
+    private static final float PLATFORM_SPACE_VERTICAL = 10;
 
 	public CharacterChooseScene(SceneType sceneType, Notify notify) {
 		super(sceneType, notify);
-        mBtnTeamAttack = new Button(ID_TEAM_ATTACK, null, this);
-        mBtnItems = new Button(ID_ITEMS, null, this);
+
+		Game game = Game.getInstance();
+        mBtnTeamAttack = new TeamAttackButton(ID_TEAM_ATTACK, null, this);
+        mBtnTeamAttack.setBindValue(game.getAttackMate());
+        mBtnUseItems = new UseItemButton(ID_ITEMS, null, this);
+        mBtnUseItems.setBindValue(game.getUseItems());
+
         mBtnBack = new Button(ID_BACK, null, this);
         mBtnNext = new Button(ID_NEXT, null, this);
-        mSMLives = new SwitchMenu(ID_LIVES, null, this);
+        mBtnLifes = new LifeSwitchButton(ID_LIVES, null, this);
+        mBtnLifes.setBindValue(game.getLifes());
+
         mBtnMode = new Button(ID_GAME_MODE, null, this);
         mBackgroundScene = new BackgroundScene(SceneType.INVALID, null);
         for(int i=0;i<BORAD_COUNT;i++) {
@@ -66,11 +76,11 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
         mBackgroundScene.render(canvas, paint);
 
         mBtnTeamAttack.render(canvas, paint);
-        mBtnItems.render(canvas, paint);
+        mBtnUseItems.render(canvas, paint);
         mBtnBack.render(canvas, paint);
         mBtnNext.render(canvas, paint);
         mBtnMode.render(canvas, paint);
-        mSMLives.render(canvas, paint);
+        mBtnLifes.render(canvas, paint);
 
         for(ActorBoard ab : mBoards) {
             ab.render(canvas, paint);
@@ -83,6 +93,10 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
 	}
 
 	public int processTouchEvent(MotionEvent event) {
+	    mBtnTeamAttack.processTouchEvent(event);
+	    mBtnMode.processTouchEvent(event);
+	    mBtnUseItems.processTouchEvent(event);
+	    mBtnLifes.processTouchEvent(event);
 		mBtnBack.processTouchEvent(event);
 		mBtnNext.processTouchEvent(event);
 		return 0;
@@ -103,33 +117,27 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
         r.left = Utils.getRealWidth(10);
         r.top = Utils.getRealHeight(20);
 
-        Bitmap buttonBackground = AssetsLoader.loadBitmap("gfx/ui/but_ta.png");
-        r.bottom = r.top + buttonBackground.getHeight();
-        mBtnTeamAttack.setBitmaps(buttonBackground);
-        mBtnTeamAttack.setText(Utils.getStringFromResourceId(R.string.team_attack));
+        mBtnTeamAttack.loadAssets();
+        r.bottom = r.top + mBtnTeamAttack.getBoundingRect().height();
         mBtnTeamAttack.moveTo(r.left, r.top);
 
-        r.left += buttonBackground.getWidth() + Utils.getRealWidth(20);
+        r.left += mBtnTeamAttack.getBoundingRect().width() + Utils.getRealWidth(20);
+        Bitmap buttonBackground = AssetsLoader.loadBitmap("gfx/ui/but_ta.png");
         mBtnMode.setBitmaps(buttonBackground);
         mBtnMode.setText(Utils.getStringFromResourceId(R.string.game_mode));
         mBtnMode.moveTo(r.left, r.top);
 
-        Bitmap arrow1 = AssetsLoader.loadBitmap("gfx/ui/arrow1.png");
-        Bitmap arrow2 = AssetsLoader.loadBitmap("gfx/ui/arrow2.png");
-        mSMLives.setBitmaps(buttonBackground, arrow1, arrow2);
-        mSMLives.setText(Utils.getStringFromResourceId(R.string.lives));
         r.left += buttonBackground.getWidth() + Utils.getRealWidth(20);
-        mSMLives.moveTo(r.left, r.top);
+        mBtnLifes.loadAssets();
+        mBtnLifes.moveTo(r.left, r.top);
 
-        mBtnItems.setBitmaps(buttonBackground);
-        mBtnItems.setText(Utils.getStringFromResourceId(R.string.items));
         r.left += buttonBackground.getWidth() + Utils.getRealWidth(20);
-        mBtnItems.moveTo(r.left, r.top);
+        mBtnUseItems.loadAssets();
+        mBtnUseItems.moveTo(r.left, r.top);
 
         Bitmap boardBackground = AssetsLoader.loadBitmap("gfx/ui/board3.png");
         // compute total width of board list
         float actorBoardTotalWidth = BORAD_COUNT * boardBackground.getWidth();
-        float boardWidth = boardBackground.getWidth();
         r.left = (mScreenRect.width() - actorBoardTotalWidth) / 2;
         r.top = r.bottom + Utils.getRealHeight(10);
         for(int i=0;i<BORAD_COUNT;i++) {
@@ -157,7 +165,8 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
             index++;
             if(index == platformsPerRow) {
                 r.left = (mScreenRect.width() - platformTotalWidth) / 2;
-                r.top += cp.getBoundingRect().height();
+                r.top += cp.getBoundingRect().height() + Utils.getRealHeight(PLATFORM_SPACE_VERTICAL);
+                index = 0;
             }
         }
 

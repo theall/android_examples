@@ -42,6 +42,7 @@ public abstract class BaseScene implements Renderable, Touchable {
         if(interrupt) {
             SoundPlayer.stopAudio();
         }
+
         SoundPlayer.playAudio(mBackgroundSound);
     }
 }

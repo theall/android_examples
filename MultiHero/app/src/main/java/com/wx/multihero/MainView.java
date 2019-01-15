@@ -235,9 +235,9 @@ public class MainView extends SurfaceView implements
     }
 	public void back(SceneType sceneType) {
         if (sceneType == SceneType.LOADING) {
-
+			System.exit(0);
         } else if (sceneType == SceneType.TITLE) {
-
+			System.exit(0);
         } else if(sceneType == SceneType.CHARACTER) {
             mSceneStack.clearPush(mTitleScene);
         } else if(sceneType == SceneType.MAP_CHOOSE) {
