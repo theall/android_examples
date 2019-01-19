@@ -11,7 +11,6 @@ import com.wx.multihero.variability.Game;
 public abstract class BaseScene implements Renderable, Touchable {
     protected SceneType mSceneType;
     public static RectF mScreenRect;
-    public static Game mGame;
     protected Notify mNotify;
     protected int mBackgroundSound = -1;
 

@@ -53,7 +53,6 @@ public class MainView extends SurfaceView implements
 	private int mMapOffsetX;
 	
 	private final Paint mPaint = new Paint();
-	private AssetsLoader mAssetsLoader;
 	private SurfaceHolder mSurfaceHolder;
 	private Canvas mCanvas;
 	
@@ -86,8 +85,9 @@ public class MainView extends SurfaceView implements
 	}
 
 	private void loadAssets() {
-		mAssetsLoader.asycLoad();
+		AssetsLoader.getInstance().asycLoad();
 		mBigFont.loadAssets();
+		mLoadingScene.loadAssets();
 		mTitleScene.loadAssets();
         mCharacterChooseScene.loadAssets();
 		mMapChooseScene.loadAssets();
@@ -107,7 +107,7 @@ public class MainView extends SurfaceView implements
 		Utils.setResolution(screenWidth, screenHeight);
 		BaseScene.setResolution(screenWidth, screenHeight);
 		mLoadingScene = new LoadingScene(SceneType.LOADING, this);
-        mAssetsLoader = new AssetsLoader(this.getContext(), SoundPlayer.initialize(), mLoadingScene);
+        AssetsLoader.getInstance().setConfigure(this.getContext(), SoundPlayer.initialize(), mLoadingScene);
 
         mTitleScene = new TitleScene(SceneType.TITLE, this);
         mCharacterChooseScene = new CharacterChooseScene(SceneType.CHARACTER, this);

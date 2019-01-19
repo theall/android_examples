@@ -8,13 +8,20 @@ import android.graphics.RectF;
 import com.wx.multihero.base.AssetsLoader;
 import com.wx.multihero.ui.widget.PictureItem;
 import com.wx.multihero.ui.widget.Widget;
+import com.wx.multihero.variability.Player;
 
 public class Stage extends Widget {
     private PictureItem mStageBitmap;
+    private Player mBindValue;
+
     public Stage(int id, RectF boundingRect) {
         super(id, boundingRect);
 
         mStageBitmap = new PictureItem(0, null, null);
+    }
+
+    public void setBindValue(Player value) {
+        mBindValue = value;
     }
 
     public void render(Canvas canvas, Paint paint) {
@@ -22,7 +29,7 @@ public class Stage extends Widget {
     }
 
     public void loadAssets() {
-        Bitmap stageBitmap = AssetsLoader.loadBitmap("gfx/ui/pad.png");
+        Bitmap stageBitmap = AssetsLoader.getInstance().loadBitmap("gfx/ui/pad.png");
         mStageBitmap.setBitmap(stageBitmap);
 
         RectF rect = new RectF(mStageBitmap.getBoundingRect());

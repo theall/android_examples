@@ -21,9 +21,9 @@ public class UseItemButton extends Button {
     }
 
     public void loadAssets() {
-        Bitmap buttonBackground = AssetsLoader.loadBitmap("gfx/ui/but_ta.png");
+        Bitmap buttonBackground = AssetsLoader.getInstance().loadBitmap("gfx/ui/but_ta.png");
         setBitmaps(buttonBackground);
-        setTouchedSoundEffect(AssetsLoader.loadSound("sound/click.mp3"));
+        setTouchedSoundEffect(AssetsLoader.getInstance().loadSound("sound/click.mp3"));
         update();
     }
 

@@ -2,19 +2,25 @@ package com.wx.multihero.ui.component;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 
 import com.wx.multihero.base.Utils;
 import com.wx.multihero.ui.widget.TouchableWidget;
+import com.wx.multihero.variability.Player;
 
 public class CharacterPlatform extends TouchableWidget {
     private RoundBoard mRoundBoard;
     private Stage mStage;
+    private Player mBindValue;
+
     public CharacterPlatform(int id, RectF boundingRect, Callback callback) {
         super(id, boundingRect, callback);
         mRoundBoard = new RoundBoard(id, null);
         mStage = new Stage(id, null);
+    }
+
+    public void setBindValue(Player bindValue) {
+        mBindValue = bindValue;
     }
 
     public void render(Canvas canvas, Paint paint) {

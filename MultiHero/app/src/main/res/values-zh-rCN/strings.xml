@@ -10,5 +10,9 @@
     <string name="team">队伍</string>
     <string name="on">开</string>
     <string name="off">关</string>
+    <string name="death_math">死亡竞赛</string>
+    <string name="hit_target">攻击物体</string>
+    <string name="catch_flag">抢旗</string>
+    <string name="loading">加载中...</string>
 
 </resources>

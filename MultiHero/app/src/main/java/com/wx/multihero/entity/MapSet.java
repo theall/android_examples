@@ -12,7 +12,7 @@ public class MapSet {
 
     public MapSet(String path) {
         mName = Utils.extractFileName(path);
-        ArrayList<String> mapFileNameList = AssetsLoader.getFileNameList(path, ".dat");
+        ArrayList<String> mapFileNameList = AssetsLoader.getInstance().getFileNameList(path, ".dat");
         for(String mapName : mapFileNameList) {
             Map map = new Map(Utils.merge(path, mapName));
             mMapList.add(map);

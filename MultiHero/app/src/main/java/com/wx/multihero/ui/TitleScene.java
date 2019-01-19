@@ -35,7 +35,7 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
 
 	public TitleScene(SceneType sceneType, Notify notify) {
 		super(sceneType, notify);
-		mBackgroundSound = AssetsLoader.loadSound("sound/title.mp3");
+		mBackgroundSound = AssetsLoader.getInstance().loadSound("sound/title.mp3");
 	}
 
 	public void loadAssets() {
@@ -47,7 +47,7 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
         {
             mTitlePicture = new PictureItem(0,
                     new RectF(0,0,screenWidth,titleStubHeight),
-                    AssetsLoader.loadBitmap("gfx/ui/title.png"));
+                    AssetsLoader.getInstance().loadBitmap("gfx/ui/title.png"));
             mTitlePicture.center();
         }
 		float remainHeight = screenHeight - titleStubHeight;
@@ -68,7 +68,7 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
 		rect.right = rect.left + maxStringWidth;
 		rect.top = titleStubHeight;
 		rect.bottom = rect.top + memuHeight;
-		int soundId = AssetsLoader.loadSound("sound/blocked.mp3");
+		int soundId = AssetsLoader.getInstance().loadSound("sound/blocked.mp3");
 		for(int i=0;i<5;i++) {
 			MenuItem mi = new MenuItem(i, rect, mMenuList[i], this);
 			mi.setTouchedSoundEffect(soundId);

@@ -7,16 +7,19 @@ import android.graphics.RectF;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
-import com.wx.multihero.R;
 import com.wx.multihero.base.AssetsLoader;
 import com.wx.multihero.base.SceneType;
 import com.wx.multihero.base.Utils;
+import com.wx.multihero.entity.Platform;
 import com.wx.multihero.ui.component.ActorBoard;
+import com.wx.multihero.ui.component.BackwardButton;
 import com.wx.multihero.ui.component.CharacterPlatform;
+import com.wx.multihero.ui.component.ForwardButton;
+import com.wx.multihero.ui.component.GameModeBtton;
 import com.wx.multihero.ui.component.LifeSwitchButton;
 import com.wx.multihero.ui.component.TeamAttackButton;
 import com.wx.multihero.ui.component.UseItemButton;
-import com.wx.multihero.ui.widget.Button;
+import com.wx.multihero.ui.widget.SelectedBorder;
 import com.wx.multihero.ui.widget.TouchableWidget;
 import com.wx.multihero.variability.Game;
 
@@ -25,13 +28,15 @@ import java.util.ArrayList;
 public class CharacterChooseScene extends BaseScene implements TouchableWidget.Callback {
     private TeamAttackButton mBtnTeamAttack;
 	private UseItemButton mBtnUseItems;
-	private Button mBtnBack;
-	private Button mBtnNext;
-	private Button mBtnMode;
+	private BackwardButton mBtnBack;
+	private ForwardButton mBtnNext;
+	private GameModeBtton mBtnMode;
 	private LifeSwitchButton mBtnLifes;
 	private BackgroundScene mBackgroundScene;
+	private SelectedBorder mChatacterSelectBorder;
     private ArrayList<ActorBoard> mBoards = new ArrayList<ActorBoard>();
     private ArrayList<CharacterPlatform> mPlatforms = new ArrayList<CharacterPlatform>();
+    private int mCurrentPlatformIndex;
 
     private static final int ID_ITEMS = 1;
     private static final int ID_NEXT = 2;
@@ -55,12 +60,15 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
         mBtnUseItems = new UseItemButton(ID_ITEMS, null, this);
         mBtnUseItems.setBindValue(game.getUseItems());
 
-        mBtnBack = new Button(ID_BACK, null, this);
-        mBtnNext = new Button(ID_NEXT, null, this);
+        mBtnBack = new BackwardButton(ID_BACK, null, this);
+        mBtnNext = new ForwardButton(ID_NEXT, null, this);
+
         mBtnLifes = new LifeSwitchButton(ID_LIVES, null, this);
         mBtnLifes.setBindValue(game.getLifes());
 
-        mBtnMode = new Button(ID_GAME_MODE, null, this);
+        mBtnMode = new GameModeBtton(ID_GAME_MODE, null, this);
+        mBtnMode.setBindValue(game.getGameMode());
+
         mBackgroundScene = new BackgroundScene(SceneType.INVALID, null);
         for(int i=0;i<BORAD_COUNT;i++) {
             ActorBoard b = new ActorBoard(i<<16+ID_BOARD, null, this);
@@ -70,6 +78,9 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
             CharacterPlatform p = new CharacterPlatform(i<<16+ID_PLATFORM, null, this);
             mPlatforms.add(p);
         }
+
+        mChatacterSelectBorder = new SelectedBorder(0, null);
+        setCurrentPlatformIndex(0);
 	}
 
 	public void render(Canvas canvas, Paint paint) {
@@ -77,8 +88,6 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
 
         mBtnTeamAttack.render(canvas, paint);
         mBtnUseItems.render(canvas, paint);
-        mBtnBack.render(canvas, paint);
-        mBtnNext.render(canvas, paint);
         mBtnMode.render(canvas, paint);
         mBtnLifes.render(canvas, paint);
 
@@ -112,40 +121,42 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
 
 	public void loadAssets() {
         mBackgroundScene.loadAssets();
+        mBtnTeamAttack.loadAssets();
+        mBtnMode.loadAssets();
+        mBtnLifes.loadAssets();
+        mBtnUseItems.loadAssets();
 
         RectF r = new RectF();
-        r.left = Utils.getRealWidth(10);
+        float buttonSpace = Utils.getRealWidth(20);
+        float btnTotalWidth = mBtnTeamAttack.getBoundingRect().width() + buttonSpace +
+                mBtnMode.getBoundingRect().width() + buttonSpace +
+                mBtnLifes.getBoundingRect().width() + buttonSpace +
+                mBtnUseItems.getBoundingRect().width();
+        r.left = (mScreenRect.width() - btnTotalWidth) / 2;
         r.top = Utils.getRealHeight(20);
-
-        mBtnTeamAttack.loadAssets();
         r.bottom = r.top + mBtnTeamAttack.getBoundingRect().height();
         mBtnTeamAttack.moveTo(r.left, r.top);
-
-        r.left += mBtnTeamAttack.getBoundingRect().width() + Utils.getRealWidth(20);
-        Bitmap buttonBackground = AssetsLoader.loadBitmap("gfx/ui/but_ta.png");
-        mBtnMode.setBitmaps(buttonBackground);
-        mBtnMode.setText(Utils.getStringFromResourceId(R.string.game_mode));
+        r.left += mBtnTeamAttack.getBoundingRect().width() + buttonSpace;
         mBtnMode.moveTo(r.left, r.top);
-
-        r.left += buttonBackground.getWidth() + Utils.getRealWidth(20);
-        mBtnLifes.loadAssets();
+        r.left += mBtnMode.getBoundingRect().width() + buttonSpace;
         mBtnLifes.moveTo(r.left, r.top);
-
-        r.left += buttonBackground.getWidth() + Utils.getRealWidth(20);
-        mBtnUseItems.loadAssets();
+        r.left += mBtnLifes.getBoundingRect().width() + buttonSpace;
         mBtnUseItems.moveTo(r.left, r.top);
 
-        Bitmap boardBackground = AssetsLoader.loadBitmap("gfx/ui/board3.png");
+        for(int i=0;i<BORAD_COUNT;i++) {
+            ActorBoard b = mBoards.get(i);
+            b.loadAssets();
+        }
+
         // compute total width of board list
-        float actorBoardTotalWidth = BORAD_COUNT * boardBackground.getWidth();
+        float boardWidth = mBoards.get(0).getBoundingRect().width();
+        float actorBoardTotalWidth = BORAD_COUNT * boardWidth;
         r.left = (mScreenRect.width() - actorBoardTotalWidth) / 2;
         r.top = r.bottom + Utils.getRealHeight(10);
         for(int i=0;i<BORAD_COUNT;i++) {
             ActorBoard b = mBoards.get(i);
-            Bitmap foreground = AssetsLoader.loadBitmap(String.format("gfx/character/%d/zwalk0.png", i+1));
-            b.setBitmaps(boardBackground, foreground);
             b.moveTo(r.left, r.top);
-            r.left += boardBackground.getWidth();
+            r.left += boardWidth;
         }
 
         // platforms
@@ -157,7 +168,7 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
         int platformsPerRow = PLATFORM_COUNT / 2;
         float platformTotalWidth = (mPlatforms.get(0).getBoundingRect().width() + platformHorizontalSpace) * platformsPerRow - platformHorizontalSpace;
         r.left = (mScreenRect.width() - platformTotalWidth) / 2;
-        r.top += boardBackground.getHeight() + Utils.getRealHeight(PLATFORM_SPACE_VERTICAL);
+        r.top += mBoards.get(0).getBoundingRect().height() + Utils.getRealHeight(PLATFORM_SPACE_VERTICAL);
         int index = 0;
         for(CharacterPlatform cp : mPlatforms) {
             cp.moveTo(r.left, r.top);
@@ -170,18 +181,8 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
             }
         }
 
-        Bitmap backBitmap = AssetsLoader.loadBitmap("gfx/ui/backward.png");
-        r.left = Utils.getRealWidth(10);
-        r.top = mScreenRect.bottom - backBitmap.getHeight() - Utils.getRealHeight(40);
-        r.right = r.left + backBitmap.getWidth();
-        r.bottom = r.top + backBitmap.getHeight();
-        mBtnBack.setBoundingRect(r);
-        mBtnBack.setBitmaps(backBitmap, backBitmap);
-
-        Bitmap nextBitmap = AssetsLoader.loadBitmap("gfx/ui/forward.png");
-        r.offsetTo(mScreenRect.right - Utils.getRealWidth(10) - nextBitmap.getWidth(), r.top);
-        mBtnNext.setBoundingRect(r);
-        mBtnNext.setBitmaps(nextBitmap, nextBitmap);
+        mBtnBack.loadAssets();
+        mBtnNext.loadAssets();
 	}
 
     public void selected(int id, Bundle parameters) {
@@ -198,5 +199,14 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
         } else if(id== ID_ITEMS) {
 
         }
+    }
+
+    public void setCurrentPlatformIndex(int index) {
+        mCurrentPlatformIndex = index;
+        if(mCurrentPlatformIndex<0 || mCurrentPlatformIndex>=mPlatforms.size())
+            return;
+
+        CharacterPlatform platform = mPlatforms.get(mCurrentPlatformIndex);
+        mChatacterSelectBorder.setHost(platform);
     }
 }

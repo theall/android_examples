@@ -10,7 +10,7 @@ public class Trigger {
 	private Bitmap bitmap2;
 	
 	public void loadAssets(int id) {
-		bitmap1 = AssetsLoader.loadBitmap(String.format("gfx/stuff/trig%d_a1.png", id));
-		bitmap2 = AssetsLoader.loadBitmap(String.format("gfx/stuff/trig%d_a2.png", id));
+		bitmap1 = AssetsLoader.getInstance().loadBitmap(String.format("gfx/stuff/trig%d_a1.png", id));
+		bitmap2 = AssetsLoader.getInstance().loadBitmap(String.format("gfx/stuff/trig%d_a2.png", id));
 	}
 }

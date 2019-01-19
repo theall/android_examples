@@ -7,11 +7,15 @@ import com.wx.multihero.entity.Map;
 import com.wx.multihero.entity.MapSet;
 import com.wx.multihero.entity.Mod;
 import com.wx.multihero.entity.ModManager;
+import com.wx.multihero.ui.component.BackwardButton;
+import com.wx.multihero.ui.component.ForwardButton;
+import com.wx.multihero.ui.component.ModSwitchButton;
 import com.wx.multihero.ui.widget.Button;
 import com.wx.multihero.ui.widget.PictureItem;
 import com.wx.multihero.ui.widget.BitmapText;
 import com.wx.multihero.ui.widget.TouchableWidget;
 
+import android.app.UiModeManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -24,17 +28,23 @@ import java.util.ArrayList;
 public class MapChooseScene extends BaseScene implements TouchableWidget.Callback {
 	private ArrayList<PictureItem> mMapThumbList = new ArrayList<PictureItem>();
     private BitmapText mModName;
-    private Button mBtnBack;
+    private BackwardButton mBtnBack;
+    private ForwardButton mBtnNext;
     private BackgroundScene mBackgroundScene;
+    private ModSwitchButton mBtnModSwitch;
     private static float SPACE_COLUMN = 20;
     private static float SPACE_ROW = 10;
     private final int ID_BACK = 1;
+    private final int ID_NEXT = 2;
+    private final int ID_MOD_SHIT = 3;
 	public MapChooseScene(SceneType sceneType, Notify notify) {
 		super(sceneType, notify);
 
         mModName = new BitmapText(0, new RectF());
-        mBtnBack = new Button(ID_BACK, null, this);
+        mBtnBack = new BackwardButton(ID_BACK, null, this);
+        mBtnNext = new ForwardButton(ID_NEXT, null, this);
         mBackgroundScene = new BackgroundScene(SceneType.INVALID, null);
+        mBtnModSwitch = new ModSwitchButton(ID_MOD_SHIT, null, this);
 	}
 
 	private void setMapSet(MapSet mapSet) {
@@ -80,16 +90,18 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
     }
 
 	public void render(Canvas canvas, Paint paint) {
-	    //canvas.drawColor(Color.BLUE);
         mBackgroundScene.render(canvas, paint);
 		for(PictureItem pi : mMapThumbList) {
 		    pi.render(canvas, paint);
         }
+        mBtnModSwitch.render(canvas, paint);
         mBtnBack.render(canvas, paint);
+        mBtnNext.render(canvas, paint);
 	}
 
 	public int processTouchEvent(MotionEvent event) {
         mBtnBack.processTouchEvent(event);
+        mBtnNext.processTouchEvent(event);
 		return 0;
 	}
 
@@ -103,21 +115,19 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
 
     public void loadAssets() {
 	    mBackgroundScene.loadAssets();
-        ModManager.load();
-        Mod mod = ModManager.getMod(1);
+        mBtnModSwitch.loadAssets();
+        mBtnModSwitch.offset((mScreenRect.width()-mBtnModSwitch.getBoundingRect().width())/2, Utils.getRealHeight(10));
+
+        ModManager modMan = ModManager.getInstance();
+        modMan.load();
+        Mod mod = modMan.getMod(1);
         mModName.setText(mod.getName());
         if(mod != null) {
             setMapSet(mod.getVsMaps());
         }
 
-        Bitmap backBitmap = AssetsLoader.loadBitmap("gfx/ui/backward.png");
-        RectF r = new RectF();
-        r.left = Utils.getRealWidth(10);
-        r.top = mScreenRect.bottom - backBitmap.getHeight() - Utils.getRealHeight(40);
-        r.right = r.left + backBitmap.getWidth();
-        r.bottom = r.top + backBitmap.getHeight();
-        mBtnBack.setBoundingRect(r);
-        mBtnBack.setBitmaps(backBitmap, backBitmap);
+        mBtnBack.loadAssets();
+        mBtnNext.loadAssets();
     }
 
     public void selected(int id, Bundle parameters) {

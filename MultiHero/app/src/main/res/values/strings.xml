@@ -10,4 +10,8 @@
     <string name="team">TEAM</string>
     <string name="on">ON</string>
     <string name="off">OFF</string>
+    <string name="death_math">DEATH MATCH</string>
+    <string name="hit_target">HIT TARGET</string>
+    <string name="catch_flag">CATCH_FLAG</string>
+    <string name="loading">Loading...</string>
 </resources>

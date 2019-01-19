@@ -12,7 +12,7 @@ public class Box {
 	
 	public void loadAssets(int id) {
 		for(int i=1;i<=5;i++) {
-			Bitmap bitmap = AssetsLoader.loadBitmap(String.format("gfx/box%d_a%d.png", id, i));
+			Bitmap bitmap = AssetsLoader.getInstance().loadBitmap(String.format("gfx/box%d_a%d.png", id, i));
 			mBitmaps.add(bitmap);
 		}
 	}

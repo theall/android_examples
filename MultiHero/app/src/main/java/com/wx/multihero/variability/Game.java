@@ -14,10 +14,7 @@ public class Game implements Stepable, Renderable {
             mInstance = new Game();
         return mInstance;
     }
-    public enum Mode {
-        ADV,
-        VS
-    }
+
     public enum State {
         PAUSED,
         PREPARING,
@@ -25,7 +22,8 @@ public class Game implements Stepable, Renderable {
         OVER,
         RUNNING
     }
-    private Mode mMode;
+
+    private GameMode mGameMode = new GameMode(GameMode.Type.ADV);
     private Map mMap;
 
     private State mState;
@@ -36,7 +34,6 @@ public class Game implements Stepable, Renderable {
 
     public Game() {
         mState = State.PREPARING;
-        mMode = Mode.ADV;
     }
 
     public Boolean getAttackMate() {
@@ -55,12 +52,8 @@ public class Game implements Stepable, Renderable {
         mState = State.READY;
     }
 
-    public Mode getMode() {
-        return mMode;
-    }
-
-    public void setMode(Mode mode) {
-        mMode = mode;
+    public GameMode getGameMode() {
+        return mGameMode;
     }
 
     public State getState() {

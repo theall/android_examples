@@ -23,7 +23,7 @@ public class BigFont {
 	
 	public void loadAssets() {
 		for(int i=0;i<36;i++) {
-			Bitmap bitmap = AssetsLoader.loadBitmap(String.format("gfx/fonts/l1_%d.png", i));
+			Bitmap bitmap = AssetsLoader.getInstance().loadBitmap(String.format("gfx/fonts/l1_%d.png", i));
 			String character = charList.substring(i, i+1);
 			mStringBitmapMap.put(character, bitmap);
             character = character.toLowerCase();

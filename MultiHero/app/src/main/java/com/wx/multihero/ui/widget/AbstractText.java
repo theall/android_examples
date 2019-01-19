@@ -55,8 +55,15 @@ public abstract class AbstractText extends Widget {
     }
 
     private void update() {
-        if(mBoundingRect.isEmpty() || mText.isEmpty())
+        if(mText.isEmpty())
             return;
+
+        if(mBoundingRect.isEmpty()) {
+            mBoundingRect.left = 0;
+            mBoundingRect.top = 0;
+            mBoundingRect.right = getStringWidth(mText);
+            mBoundingRect.bottom = getStringHeight(mText);
+        }
 
         if((mAlignment&HORIZONTAL_CENTER)==HORIZONTAL_CENTER) {
             mDrawingRect.left = mBoundingRect.left + (mBoundingRect.width()-getStringWidth(mText))/2;

@@ -23,11 +23,11 @@ public class Map {
     }
 
     public void load(String assetFileName) {
-        InputStream inputStream = AssetsLoader.loadFile(assetFileName);
+        InputStream inputStream = AssetsLoader.getInstance().loadFile(assetFileName);
         if(inputStream != null)
         {
             assetFileName = assetFileName.replace(".dat", ".jpg");
-            mThumbBitmap = AssetsLoader.loadBitmap(assetFileName);
+            mThumbBitmap = AssetsLoader.getInstance().loadBitmap(assetFileName);
             parseMapData(inputStream);
         }
     }

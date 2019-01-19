@@ -41,7 +41,7 @@ public class RoundBoard extends Widget {
     }
 
     private void configActorType(PictureItem actor, String resourcePath) {
-        Bitmap bitmap = AssetsLoader.loadBitmap(resourcePath);
+        Bitmap bitmap = AssetsLoader.getInstance().loadBitmap(resourcePath);
         actor.setBitmap(bitmap);
         RectF backgroundRect = mBackground.getBoundingRect();
         RectF actorRect = actor.getBoundingRect();
@@ -53,7 +53,7 @@ public class RoundBoard extends Widget {
         actor.setBoundingRect(r);
     }
     public void loadAssets() {
-        mBackground.setBitmap(AssetsLoader.loadBitmap("gfx/ui/board.png"));
+        mBackground.setBitmap(AssetsLoader.getInstance().loadBitmap("gfx/ui/board.png"));
 
         configActorType(mActorCpu, "gfx/ui/butCPU.png");
         configActorType(mActorHumen, "gfx/ui/butHum.png");

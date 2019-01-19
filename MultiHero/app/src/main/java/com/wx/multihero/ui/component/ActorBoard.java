@@ -5,11 +5,13 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
+import com.wx.multihero.base.AssetsLoader;
 import com.wx.multihero.ui.widget.PictureItem;
 import com.wx.multihero.ui.widget.TouchableWidget;
 
 public class ActorBoard extends TouchableWidget {
     private PictureItem mBackground;
+    private Character mCharacter;
     private PictureItem mForeground;
 
     public ActorBoard(int id, RectF boundingRect, Callback callback) {
@@ -19,16 +21,9 @@ public class ActorBoard extends TouchableWidget {
         mForeground = new PictureItem(0, boundingRect, null);
     }
 
-    public void setBitmaps(Bitmap background, Bitmap foreground) {
-        if(background == null)
-            return;
-
-        if(foreground == null)
-            foreground = background;
-
+    public void loadAssets() {
+        Bitmap background = AssetsLoader.getInstance().loadBitmap("gfx/ui/board3.png");
         mBackground.setBitmap(background);
-        mForeground.setBitmap(foreground);
-
         if(mBoundingRect.isEmpty()) {
             RectF r = new RectF();
             r.offsetTo(0, 0);

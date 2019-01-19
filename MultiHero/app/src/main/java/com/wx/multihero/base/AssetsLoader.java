@@ -25,15 +25,25 @@ public class AssetsLoader implements Runnable {
     private static final String ASSETS_MAPS = "maps";
     private int mAssetsTotalCount = 0;
     private int mAssetsLoadedCount = 0;
-
+    private static AssetsLoader mInstance = null;
     public interface LoaderNotify {
         void onProgress(int loadedSize, int totalSize);
     }
     LoaderNotify mNotify = null;
-    public AssetsLoader(Context context, SoundPool soundPool, LoaderNotify notify) {
+    public AssetsLoader() {
+
+    }
+
+    public void setConfigure(Context context, SoundPool soundPool, LoaderNotify notify) {
         mSoundPool = soundPool;
         mAssetManager = context.getAssets();
         mNotify = notify;
+    }
+
+    public static AssetsLoader getInstance() {
+        if(mInstance == null)
+            mInstance = new AssetsLoader();
+        return mInstance;
     }
 
     private void findFiles(ArrayList<String> fileList, String path) {
@@ -53,7 +63,7 @@ public class AssetsLoader implements Runnable {
         }
     }
 
-    public static ArrayList<String> getFileNameList(String path, String ext) {
+    public ArrayList<String> getFileNameList(String path, String ext) {
         String fileNames[] = new String[0];
         try {
             fileNames = mAssetManager.list(path);
@@ -72,7 +82,7 @@ public class AssetsLoader implements Runnable {
         return fileNameList;
     }
 
-    public static ArrayList<String> getFileNameList(String path){
+    public ArrayList<String> getFileNameList(String path){
         String fileNames[] = new String[0];
         try {
             fileNames = mAssetManager.list(path);
@@ -90,7 +100,7 @@ public class AssetsLoader implements Runnable {
         new Thread(this).start();
     }
 
-    public static int loadSound(String fileName) {
+    public int loadSound(String fileName) {
         if(mSoundPool==null || mAssetManager==null)
             return -1;
         String actualFileName = fileName;
@@ -116,7 +126,7 @@ public class AssetsLoader implements Runnable {
         return soundId;
     }
 
-    public static Bitmap loadBitmap(String fileName) {
+    public Bitmap loadBitmap(String fileName) {
     	String actualFileName = fileName;
 //    	String gfxPrefix = ASSETS_GFX + "/";
 //        if(!fileName.startsWith(gfxPrefix))
@@ -144,7 +154,7 @@ public class AssetsLoader implements Runnable {
         return bmp;
     }
 
-    public static InputStream loadFile(String fileName) {
+    public InputStream loadFile(String fileName) {
         try {
             return mAssetManager.open(fileName);
         } catch (IOException e) {

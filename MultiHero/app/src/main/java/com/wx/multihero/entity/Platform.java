@@ -9,6 +9,6 @@ public class Platform {
 	private Bitmap bitmap;
 	
 	public void loadAssets(int id) {
-		bitmap = AssetsLoader.loadBitmap(String.format("gfx/stuff/plat%d.png", id));
+		bitmap = AssetsLoader.getInstance().loadBitmap(String.format("gfx/stuff/plat%d.png", id));
 	}
 }
