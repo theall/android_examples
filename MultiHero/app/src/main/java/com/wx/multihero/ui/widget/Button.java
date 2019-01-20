@@ -23,14 +23,14 @@ public class Button extends TouchableWidget implements Renderable {
         super(id, boundingRect, callback);
         mText = new PrimitiveText(0, boundingRect);
 
-        setBitmaps(normal);
+        setBitmap(normal);
     }
 
     public Button(int id, RectF boundingRect, Callback callback, Bitmap normal, Bitmap down) {
         super(id, boundingRect, callback);
         mText = new PrimitiveText(0, boundingRect);
 
-        setBitmaps(normal, down);
+        setBitmap(normal, down);
     }
 
     public String getText() {
@@ -41,11 +41,11 @@ public class Button extends TouchableWidget implements Renderable {
         mText.setText(text);
     }
 
-    public void setBitmaps(Bitmap normal) {
-        setBitmaps(normal, normal);
+    public void setBitmap(Bitmap normal) {
+        setBitmap(normal, normal);
     }
 
-    public void setBitmaps(Bitmap normal, Bitmap down) {
+    public void setBitmap(Bitmap normal, Bitmap down) {
         mNormal = normal;
         mDown = down;
         if(mBoundingRect.isEmpty()) {

@@ -14,8 +14,8 @@ public class Character {
 
 	public void loadAssets(String path) {
 		path = Utils.adjustDir(path);
-		mIcon = AssetsLoader.getInstance().loadBitmap(path+"Icon.png");
-		mIcon = AssetsLoader.getInstance().loadBitmap(path+"zWalk0.png");
+		mIcon = AssetsLoader.getInstance().loadBitmap(path+"zIcon.png");
+		mPreview = AssetsLoader.getInstance().loadBitmap(path+"zwalk0.png");
 	}
 
 	public Bitmap getIcon() {

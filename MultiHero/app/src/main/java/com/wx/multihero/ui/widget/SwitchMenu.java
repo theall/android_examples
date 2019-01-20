@@ -60,8 +60,8 @@ public class SwitchMenu extends TouchableWidget implements TouchableWidget.Callb
     }
     public void setBitmaps(Bitmap background, Bitmap left, Bitmap right) {
         mBackground.setBitmap(background);
-        mBtnLeft.setBitmaps(left);
-        mBtnRight.setBitmaps(right);
+        mBtnLeft.setBitmap(left);
+        mBtnRight.setBitmap(right);
 
         if(mBoundingRect.isEmpty()) {
             mBoundingRect.set(mBackground.getBoundingRect());

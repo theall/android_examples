@@ -7,11 +7,11 @@ import android.graphics.RectF;
 
 public class PictureItem extends Widget {
     private Bitmap mBitmap;
-
+    private Alignment mAlignment = new Alignment();
     public PictureItem(int id, RectF boundingRect, Bitmap bitmap) {
         super(id, boundingRect);
 
-        mBitmap = bitmap;
+        setBitmap(bitmap);
     }
 
     public Bitmap getBitmap() {
@@ -29,33 +29,28 @@ public class PictureItem extends Widget {
             mBoundingRect.right = bitmap.getWidth();
             mBoundingRect.bottom = bitmap.getHeight();
         }
+        update();
     }
 
     public void setHCenter(Boolean center) {
-        if(mBitmap == null)
-            return;
-
-        if(center) {
-            mDrawingRect.left = mBoundingRect.left + (mBoundingRect.width()-mBitmap.getWidth())/2;
-        } else {
-            mDrawingRect.left = mBoundingRect.left;
-        }
+        if(center)
+            mAlignment.set(Alignment.HORIZONTAL_CENTER);
+        else
+            mAlignment.unset(Alignment.HORIZONTAL_CENTER);
+        update();
     }
 
     public void setVCenter(Boolean center) {
-        if(mBitmap == null)
-            return;
-
-        if(center) {
-            mDrawingRect.top = mBoundingRect.top + (mBoundingRect.height() - mBitmap.getHeight()) / 2;
-        } else {
-            mDrawingRect.top = mBoundingRect.top;
-        }
+        if(center)
+            mAlignment.set(Alignment.VERTICAL_CENTER);
+        else
+            mAlignment.unset(Alignment.VERTICAL_CENTER);
+        update();
     }
 
     public void center() {
-        setHCenter(true);
-        setVCenter(true);
+        mAlignment.set(Alignment.CENTER);
+        update();
     }
 
     public void render(Canvas canvas, Paint paint) {
@@ -65,6 +60,22 @@ public class PictureItem extends Widget {
     }
 
     public void positionChanged(float dx, float dy) {
-        center();
+        update();
+    }
+
+    private void update() {
+        if(mBitmap == null)
+            return;
+
+        if(mAlignment.testFlag(Alignment.HORIZONTAL_CENTER)) {
+            mDrawingRect.left = mBoundingRect.left + (mBoundingRect.width()-mBitmap.getWidth())/2;
+        } else {
+            mDrawingRect.left = mBoundingRect.left;
+        }
+        if(mAlignment.testFlag(Alignment.VERTICAL_CENTER)) {
+            mDrawingRect.top = mBoundingRect.top + (mBoundingRect.height() - mBitmap.getHeight()) / 2;
+        } else {
+            mDrawingRect.top = mBoundingRect.top;
+        }
     }
 }

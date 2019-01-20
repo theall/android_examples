@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 
 import com.wx.multihero.base.AssetsLoader;
+import com.wx.multihero.entity.Character;
 import com.wx.multihero.ui.widget.PictureItem;
 import com.wx.multihero.ui.widget.TouchableWidget;
 
@@ -21,6 +22,25 @@ public class ActorBoard extends TouchableWidget {
         mForeground = new PictureItem(0, boundingRect, null);
     }
 
+    public void setBindValue(Character value) {
+        mCharacter = value;
+        if(mCharacter != null) {
+            Bitmap background = mCharacter.getPreview();
+            if(background != null) {
+                RectF r = new RectF();
+                r.offsetTo(0, 0);
+                r.right = background.getWidth();
+                r.bottom = background.getHeight();
+                mForeground.setBitmap(background);
+                mForeground.center();
+            }
+        }
+    }
+
+    public Character getBindValue() {
+        return mCharacter;
+    }
+
     public void loadAssets() {
         Bitmap background = AssetsLoader.getInstance().loadBitmap("gfx/ui/board3.png");
         mBackground.setBitmap(background);
@@ -32,8 +52,8 @@ public class ActorBoard extends TouchableWidget {
             mBackground.setBoundingRect(r);
             mForeground.setBoundingRect(r);
             setBoundingRect(r);
-            mForeground.center();
         }
+        setTouchedSoundEffect(AssetsLoader.getInstance().loadSound("sound/BHit.mp3"));
     }
 
     public void render(Canvas canvas, Paint paint) {

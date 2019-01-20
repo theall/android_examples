@@ -2,7 +2,6 @@ package com.wx.multihero.ui.component;
 
 import android.graphics.Bitmap;
 import android.graphics.RectF;
-import android.os.Bundle;
 
 import com.wx.multihero.R;
 import com.wx.multihero.base.AssetsLoader;
@@ -23,7 +22,7 @@ public class TeamAttackButton extends Button {
 
     public void loadAssets() {
         Bitmap buttonBackground = AssetsLoader.getInstance().loadBitmap("gfx/ui/but_ta.png");
-        setBitmaps(buttonBackground);
+        setBitmap(buttonBackground);
         setTouchedSoundEffect(AssetsLoader.getInstance().loadSound("sound/click.mp3"));
         update();
     }

@@ -9,10 +9,19 @@ public abstract class Widget implements Renderable {
     protected RectF mDrawingRect;
     protected int mId;
 
+    public interface Callback {
+        void moved(float dx, float dy);
+    }
+    private Callback mCallback = null;
+
     public Widget(int id, RectF boundingRect) {
         mBoundingRect = new RectF(boundingRect);
         mDrawingRect = new RectF(boundingRect);
         mId = id;
+    }
+
+    public void setCallback(Callback callback) {
+        mCallback = callback;
     }
 
     public int getId() {
@@ -36,6 +45,9 @@ public abstract class Widget implements Renderable {
         float dy = rect.top - mBoundingRect.top;
         mBoundingRect.set(rect);
         positionChanged(dx, dy);
+        if(mCallback != null) {
+            mCallback.moved(dx, dy);
+        }
     }
 
     public RectF getDrawingRect() {
@@ -58,6 +70,9 @@ public abstract class Widget implements Renderable {
             mDrawingRect.offset(dx, dy);
         }
         positionChanged(dx, dy);
+        if(mCallback != null) {
+            mCallback.moved(dx, dy);
+        }
     }
 
     public void offset(float dx, float dy) {
@@ -68,6 +83,9 @@ public abstract class Widget implements Renderable {
             mDrawingRect.offset(dx, dy);
 
         positionChanged(dx, dy);
+        if(mCallback != null) {
+            mCallback.moved(dx, dy);
+        }
     }
 
     public abstract void positionChanged(float dx, float dy);

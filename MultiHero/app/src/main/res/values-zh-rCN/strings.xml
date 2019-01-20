@@ -14,5 +14,6 @@
     <string name="hit_target">攻击物体</string>
     <string name="catch_flag">抢旗</string>
     <string name="loading">加载中...</string>
+    <string name="none">无</string>
 
 </resources>

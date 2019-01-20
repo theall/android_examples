@@ -30,9 +30,9 @@ public class GameModeBtton extends Button {
 
     public void loadAssets() {
         Bitmap buttonBackground = AssetsLoader.getInstance().loadBitmap("gfx/ui/but_ta.png");
-        setBitmaps(buttonBackground);
+        setBitmap(buttonBackground);
         setText(Utils.getStringFromResourceId(R.string.game_mode));
-        setBitmaps(buttonBackground);
+        setBitmap(buttonBackground);
         setTouchedSoundEffect(AssetsLoader.getInstance().loadSound("sound/click.mp3"));
         update();
     }

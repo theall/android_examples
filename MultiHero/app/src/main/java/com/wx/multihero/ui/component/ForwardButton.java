@@ -14,7 +14,7 @@ public class ForwardButton extends Button {
 
     public void loadAssets() {
         Bitmap nextBitmap = AssetsLoader.getInstance().loadBitmap("gfx/ui/forward.png");
-        setBitmaps(nextBitmap, nextBitmap);
+        setBitmap(nextBitmap, nextBitmap);
         mBoundingRect.offsetTo(Utils.getScreenWidth() - nextBitmap.getWidth() - Utils.getRealWidth(10),
                 Utils.getScreenHeight() - nextBitmap.getHeight() - Utils.getRealHeight(40));
 

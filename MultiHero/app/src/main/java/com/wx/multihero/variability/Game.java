@@ -3,9 +3,13 @@ package com.wx.multihero.variability;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import com.wx.multihero.R;
 import com.wx.multihero.base.Renderable;
 import com.wx.multihero.base.Stepable;
+import com.wx.multihero.base.Utils;
+import com.wx.multihero.entity.CharacterManager;
 import com.wx.multihero.entity.Map;
+import java.util.ArrayList;
 
 public class Game implements Stepable, Renderable {
     private static Game mInstance = null;
@@ -25,15 +29,22 @@ public class Game implements Stepable, Renderable {
 
     private GameMode mGameMode = new GameMode(GameMode.Type.ADV);
     private Map mMap;
-
     private State mState;
     private Boolean mAutoPilot = true;
     private Boolean mAttackMate = false;
     private Boolean mUseItems = true;
     private Integer mLifes = 3;
+    private static int PLAYER_COUNT = 10;
+    private ArrayList<Player> mPlayers = new ArrayList<Player>();
 
     public Game() {
         mState = State.PREPARING;
+        for(int i=0;i<PLAYER_COUNT;i++) {
+            Player player = new Player();
+            player.setName(Utils.getStringFromResourceId(R.string.player)+" "+(i+1));
+            mPlayers.add(player);
+        }
+        mPlayers.get(0).setType(Player.Type.HUM);
     }
 
     public Boolean getAttackMate() {
@@ -70,16 +81,26 @@ public class Game implements Stepable, Renderable {
         }
 
         if (mState==State.RUNNING && mAutoPilot) {
-            autopilot();
+            autoPilot();
         }
     }
 
-    private void autopilot() {
+    private void autoPilot() {
         if (!mAutoPilot)
             return;
     }
 
     public void render(Canvas canvas, Paint paint) {
 
+    }
+
+    public ArrayList<Player> getPlayerList() {
+        return mPlayers;
+    }
+
+    public Player getPlayer(int index) {
+        if(index<0 || index>=mPlayers.size())
+            return null;
+        return mPlayers.get(index);
     }
 }

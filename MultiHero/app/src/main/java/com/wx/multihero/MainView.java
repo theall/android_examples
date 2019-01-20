@@ -17,6 +17,7 @@ import com.wx.multihero.base.BigFont;
 import com.wx.multihero.base.SceneType;
 import com.wx.multihero.base.SoundPlayer;
 import com.wx.multihero.base.Utils;
+import com.wx.multihero.entity.CharacterManager;
 import com.wx.multihero.entity.ModManager;
 import com.wx.multihero.entity.TriggersManager;
 import com.wx.multihero.ui.BaseScene;

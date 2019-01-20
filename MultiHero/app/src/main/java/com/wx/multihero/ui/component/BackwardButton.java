@@ -14,7 +14,7 @@ public class BackwardButton extends Button {
 
     public void loadAssets() {
         Bitmap backBitmap = AssetsLoader.getInstance().loadBitmap("gfx/ui/backward.png");
-        setBitmaps(backBitmap, backBitmap);
+        setBitmap(backBitmap, backBitmap);
         moveTo(Utils.getRealWidth(10), Utils.getScreenHeight() - backBitmap.getHeight() - Utils.getRealHeight(40));
         setTouchedSoundEffect(AssetsLoader.getInstance().loadSound("sound/click.mp3"));
     }
