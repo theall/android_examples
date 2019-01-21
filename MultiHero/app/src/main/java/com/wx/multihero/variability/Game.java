@@ -7,7 +7,6 @@ import com.wx.multihero.R;
 import com.wx.multihero.base.Renderable;
 import com.wx.multihero.base.Stepable;
 import com.wx.multihero.base.Utils;
-import com.wx.multihero.entity.CharacterManager;
 import com.wx.multihero.entity.Map;
 import java.util.ArrayList;
 

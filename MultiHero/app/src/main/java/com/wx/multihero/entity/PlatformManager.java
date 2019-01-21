@@ -7,9 +7,7 @@ public class PlatformManager {
 	
 	public void loadAssets() {
 		for(int i=1;i<=20;i++) {
-			Platform platform = new Platform();
-			platform.loadAssets(i);
-			mPlatforms.add(platform);
+
 		}
 	}
 }

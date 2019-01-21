@@ -1,5 +1,6 @@
 package com.wx.multihero.base;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -155,9 +156,9 @@ public class AssetsLoader implements Runnable {
         return bmp;
     }
 
-    public InputStream loadFile(String fileName) {
+    public DataInputStream loadFile(String fileName) {
         try {
-            return mAssetManager.open(fileName);
+            return new DataInputStream(mAssetManager.open(fileName));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (OutOfMemoryError e) {

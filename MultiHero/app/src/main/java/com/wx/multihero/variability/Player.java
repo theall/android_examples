@@ -2,8 +2,6 @@ package com.wx.multihero.variability;
 
 import com.wx.multihero.entity.Character;
 
-import javax.xml.transform.Templates;
-
 public class Player {
     public enum Type {
         HUM,
@@ -27,7 +25,9 @@ public class Player {
     private Team mTeam;
     private Character mCharacter;
     private String mName;
-
+    private int mHP;
+    private int mSP;
+    private int mLifes;
     public interface CharacterChangedCallback {
         void characterChanged(Character oldCharacter, Character newCharacter);
     }

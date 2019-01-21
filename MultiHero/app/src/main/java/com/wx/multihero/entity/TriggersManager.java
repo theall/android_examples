@@ -7,9 +7,7 @@ public class TriggersManager {
 	
 	public void loadAssets() {
 		for(int i=1;i<=20;i++) {
-			Trigger trigger = new Trigger();
-			trigger.loadAssets(i);
-			mTriggers.add(trigger);
+
 		}
 	}
 }
