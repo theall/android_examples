@@ -7,16 +7,17 @@ import java.util.ArrayList;
 
 public class MapSet {
     private String mName;
-
+    private int mCurrentMapIndex;
     private ArrayList<Map> mMapList = new ArrayList<Map>();
 
-    public MapSet(String path) {
-        mName = Utils.extractFileName(path);
+    public MapSet(String path, String name) {
+        mName = name;
         ArrayList<String> mapFileNameList = AssetsLoader.getInstance().getFileNameList(path, ".dat");
         for(String mapName : mapFileNameList) {
             Map map = new Map(Utils.merge(path, mapName));
             mMapList.add(map);
         }
+        mCurrentMapIndex = 0;
     }
 
     public String getName() {
@@ -29,5 +30,13 @@ public class MapSet {
 
     public int getMapCount() {
         return mMapList.size();
+    }
+
+    public int getCurrentMapIndex() {
+        return mCurrentMapIndex;
+    }
+
+    public void setCurrentMapIndex(int currentMapIndex) {
+        mCurrentMapIndex = currentMapIndex;
     }
 }

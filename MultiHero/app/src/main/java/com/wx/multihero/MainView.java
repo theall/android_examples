@@ -3,6 +3,7 @@ package com.wx.multihero;
 import java.util.Random;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -67,7 +68,6 @@ public class MainView extends SurfaceView implements
 	private MapChooseScene mMapChooseScene;
 	private GameScene mGameScene;
 	private BigFont mBigFont = new BigFont();
-    private ModManager mMapSetManager;
 
 	public MainView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -295,5 +295,19 @@ public class MainView extends SurfaceView implements
 
 	public void setGameState(Game.State state) {
 		mGame.setState(state);
+	}
+
+	private void loadConfig() {
+		Context ctx = getContext();
+		SharedPreferences sharedPreferences = ctx.getSharedPreferences(ctx.getPackageName(), ctx.MODE_PRIVATE);
+	}
+
+	private void saveConfig() {
+		Context ctx = getContext();
+		SharedPreferences sharedPreferences = ctx.getSharedPreferences(ctx.getPackageName(), ctx.MODE_PRIVATE);
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putBoolean("music", true);
+		editor.putBoolean("sound", true);
+		editor.commit();
 	}
 }

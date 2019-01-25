@@ -13,6 +13,7 @@ import com.wx.multihero.ui.component.ModSwitchButton;
 import com.wx.multihero.ui.widget.Button;
 import com.wx.multihero.ui.widget.PictureItem;
 import com.wx.multihero.ui.widget.BitmapText;
+import com.wx.multihero.ui.widget.SelectedBorder;
 import com.wx.multihero.ui.widget.TouchableWidget;
 
 import android.app.UiModeManager;
@@ -21,6 +22,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
@@ -28,15 +30,18 @@ import java.util.ArrayList;
 public class MapChooseScene extends BaseScene implements TouchableWidget.Callback {
 	private ArrayList<PictureItem> mMapThumbList = new ArrayList<PictureItem>();
     private BitmapText mModName;
+    private SelectedBorder mSelectBorder;
     private BackwardButton mBtnBack;
     private ForwardButton mBtnNext;
     private BackgroundScene mBackgroundScene;
     private ModSwitchButton mBtnModSwitch;
+    private MapSet mCurrentMapSet;
     private static float SPACE_COLUMN = 20;
     private static float SPACE_ROW = 10;
     private final int ID_BACK = 1;
     private final int ID_NEXT = 2;
     private final int ID_MOD_SHIT = 3;
+    private final int ID_MAP = 4;
 	public MapChooseScene(SceneType sceneType, Notify notify) {
 		super(sceneType, notify);
 
@@ -45,12 +50,17 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
         mBtnNext = new ForwardButton(ID_NEXT, null, this);
         mBackgroundScene = new BackgroundScene(SceneType.INVALID, null);
         mBtnModSwitch = new ModSwitchButton(ID_MOD_SHIT, null, this);
+        mSelectBorder = new SelectedBorder(0, null);
+        mCurrentMapSet = null;
 	}
 
 	private void setMapSet(MapSet mapSet) {
 	    if(mapSet == null)
 	        return;
 
+        mBtnModSwitch.setText(mapSet.getName());
+
+        mCurrentMapSet = mapSet;
         mMapThumbList.clear();
         if(mapSet.getMapCount() < 1)
             return;
@@ -61,8 +71,23 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
         float validHeight = screenHeight * Utils.GOLD_LINE;
         float spaceColumn = SPACE_COLUMN * Utils.BASE_SCREEN_WIDTH / screenWidth;
         float spaceRow = SPACE_ROW * Utils.BASE_SCREEN_HEIGHT / screenHeight;
-        float leftBound = (screenWidth - validWidth) / 2;
-        float rightBound = leftBound + validWidth;
+        float bmpWidth = 0;
+        for(Map map : mapSet.getMapList()) {
+            Bitmap thumb = map.getThumbBitmap();
+            if (thumb != null) {
+                bmpWidth = thumb.getWidth();
+                break;
+            }
+        }
+        if(bmpWidth == 0) {
+            Log.e("MultiHero","Can not find any thumb bitmaps in map set!");
+            return;
+        }
+        // precompute the real width
+        int colsPerRow = Math.round((validWidth+spaceColumn) / (bmpWidth+spaceColumn));
+        float widthPerRow = colsPerRow * (bmpWidth+spaceColumn) - spaceColumn;
+        float leftBound = (screenWidth - widthPerRow) / 2;
+        float rightBound = leftBound + widthPerRow;
         int col = 0;
         int row = 0;
         RectF r = new RectF();
@@ -72,10 +97,9 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
             Bitmap thumb = map.getThumbBitmap();
             if(thumb == null)
                 continue;
-            float bmpWidth = thumb.getWidth();
-            r.right = r.left + bmpWidth;
+            r.right = r.left + thumb.getWidth();
             r.bottom = r.top + thumb.getHeight();
-            PictureItem pi = new PictureItem(row<<16+col, r, thumb);
+            PictureItem pi = new PictureItem(ID_MAP, r, thumb);
             r.left = r.right + spaceColumn;
             if(r.left > rightBound) {
                 r.left = leftBound;
@@ -87,6 +111,14 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
             }
             mMapThumbList.add(pi);
         }
+
+        int currentMap = mapSet.getCurrentMapIndex();
+        PictureItem pictureItem = mMapThumbList.get(currentMap);
+        if(pictureItem != null) {
+            mSelectBorder.setHost(pictureItem);
+        } else {
+            mSelectBorder.setHost(null);
+        }
     }
 
 	public void render(Canvas canvas, Paint paint) {
@@ -94,12 +126,25 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
 		for(PictureItem pi : mMapThumbList) {
 		    pi.render(canvas, paint);
         }
+        mSelectBorder.render(canvas, paint);
         mBtnModSwitch.render(canvas, paint);
         mBtnBack.render(canvas, paint);
         mBtnNext.render(canvas, paint);
 	}
 
 	public int processTouchEvent(MotionEvent event) {
+	    float x = event.getX();
+	    float y = event.getY();
+	    int index = 0;
+	    for(PictureItem pi : mMapThumbList) {
+	        if(pi.touchTest(x, y)) {
+                mCurrentMapSet.setCurrentMapIndex(index);
+	            mSelectBorder.setHost(pi);
+	            return 1;
+            }
+            index++;
+        }
+	    mBtnModSwitch.processTouchEvent(event);
         mBtnBack.processTouchEvent(event);
         mBtnNext.processTouchEvent(event);
 		return 0;
@@ -116,7 +161,7 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
     public void loadAssets() {
 	    mBackgroundScene.loadAssets();
         mBtnModSwitch.loadAssets();
-        mBtnModSwitch.offset((mScreenRect.width()-mBtnModSwitch.getBoundingRect().width())/2, Utils.getRealHeight(10));
+        mBtnModSwitch.offset((mScreenRect.width()-mBtnModSwitch.getBoundingRect().width())/2, Utils.getRealHeight(20));
 
         ModManager modMan = ModManager.getInstance();
         modMan.load();

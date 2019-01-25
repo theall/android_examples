@@ -16,9 +16,9 @@ public class Mod {
     
     public Mod(String path) {
         mName = Utils.extractFileName(path);
-        mAdvMaps = new MapSet(Utils.merge(path, MAP_TYPE_ADV));
-        mVsMaps = new MapSet(Utils.merge(path, MAP_TYPE_VS));
-        mCtfMaps = new MapSet(Utils.merge(path, MAP_TYPE_CTF));
+        mAdvMaps = new MapSet(Utils.merge(path, MAP_TYPE_ADV), mName);
+        mVsMaps = new MapSet(Utils.merge(path, MAP_TYPE_VS), mName);
+        mCtfMaps = new MapSet(Utils.merge(path, MAP_TYPE_CTF), mName);
     }
     
     public String getName() {

@@ -20,14 +20,30 @@ public class Player {
         PURPLE,
         PINK
     }
-
+    public enum Dir {
+        LEFT,
+        UP,
+        RIGHT,
+        DOWN
+    }
     private Type mType;
     private Team mTeam;
     private Character mCharacter;
     private String mName;
-    private int mHP;
-    private int mSP;
-    private int mLifes;
+    public int mHP;
+    public int mSP;
+    public int mLifes;
+    public Dir mDir;
+    public float mSpeed;
+    public float mAcceleration;
+    public float mBlockSpeed;
+    public int mShieldTime;
+    public int mHeight;
+    public int mUpHeight;
+    public int mDuckHeight;
+    public int mBlockLife;
+    public int mBlockMaxLife;
+
     public interface CharacterChangedCallback {
         void characterChanged(Character oldCharacter, Character newCharacter);
     }
@@ -43,6 +59,17 @@ public class Player {
     private TeamChangedCallback mTeamChangedCallback;
     
     public Player() {
+        mHP = 100;
+        mSP = 0;
+        mLifes = 3;
+        mHeight = 45;
+        mUpHeight = mHeight;
+        mDuckHeight = 25;
+        mBlockLife = 100;
+        mBlockMaxLife = 100;
+        mAcceleration = 0.2f;
+        mBlockSpeed = 0.8f;
+        mDir = Dir.RIGHT;
         mType = Type.UNKNOWN;
         mTeam = Team.NONE;
         mCharacterChangedCallback = null;

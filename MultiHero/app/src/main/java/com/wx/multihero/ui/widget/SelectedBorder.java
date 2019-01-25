@@ -7,8 +7,11 @@ import android.graphics.RectF;
 
 public class SelectedBorder extends Widget implements Widget.Callback {
     protected Widget mHost;
+    private boolean mRenderFlag;
     public SelectedBorder(int id, RectF boundingRect) {
         super(id, boundingRect);
+
+        mRenderFlag = true;
     }
 
     public Widget getHost() {
@@ -41,12 +44,14 @@ public class SelectedBorder extends Widget implements Widget.Callback {
     }
 
     public void render(Canvas canvas, Paint paint) {
-        if(mHost == null)
+        mRenderFlag = !mRenderFlag;
+        if(mHost==null)
             return;
 
         int oldColor = paint.getColor();
         Paint.Style oldStyle = paint.getStyle();
-        paint.setColor(Color.RED);
+        int color = mRenderFlag?Color.RED:Color.WHITE;
+        paint.setColor(color);
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawRect(mBoundingRect, paint);
         paint.setColor(oldColor);

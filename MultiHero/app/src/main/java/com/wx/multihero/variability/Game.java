@@ -1,6 +1,7 @@
 package com.wx.multihero.variability;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.wx.multihero.R;
@@ -90,7 +91,7 @@ public class Game implements Stepable, Renderable {
     }
 
     public void render(Canvas canvas, Paint paint) {
-
+        canvas.drawColor(Color.BLUE);
     }
 
     public ArrayList<Player> getPlayerList() {

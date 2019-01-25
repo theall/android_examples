@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 
 import com.wx.multihero.base.SceneType;
+import com.wx.multihero.variability.Game;
 
 public class GameScene extends BaseScene {
     public GameScene(SceneType sceneType, Notify notify) {
@@ -12,7 +13,7 @@ public class GameScene extends BaseScene {
     }
 
     public void render(Canvas canvas, Paint paint) {
-
+        Game.getInstance().render(canvas, paint);
     }
 
     public int processTouchEvent(MotionEvent event) {
