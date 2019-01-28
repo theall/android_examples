@@ -3,9 +3,8 @@ package com.wx.multihero.entity;
 import android.graphics.Bitmap;
 
 import com.wx.multihero.base.AssetsLoader;
-import com.wx.multihero.base.Utils;
+import com.wx.multihero.base.LittleEndianDataInputStream;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 
 public class Trigger {
@@ -33,7 +32,7 @@ public class Trigger {
 	public int onStatus;
 	public int offStatus;
 
-	public Trigger(DataInputStream inputStream) throws IOException {
+	public Trigger(LittleEndianDataInputStream inputStream) throws IOException {
 		x = inputStream.readInt();
 		y = inputStream.readInt();
 		w = inputStream.readInt();

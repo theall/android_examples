@@ -1,10 +1,8 @@
 package com.wx.multihero.base;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -128,6 +126,11 @@ public class AssetsLoader implements Runnable {
         return soundId;
     }
 
+    public Bitmap loadBitmap(String format, java.lang.Object... args) {
+        String fileName = String.format(format, args);
+        return loadBitmap(fileName);
+    }
+
     public Bitmap loadBitmap(String fileName) {
     	String actualFileName = fileName;
 //    	String gfxPrefix = ASSETS_GFX + "/";
@@ -156,9 +159,9 @@ public class AssetsLoader implements Runnable {
         return bmp;
     }
 
-    public DataInputStream loadFile(String fileName) {
+    public LittleEndianDataInputStream loadFile(String fileName) {
         try {
-            return new DataInputStream(mAssetManager.open(fileName));
+            return new LittleEndianDataInputStream(mAssetManager.open(fileName));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (OutOfMemoryError e) {

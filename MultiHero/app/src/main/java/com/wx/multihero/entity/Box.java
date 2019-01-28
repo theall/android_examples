@@ -1,18 +1,18 @@
 package com.wx.multihero.entity;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import android.graphics.Bitmap;
 
 import com.wx.multihero.base.AssetsLoader;
+import com.wx.multihero.base.LittleEndianDataInputStream;
 
 public class Box {
 	public float x;
 	public float y;
-	public int xspeed;
-	public int yspeed;
+	public float xspeed;
+	public float yspeed;
 	public int target;
 	public int draw;
 	public int width;
@@ -22,9 +22,9 @@ public class Box {
 	public int type;
 	public int chunkType;
 	public int hitMode;
-	public int hitTime;
-	public int hitSpeed;
-	public int hitYSpeed;
+	public float hitTime;
+	public float hitSpeed;
+	public float hitYSpeed;
 	public int damage;
 	public int hitSound;
 	public int useTrigger;
@@ -37,11 +37,11 @@ public class Box {
 	public ArrayList<Point> mPointList = new ArrayList<Point>();
 	private ArrayList<Bitmap> mBitmaps = new ArrayList<Bitmap>();
 
-	public Box(DataInputStream inputStream) throws IOException {
+	public Box(LittleEndianDataInputStream inputStream) throws IOException {
 		x = inputStream.readFloat();
 		y = inputStream.readFloat();
-		xspeed = inputStream.readInt();
-		yspeed = inputStream.readInt();
+		xspeed = inputStream.readFloat();
+		yspeed = inputStream.readFloat();
 		target = inputStream.readInt();
 		draw = inputStream.readInt();
 		width = inputStream.readInt();
@@ -51,9 +51,9 @@ public class Box {
 		type = inputStream.readInt();
 		chunkType = inputStream.readInt();
 		hitMode = inputStream.readInt();
-		hitTime = inputStream.readInt();
-		hitSpeed = inputStream.readInt();
-		hitYSpeed = inputStream.readInt();
+		hitTime = inputStream.readFloat();
+		hitSpeed = inputStream.readFloat();
+		hitYSpeed = inputStream.readFloat();
 		damage = inputStream.readInt();
 		hitSound = inputStream.readInt();
 		useTrigger = inputStream.readInt();

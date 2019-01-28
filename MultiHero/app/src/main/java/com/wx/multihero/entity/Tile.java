@@ -1,6 +1,7 @@
 package com.wx.multihero.entity;
 
-import java.io.DataInputStream;
+import com.wx.multihero.base.LittleEndianDataInputStream;
+
 import java.io.IOException;
 
 public class Tile {
@@ -28,7 +29,7 @@ public class Tile {
     public int xScrSpeed;
     public int yScrSpeed;
 
-    public Tile(DataInputStream inputStream) throws IOException {
+    public Tile(LittleEndianDataInputStream inputStream) throws IOException {
         x = inputStream.readInt();
         y = inputStream.readInt();
         number = inputStream.readInt();

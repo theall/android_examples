@@ -1,6 +1,7 @@
 package com.wx.multihero.entity;
 
-import java.io.DataInputStream;
+import com.wx.multihero.base.LittleEndianDataInputStream;
+
 import java.io.IOException;
 
 public class Factory {
@@ -25,7 +26,7 @@ public class Factory {
     public int var3;
     public int var4;
     public int var5;
-    public Factory(DataInputStream inputStream) throws IOException {
+    public Factory(LittleEndianDataInputStream inputStream) throws IOException {
         x = inputStream.readInt();
         y = inputStream.readInt();
         dir = inputStream.readInt();

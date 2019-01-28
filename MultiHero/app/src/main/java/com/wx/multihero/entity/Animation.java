@@ -1,6 +1,7 @@
 package com.wx.multihero.entity;
 
-import java.io.DataInputStream;
+import com.wx.multihero.base.LittleEndianDataInputStream;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -11,7 +12,7 @@ public class Animation {
     public int nsel;
     public int curFrame;
     private ArrayList<AniFrame> mFrames = new ArrayList<AniFrame>();
-    public Animation(DataInputStream inputStream) throws IOException {
+    public Animation(LittleEndianDataInputStream inputStream) throws IOException {
         seg = inputStream.readInt();
         frames = inputStream.readInt();
         bgsel = inputStream.readInt();

@@ -21,7 +21,7 @@ public class GameScene extends BaseScene {
     }
 
     public void shiftIn() {
-
+        Game.getInstance().loadMap(null);
     }
 
     public void shiftOut() {

@@ -1,6 +1,7 @@
-md %temp%\multihero\.gradle
-mklink /D .gradle %temp%\multihero\.gradle
+set ROOT=z:\build\mh
+md %ROOT%\.gradle
+mklink /D .gradle %ROOT%\.gradle
 cd app
-md %temp%\multihero\build
-mklink /D build %temp%\multihero\build
+md %ROOT%\build
+mklink /D %ROOT%\build
 cd ..

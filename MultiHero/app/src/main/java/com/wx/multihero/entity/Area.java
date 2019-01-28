@@ -1,6 +1,7 @@
 package com.wx.multihero.entity;
 
-import java.io.DataInputStream;
+import com.wx.multihero.base.LittleEndianDataInputStream;
+
 import java.io.IOException;
 
 public class Area {
@@ -13,7 +14,7 @@ public class Area {
     public int edges;
     public int moveBy;
 
-    public Area(DataInputStream inputStream) throws IOException {
+    public Area(LittleEndianDataInputStream inputStream) throws IOException {
         x = inputStream.readInt();
         y = inputStream.readInt();
         w = inputStream.readInt();

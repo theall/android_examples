@@ -1,55 +1,55 @@
 package com.wx.multihero.entity;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.wx.multihero.base.AssetsLoader;
+import com.wx.multihero.base.LittleEndianDataInputStream;
 import com.wx.multihero.base.Utils;
 
-import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 public class Map {
-    private Bitmap mThumbBitmap;
-    private String mMapName;
-    private ArrayList<Area> mAreaList = new ArrayList<Area>();
-    private ArrayList<DArea> mDAreaList = new ArrayList<DArea>();
-    private ArrayList<Box> mBoxList = new ArrayList<Box>();
-    private ArrayList<Wall> mWallList = new ArrayList<Wall>();
-    private ArrayList<Layer> mLayerList = new ArrayList<Layer>();
-    private ArrayList<PawnPoint> mPawnPointList = new ArrayList<PawnPoint>();
-    private ArrayList<Integer> mEventList = new ArrayList<Integer>();
-    private ArrayList<Trigger> mTriggerList = new ArrayList<Trigger>();
-    private ArrayList<Animation> mAnimationList = new ArrayList<Animation>();
-    private Point mFlagPoint1;
-    private Point mFlagPoint2;
-    private boolean mScrollMap;
-    private int mBackgroundColor;
-    private int[] mNexMap = new int[5];
-    private int mXScrStart;
-    private int mYScrStart;
-    private int mFightMode;
-    private int mMapN;
-    private int mScrLock;
-    private int mLoadvsMode;
-    private int mYScrCameraBottomLimit;
-    private int mUScrLimit;
-    private int mNoAirStrike;
-    private int mVar4;
-    private int mVar5;
-    private int mVar6;
-    private int mVar7;
-    private int mVar8;
-    private int mVar9;
-    private int mVar10;
-    private String mStri1;
-    private String mStri2;
-    private String mStri3;
-    private int mLScrLimit;
-    private int mRScrLimit;
-    private int mMusicN1;
-    private int mMusicN2;
+    public Bitmap mThumbBitmap;
+    public String mMapName;
+    public ArrayList<Area> mAreaList = new ArrayList<Area>();
+    public ArrayList<DArea> mDAreaList = new ArrayList<DArea>();
+    public ArrayList<Box> mBoxList = new ArrayList<Box>();
+    public ArrayList<Wall> mWallList = new ArrayList<Wall>();
+    public ArrayList<Layer> mLayerList = new ArrayList<Layer>();
+    public ArrayList<PawnPoint> mPawnPointList = new ArrayList<PawnPoint>();
+    public ArrayList<Integer> mEventList = new ArrayList<Integer>();
+    public ArrayList<Trigger> mTriggerList = new ArrayList<Trigger>();
+    public ArrayList<Animation> mAnimationList = new ArrayList<Animation>();
+    public Point mFlagPoint1;
+    public Point mFlagPoint2;
+    public boolean mScrollMap;
+    public int mBackgroundColor;
+    public int[] mNextMap = new int[5];
+    public int mXScrStart;
+    public int mYScrStart;
+    public int mFightMode;
+    public int mMapN;
+    public int mScrLock;
+    public int mLoadvsMode;
+    public int mYScrCameraBottomLimit;
+    public int mUScrLimit;
+    public int mNoAirStrike;
+    public int mVar4;
+    public int mVar5;
+    public int mVar6;
+    public int mVar7;
+    public int mVar8;
+    public int mVar9;
+    public int mVar10;
+    public String mStri1;
+    public String mStri2;
+    public String mStri3;
+    public int mLScrLimit;
+    public int mRScrLimit;
+    public int mMusicN1;
+    public int mMusicN2;
     public enum Type {
         ADV,
         VS
@@ -61,7 +61,7 @@ public class Map {
     }
 
     public void load(String assetFileName) {
-        DataInputStream inputStream = AssetsLoader.getInstance().loadFile(assetFileName);
+        LittleEndianDataInputStream inputStream = AssetsLoader.getInstance().loadFile(assetFileName);
         if(inputStream != null)
         {
             assetFileName = assetFileName.replace(".dat", ".jpg");
@@ -74,7 +74,7 @@ public class Map {
         return mThumbBitmap;
     }
 
-    private void parseMapData(DataInputStream inputStream) {
+    private void parseMapData(LittleEndianDataInputStream inputStream) {
         try {
             int areaAmount = inputStream.readInt();
             mAreaList.clear();
@@ -107,11 +107,11 @@ public class Map {
             int r = inputStream.readInt();
             int g = inputStream.readInt();
             int b = inputStream.readInt();
-            mBackgroundColor = 0xff<<24 + r<<16 + g<<8 + b;
+            mBackgroundColor = (0xff<<24) + (r<<16) + (g<<8) + b;
 
-            // 5 layers
+            // 6 layers
             mLayerList.clear();
-            for(int i=0;i<5;i++) {
+            for(int i=0;i<6;i++) {
                 Layer layer = new Layer(inputStream);
                 mLayerList.add(layer);
             }
@@ -142,7 +142,7 @@ public class Map {
             }
 
             for(int i=0;i<5;i++) {
-                mNexMap[i] = inputStream.readInt();
+                mNextMap[i] = inputStream.readInt();
             }
 
             mXScrStart = inputStream.readInt();
@@ -161,9 +161,7 @@ public class Map {
             mVar8 = inputStream.readInt();
             mVar9 = inputStream.readInt();
             mVar10 = inputStream.readInt();
-            mStri1 = readString(inputStream);
-            mStri2 = readString(inputStream);
-            mStri3 = readString(inputStream);
+            inputStream.skipBytes(4*3);
             mLScrLimit = inputStream.readInt();
             mRScrLimit = inputStream.readInt();
             mMusicN1 = inputStream.readInt();
@@ -176,17 +174,8 @@ public class Map {
                 mAnimationList.add(animation);
             }
         } catch (IOException e) {
+            Log.e("Map", mMapName);
             e.printStackTrace();
         }
-    }
-
-    private String readString(DataInputStream inputStream) throws IOException {
-        String result = "";
-        char c = '\0';
-        do {
-            c = inputStream.readChar();
-            result += c;
-        } while (c!=0);
-        return result;
     }
 }

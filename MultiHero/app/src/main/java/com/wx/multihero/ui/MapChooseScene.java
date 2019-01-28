@@ -165,7 +165,7 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
 
         ModManager modMan = ModManager.getInstance();
         modMan.load();
-        Mod mod = modMan.getMod(1);
+        Mod mod = modMan.getMod(0);
         mModName.setText(mod.getName());
         if(mod != null) {
             setMapSet(mod.getVsMaps());
@@ -183,5 +183,11 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
                 mNotify.next(mSceneType, 0);
             }
         }
+    }
+
+    public Map getSelectedMap() {
+	    if(mCurrentMapSet == null)
+	        return null;
+	    return mCurrentMapSet.getCurrentMap();
     }
 }

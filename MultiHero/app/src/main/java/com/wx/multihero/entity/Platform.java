@@ -3,9 +3,9 @@ package com.wx.multihero.entity;
 import android.graphics.Bitmap;
 
 import com.wx.multihero.base.AssetsLoader;
+import com.wx.multihero.base.LittleEndianDataInputStream;
 import com.wx.multihero.base.Utils;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -31,7 +31,7 @@ public class Platform {
 	public int breakable;
 	public int eventN2;
 	public ArrayList<Point> mPointList = new ArrayList<Point>();
-	public Platform(DataInputStream inputStream) throws IOException {
+	public Platform(LittleEndianDataInputStream inputStream) throws IOException {
 		x = inputStream.readFloat();
 		y = inputStream.readFloat();
 		xspeed = inputStream.readInt();

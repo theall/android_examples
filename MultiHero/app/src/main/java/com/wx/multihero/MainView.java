@@ -170,7 +170,6 @@ public class MainView extends SurfaceView implements
     }
 
 	private void drawing() {
-
 		try {
 			mCanvas = mSurfaceHolder.lockCanvas();
 			if(mCanvas==null)
@@ -187,6 +186,7 @@ public class MainView extends SurfaceView implements
 		} finally {
             if (mCanvas != null) {
                 mSurfaceHolder.unlockCanvasAndPost(mCanvas);
+				mCanvas = null;
             }
         }
 	}
@@ -279,6 +279,7 @@ public class MainView extends SurfaceView implements
         } else if(sceneType == SceneType.CHARACTER) {
             mSceneStack.clearPush(mMapChooseScene);
 		} else if(sceneType == SceneType.MAP_CHOOSE) {
+        	Game.getInstance().loadMap(mMapChooseScene.getSelectedMap());
         	mSceneStack.clearPush(mGameScene);
         } else if(sceneType == SceneType.GAME) {
 

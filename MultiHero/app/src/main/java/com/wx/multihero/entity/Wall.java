@@ -1,6 +1,7 @@
 package com.wx.multihero.entity;
 
-import java.io.DataInputStream;
+import com.wx.multihero.base.LittleEndianDataInputStream;
+
 import java.io.IOException;
 
 public class Wall {
@@ -8,7 +9,7 @@ public class Wall {
     public int y;
     public int w;
     public int h;
-    public Wall(DataInputStream inputStream) throws IOException {
+    public Wall(LittleEndianDataInputStream inputStream) throws IOException {
         x = inputStream.readInt();
         y = inputStream.readInt();
         w = inputStream.readInt();

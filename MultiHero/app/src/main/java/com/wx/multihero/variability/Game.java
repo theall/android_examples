@@ -8,7 +8,10 @@ import com.wx.multihero.R;
 import com.wx.multihero.base.Renderable;
 import com.wx.multihero.base.Stepable;
 import com.wx.multihero.base.Utils;
+import com.wx.multihero.entity.Layer;
 import com.wx.multihero.entity.Map;
+import com.wx.multihero.variability.Sprite.LayersManager;
+
 import java.util.ArrayList;
 
 public class Game implements Stepable, Renderable {
@@ -28,7 +31,6 @@ public class Game implements Stepable, Renderable {
     }
 
     private GameMode mGameMode = new GameMode(GameMode.Type.ADV);
-    private Map mMap;
     private State mState;
     private Boolean mAutoPilot = true;
     private Boolean mAttackMate = false;
@@ -36,6 +38,7 @@ public class Game implements Stepable, Renderable {
     private Integer mLifes = 3;
     private static int PLAYER_COUNT = 10;
     private ArrayList<Player> mPlayers = new ArrayList<Player>();
+    private LayersManager mLayersManager;
 
     public Game() {
         mState = State.PREPARING;
@@ -45,6 +48,11 @@ public class Game implements Stepable, Renderable {
             mPlayers.add(player);
         }
         mPlayers.get(0).setType(Player.Type.HUM);
+        mLayersManager = new LayersManager();
+    }
+
+    public void loadMap(Map map) {
+        mLayersManager.setMap(map);
     }
 
     public Boolean getAttackMate() {

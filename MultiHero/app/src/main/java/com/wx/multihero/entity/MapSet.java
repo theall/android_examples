@@ -36,6 +36,11 @@ public class MapSet {
         return mCurrentMapIndex;
     }
 
+    public Map getCurrentMap() {
+        if(mCurrentMapIndex>=0 && mCurrentMapIndex<mMapList.size())
+            return mMapList.get(mCurrentMapIndex);
+        return null;
+    }
     public void setCurrentMapIndex(int currentMapIndex) {
         mCurrentMapIndex = currentMapIndex;
     }
