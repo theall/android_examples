@@ -1,20 +1,17 @@
 package com.wx.multihero.ui.component;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.MotionEvent;
 
-import com.wx.multihero.R;
 import com.wx.multihero.base.AssetsLoader;
 import com.wx.multihero.base.Utils;
-import com.wx.multihero.ui.widget.AbstractText;
 import com.wx.multihero.ui.widget.Alignment;
 import com.wx.multihero.ui.widget.PictureItem;
 import com.wx.multihero.ui.widget.PrimitiveText;
 import com.wx.multihero.ui.widget.Widget;
-import com.wx.multihero.variability.Player;
+import com.wx.multihero.variability.Sprite.Player;
 
 public class RoundBoard extends Widget {
     private PictureItem mBackground;

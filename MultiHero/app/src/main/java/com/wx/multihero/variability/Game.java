@@ -1,16 +1,17 @@
 package com.wx.multihero.variability;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.wx.multihero.R;
+import com.wx.multihero.base.AssetsLoader;
 import com.wx.multihero.base.Renderable;
+import com.wx.multihero.base.SoundPlayer;
 import com.wx.multihero.base.Stepable;
 import com.wx.multihero.base.Utils;
-import com.wx.multihero.entity.Layer;
 import com.wx.multihero.entity.Map;
 import com.wx.multihero.variability.Sprite.LayersManager;
+import com.wx.multihero.variability.Sprite.Player;
 
 import java.util.ArrayList;
 
@@ -39,6 +40,7 @@ public class Game implements Stepable, Renderable {
     private static int PLAYER_COUNT = 10;
     private ArrayList<Player> mPlayers = new ArrayList<Player>();
     private LayersManager mLayersManager;
+    private int mBackgroundMusic;
 
     public Game() {
         mState = State.PREPARING;
@@ -49,9 +51,12 @@ public class Game implements Stepable, Renderable {
         }
         mPlayers.get(0).setType(Player.Type.HUM);
         mLayersManager = new LayersManager();
+        mBackgroundMusic = -1;
     }
 
     public void loadMap(Map map) {
+        mBackgroundMusic = AssetsLoader.getInstance().loadSound(
+                String.format("sound/music%d.mp3",map.mMusicN1));
         mLayersManager.setMap(map);
     }
 
@@ -81,9 +86,15 @@ public class Game implements Stepable, Renderable {
 
     public void setState(State state) {
         mState = state;
+        if(state == State.PAUSED) {
+            SoundPlayer.stopAudio();
+        } else if(state == State.RUNNING) {
+            SoundPlayer.playAudio(mBackgroundMusic);
+        }
     }
     
     public void step() {
+        mLayersManager.step();
         if (mState == State.RUNNING || mState == State.OVER) {
 
         }
@@ -99,7 +110,7 @@ public class Game implements Stepable, Renderable {
     }
 
     public void render(Canvas canvas, Paint paint) {
-        canvas.drawColor(Color.BLUE);
+        mLayersManager.render(canvas, paint);
     }
 
     public ArrayList<Player> getPlayerList() {
@@ -110,5 +121,9 @@ public class Game implements Stepable, Renderable {
         if(index<0 || index>=mPlayers.size())
             return null;
         return mPlayers.get(index);
+    }
+
+    public void earthQuake() {
+        mLayersManager.earthQuake();
     }
 }

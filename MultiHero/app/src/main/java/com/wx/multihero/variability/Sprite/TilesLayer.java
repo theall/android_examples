@@ -19,6 +19,7 @@ public class TilesLayer extends Sprite {
         for(Tile tile : layer.getTileList()) {
             TileSprite tileSprite = new TileSprite();
             tileSprite.loadFromTile(tile);
+            mTileSpriteList.add(tileSprite);
         }
     }
 

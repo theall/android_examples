@@ -8,6 +8,7 @@ import com.wx.multihero.base.LittleEndianDataInputStream;
 import com.wx.multihero.base.Utils;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 
 public class Map {
@@ -15,6 +16,7 @@ public class Map {
     public String mMapName;
     public ArrayList<Area> mAreaList = new ArrayList<Area>();
     public ArrayList<DArea> mDAreaList = new ArrayList<DArea>();
+    public ArrayList<Platform> mPlatformList = new ArrayList<Platform>();
     public ArrayList<Box> mBoxList = new ArrayList<Box>();
     public ArrayList<Wall> mWallList = new ArrayList<Wall>();
     public ArrayList<Layer> mLayerList = new ArrayList<Layer>();
@@ -27,8 +29,8 @@ public class Map {
     public boolean mScrollMap;
     public int mBackgroundColor;
     public int[] mNextMap = new int[5];
-    public int mXScrStart;
-    public int mYScrStart;
+    public float mXScrStart;
+    public float mYScrStart;
     public int mFightMode;
     public int mMapN;
     public int mScrLock;
@@ -90,6 +92,13 @@ public class Map {
                 mDAreaList.add(area);
             }
 
+            int platAmount = inputStream.readInt();
+            mPlatformList.clear();
+            for(int i=0;i<platAmount;i++) {
+                Platform platform = new Platform(inputStream);
+                mPlatformList.add(platform);
+            }
+
             int boxAmount = inputStream.readInt();
             mBoxList.clear();
             for(int i=0;i<boxAmount;i++) {
@@ -146,7 +155,11 @@ public class Map {
             }
 
             mXScrStart = inputStream.readInt();
+            if(mXScrStart==0)
+                mXScrStart = Utils.getRealWidth(-100);
             mYScrStart = inputStream.readInt();
+            if(mYScrStart==0)
+                mYScrStart = Utils.getRealHeight(-1);
             mFightMode = inputStream.readInt();
             mMapN = inputStream.readInt();
             mScrLock = inputStream.readInt();

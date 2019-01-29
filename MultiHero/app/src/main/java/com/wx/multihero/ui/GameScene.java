@@ -21,11 +21,11 @@ public class GameScene extends BaseScene {
     }
 
     public void shiftIn() {
-        Game.getInstance().loadMap(null);
+        Game.getInstance().setState(Game.State.RUNNING);
     }
 
     public void shiftOut() {
-
+        Game.getInstance().setState(Game.State.OVER);
     }
 
     public void loadAssets() {

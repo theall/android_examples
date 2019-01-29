@@ -5,7 +5,7 @@ import android.graphics.RectF;
 
 import com.wx.multihero.base.AssetsLoader;
 import com.wx.multihero.ui.widget.Button;
-import com.wx.multihero.variability.Player;
+import com.wx.multihero.variability.Sprite.Player;
 
 public class PlayerTypeButton extends Button implements Player.TypeChangedCallback {
     private Bitmap mActorCpu;

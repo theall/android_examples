@@ -5,6 +5,7 @@ import android.graphics.RectF;
 import android.os.Bundle;
 
 import com.wx.multihero.base.AssetsLoader;
+import com.wx.multihero.entity.Mod;
 import com.wx.multihero.entity.ModManager;
 import com.wx.multihero.ui.widget.SwitchMenu;
 
@@ -26,6 +27,7 @@ public class ModSwitchButton extends SwitchMenu {
                 mBindValue.shiftNext();
             }
             update();
+            touched();
         }
     }
 
@@ -36,7 +38,9 @@ public class ModSwitchButton extends SwitchMenu {
 
     private void update() {
         if(mBindValue != null) {
-            setText(mBindValue.getCurrentMod().getName());
+            Mod mod = mBindValue.getCurrentMod();
+            String name = mod!=null?mod.getName():"";
+            setText(name);
         }
     }
 

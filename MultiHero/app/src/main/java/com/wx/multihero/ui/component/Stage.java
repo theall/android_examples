@@ -10,7 +10,6 @@ import com.wx.multihero.base.AssetsLoader;
 import com.wx.multihero.entity.Character;
 import com.wx.multihero.ui.widget.PictureItem;
 import com.wx.multihero.ui.widget.Widget;
-import com.wx.multihero.variability.Player;
 
 public class Stage extends Widget {
     private PictureItem mStageBitmap;

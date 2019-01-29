@@ -37,14 +37,12 @@ public class MainView extends SurfaceView implements
 	public static Context context = null;
 	private static final int FPS = 90;
 	private static final float GRAVITY = 0.35f;
-	private static final Random RND = new Random();
 
 	private int mFps;
 	private boolean mShowFPS = true;
 	private int mFrameCounter;
 	public static int screenWidth;
 	public static int screenHeight;
-	private Game mGame;
 	private SceneType mSceneState;
 	private int mScore;
 	private int mHighScore;
@@ -118,14 +116,14 @@ public class MainView extends SurfaceView implements
 	}
 
 	private void gameOver() {
-		mGame.setState(Game.State.OVER);
+		Game.getInstance().setState(Game.State.OVER);
 		if (mScore > mHighScore) {
 			mHighScore = mScore;
 		}
 	}
 
 	public void update() {
-		mGame.step();
+		Game.getInstance().step();
 	}
 
 	private void initNewGame() {
@@ -135,10 +133,7 @@ public class MainView extends SurfaceView implements
 		mMapOffsetX = 0;
 		mVelocity = 0;
 		mSceneState = SceneType.GAME;
-		if(mGame==null) {
-			mGame = new Game();
-		}
-		mGame.reset();
+		Game.getInstance().reset();
 	}
 
 	public Bundle saveState() {
@@ -147,7 +142,7 @@ public class MainView extends SurfaceView implements
 	}
 
 	public void restoreState(Bundle icicle) {
-		mGame.setState(Game.State.PAUSED);
+		Game.getInstance().setState(Game.State.PAUSED);
 	}
 
 	@Override
@@ -160,10 +155,9 @@ public class MainView extends SurfaceView implements
         if(mCanvas != null) {
             int oldColor = mPaint.getColor();
             mPaint.setColor(Color.GREEN);
-            String text = String.format("FPS:%2d", mFps);
-            mCanvas.drawText(text,
-					10,
-					10,
+            mCanvas.drawText(String.format("FPS:%2d", mFps),
+					Utils.getRealWidth(10),
+					Utils.getRealHeight(20),
 					mPaint);
             mPaint.setColor(oldColor);
         }
@@ -181,6 +175,8 @@ public class MainView extends SurfaceView implements
             {
                 drawFPS();
             }
+            mSurfaceHolder.unlockCanvasAndPost(mCanvas);
+            mCanvas = null;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -193,12 +189,14 @@ public class MainView extends SurfaceView implements
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-        mSceneStack.processTouchEvent(event);
 		SceneType topSceneType = mSceneStack.getTopSceneType();
 		SceneType topLessSceneType = mSceneStack.getTopLessSceneType();
 		if(topSceneType == SceneType.TITLE) {
 
+		} else if(topSceneType == SceneType.GAME) {
+			Game.getInstance().earthQuake();
 		}
+		mSceneStack.processTouchEvent(event);
 		return true;
 	}
 
@@ -244,7 +242,7 @@ public class MainView extends SurfaceView implements
         } else if(sceneType == SceneType.MAP_CHOOSE) {
             mSceneStack.clearPush(mCharacterChooseScene);
         } else if (sceneType == SceneType.GAME) {
-
+			mSceneStack.clearPush(mMapChooseScene);
         } else if (sceneType == SceneType.OPTION) {
 
         } else if (sceneType == SceneType.OVER) {
@@ -295,7 +293,7 @@ public class MainView extends SurfaceView implements
 	}
 
 	public void setGameState(Game.State state) {
-		mGame.setState(state);
+		Game.getInstance().setState(state);
 	}
 
 	private void loadConfig() {

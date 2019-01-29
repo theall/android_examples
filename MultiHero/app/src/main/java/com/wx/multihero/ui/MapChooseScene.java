@@ -50,6 +50,7 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
         mBtnNext = new ForwardButton(ID_NEXT, null, this);
         mBackgroundScene = new BackgroundScene(SceneType.INVALID, null);
         mBtnModSwitch = new ModSwitchButton(ID_MOD_SHIT, null, this);
+        mBtnModSwitch.setBindValue(ModManager.getInstance());
         mSelectBorder = new SelectedBorder(0, null);
         mCurrentMapSet = null;
 	}
@@ -165,22 +166,29 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
 
         ModManager modMan = ModManager.getInstance();
         modMan.load();
-        Mod mod = modMan.getMod(0);
+        refresh();
+
+        mBtnBack.loadAssets();
+        mBtnNext.loadAssets();
+    }
+
+    public void refresh() {
+        ModManager modMan = ModManager.getInstance();
+        Mod mod = modMan.getCurrentMod();
         mModName.setText(mod.getName());
         if(mod != null) {
             setMapSet(mod.getVsMaps());
         }
-
-        mBtnBack.loadAssets();
-        mBtnNext.loadAssets();
     }
 
     public void selected(int id, Bundle parameters) {
         if(mNotify != null) {
             if(id == ID_BACK) {
                 mNotify.back(mSceneType);
-            } else {
+            } else if(id == ID_NEXT) {
                 mNotify.next(mSceneType, 0);
+            } else if(id == ID_MOD_SHIT) {
+                refresh();
             }
         }
     }

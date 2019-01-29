@@ -8,7 +8,7 @@ import android.view.MotionEvent;
 import com.wx.multihero.base.Utils;
 import com.wx.multihero.entity.Character;
 import com.wx.multihero.ui.widget.Widget;
-import com.wx.multihero.variability.Player;
+import com.wx.multihero.variability.Sprite.Player;
 
 public class CharacterPlatform extends Widget implements Player.CharacterChangedCallback {
     private RoundBoard mRoundBoard;

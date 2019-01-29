@@ -7,23 +7,32 @@ import android.graphics.Paint;
 import com.wx.multihero.base.Renderable;
 import com.wx.multihero.base.Stepable;
 
-public class Sprite implements Renderable, Stepable {
-    public Bitmap bitmap;
-    public float x;
-    public float y;
+public class Sprite implements Renderable,Stepable {
+    private Bitmap mBitmap;
+    private float mX;
+    private float mY;
 
     public Sprite() {
-        x = 0;
-        y = 0;
+        mX = 0;
+        mY = 0;
     }
 
-    public Sprite(Bitmap _bitmap) {
-        bitmap = _bitmap;
+    public Sprite(Bitmap bitmap) {
+        mBitmap = bitmap;
+    }
+
+    public void move(float x, float y) {
+        mX = x;
+        mY = y;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        mBitmap = bitmap;
     }
 
     public void render(Canvas canvas, Paint paint) {
-        if(bitmap != null) {
-            canvas.drawBitmap(bitmap, x, y, paint);
+        if(mBitmap != null) {
+            canvas.drawBitmap(mBitmap, mX, mY, paint);
         }
     }
 

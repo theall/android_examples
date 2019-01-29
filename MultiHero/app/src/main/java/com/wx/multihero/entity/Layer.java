@@ -18,4 +18,8 @@ public class Layer {
     public ArrayList<Tile> getTileList() {
         return mTileList;
     }
+
+    public int getTilesAmount() {
+        return mTileList.size();
+    }
 }

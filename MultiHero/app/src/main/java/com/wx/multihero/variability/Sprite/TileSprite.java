@@ -1,5 +1,6 @@
 package com.wx.multihero.variability.Sprite;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
@@ -11,10 +12,10 @@ public class TileSprite extends Sprite {
     }
 
     public void loadFromTile(Tile tile) {
-        x = tile.x;
-        y = tile.y;
+        move(tile.x, tile.y);
         AssetsLoader assetsLoader = AssetsLoader.getInstance();
-        bitmap = assetsLoader.loadBitmap("gfx/tiles/%d_%d.png", tile.setNumber, tile.number);
+        Bitmap bitmap = assetsLoader.loadBitmap("gfx/tiles/%d_%d.png", tile.setNumber, tile.number);
+        setBitmap(bitmap);
     }
 
     @Override

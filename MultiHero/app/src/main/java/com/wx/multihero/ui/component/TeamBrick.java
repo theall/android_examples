@@ -15,7 +15,7 @@ import com.wx.multihero.ui.widget.ColorButton;
 import com.wx.multihero.ui.widget.PrimitiveText;
 import com.wx.multihero.ui.widget.TouchableWidget;
 import com.wx.multihero.ui.widget.Widget;
-import com.wx.multihero.variability.Player;
+import com.wx.multihero.variability.Sprite.Player;
 
 public class TeamBrick extends Widget implements Renderable,TouchableWidget.Callback{
     private PrimitiveText mLabel;

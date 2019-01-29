@@ -2,6 +2,8 @@ package com.wx.multihero.base;
 
 import android.content.Context;
 
+import java.util.Random;
+
 public class Utils {
 	public static final float BASE_SCREEN_WIDTH = 800.0f;
 	public static final float BASE_SCREEN_HEIGHT = 480f;
@@ -9,6 +11,7 @@ public class Utils {
 	private static float mScreenWidth = BASE_SCREEN_WIDTH;
 	private static float mScreenHeight = BASE_SCREEN_HEIGHT;
 	private static Context mContext = null;
+	private static Random mRandom = null;
 
 	public static float getScreenWidth() {
 		return mScreenWidth;
@@ -61,5 +64,19 @@ public class Utils {
 
 	public static void setContext(Context context) {
 		mContext = context;
+	}
+
+	public static int getRandValue(int below, int up) {
+		if(mRandom == null)
+			mRandom = new Random();
+		return mRandom.nextInt(up-below)+below;
+	}
+
+	public static float getRandWidth(int below, int up) {
+		return getRealWidth(getRandValue(below, up));
+	}
+
+	public static float getRandHeight(int below, int up) {
+		return getRealHeight(getRandValue(below, up));
 	}
 }

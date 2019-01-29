@@ -58,6 +58,7 @@ public class SwitchMenu extends TouchableWidget implements TouchableWidget.Callb
             mText.setText(text);
         }
     }
+
     public void setBitmaps(Bitmap background, Bitmap left, Bitmap right) {
         mBackground.setBitmap(background);
         mBtnLeft.setBitmap(left);
