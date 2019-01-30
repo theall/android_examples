@@ -2,24 +2,32 @@ package com.wx.multihero.variability.Sprite;
 
 import android.graphics.Bitmap;
 
-public class Frame extends Sprite {
-    private int mDuration;
-
+public class Frame {
+    public int duration;
+    public Bitmap bitmap;
+    
     public Frame() {
-        super();
-        mDuration = 0;
+        duration = -1;
     }
 
     public Frame(int duration, Bitmap bitmap) {
-        super(bitmap);
-        mDuration = duration;
+        this.duration = duration;
+        this.bitmap = bitmap;
     }
 
     public void setDuration(int duration) {
-        mDuration = duration;
+        this.duration = duration;
     }
 
     public int getDuration() {
-        return mDuration;
+        return duration;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 }

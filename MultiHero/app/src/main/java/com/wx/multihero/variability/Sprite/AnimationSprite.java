@@ -1,19 +1,16 @@
 package com.wx.multihero.variability.Sprite;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-
 import java.util.ArrayList;
 
-public class MultiFrames extends Sprite {
+public class AnimationSprite extends Sprite {
     private ArrayList<Frame> mFrameList = new ArrayList<Frame>();
     private Frame mCurrentFrame;
     private int mCurrentIndex;
     private int mTotalFrameDuration;
     private int mRecycleTimes;
 
-    public MultiFrames() {
+    public AnimationSprite() {
         mCurrentIndex = -1;
         mTotalFrameDuration = 0;
         mCurrentFrame = null;
@@ -27,11 +24,6 @@ public class MultiFrames extends Sprite {
     public void add(Frame frame) {
         mFrameList.add(frame);
         mTotalFrameDuration += frame.getDuration();
-    }
-    
-    public void render(Canvas canvas, Paint paint) {
-        if(mCurrentFrame != null)
-            mCurrentFrame.render(canvas, paint);
     }
 
     public void step() {
@@ -50,6 +42,10 @@ public class MultiFrames extends Sprite {
             }
             frameCounter -= duration;
         }
+
+        if(mCurrentFrame != null) {
+            setBitmap(mCurrentFrame.getBitmap());
+        }
     }
 
     public Frame getCurrentFrame() {
@@ -58,5 +54,13 @@ public class MultiFrames extends Sprite {
 
     public boolean isRecycled() {
         return mRecycleTimes>0;
+    }
+
+    public Sprite getHost() {
+        return mHost;
+    }
+
+    public void setHost(Sprite host) {
+        mHost = host;
     }
 }

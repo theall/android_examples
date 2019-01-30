@@ -2,9 +2,9 @@ package com.wx.multihero.variability.Chunk;
 
 import android.graphics.Bitmap;
 import com.wx.multihero.base.AssetsLoader;
-import com.wx.multihero.variability.Sprite.MultiFrames;
+import com.wx.multihero.variability.Sprite.AnimationSprite;
 
-public class Chunk extends MultiFrames {
+public class Chunk extends AnimationSprite {
     public enum Type {
         TEST,
         BLOCKING,

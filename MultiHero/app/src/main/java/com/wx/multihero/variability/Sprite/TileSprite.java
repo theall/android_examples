@@ -16,6 +16,7 @@ public class TileSprite extends Sprite {
         AssetsLoader assetsLoader = AssetsLoader.getInstance();
         Bitmap bitmap = assetsLoader.loadBitmap("gfx/tiles/%d_%d.png", tile.setNumber, tile.number);
         setBitmap(bitmap);
+
     }
 
     @Override
