@@ -33,7 +33,7 @@ g_effectList = [
     {'TypeName':'BLUERAY_IMPACT_2','ClassName':'BluerayImpact2','frames':[[22,1,1]]},
     {'TypeName':'POWER_BALL','ClassName':'PowerBall','frames':[[23,1,1]]},
     {'TypeName':'FIRE_GOING_UP','ClassName':'FireGoingUp','frames':[[24,1,2,(0,-1)],[24,2,3]]},
-    {'TypeName':'4_WAY_EXPLOSION','ClassName':'4WayExplosion','frames':[[25,1,2],[25,2,3],[25,3,4],[25,4,3]]},
+    {'TypeName':'FOUR_WAY_EXPLOSION','ClassName':'FourWayExplosion','frames':[[25,1,2],[25,2,3],[25,3,4],[25,4,3]]},
     {'TypeName':'BATMAN_BOMB_SMOKE','ClassName':'BatmanBombSmoke','frames':[[26,1,4],[26,2,3],[26,3,4],[26,4,3]]},
     {'TypeName':'GREEN_RAY_IMPACT','ClassName':'GreenRayImpact','frames':[[27,1,8],[27,2,8]]},
     {'TypeName':'LITTLE_SMOKE','ClassName':'LittleSmoke','frames':[[28,1,5],[28,2,5],[28,3,5]]},

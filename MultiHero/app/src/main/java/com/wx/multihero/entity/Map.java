@@ -183,12 +183,32 @@ public class Map {
             int animationAmount = inputStream.readInt();
             mAnimationList.clear();
             for(int i=0;i<animationAmount;i++) {
-                Animation animation = new Animation(inputStream);
+                Animation animation = new Animation(inputStream, this);
                 mAnimationList.add(animation);
+            }
+
+            // merge tile and animation
+            for(Animation a : mAnimationList) {
+                for(int i=0;i<a.mFrames.size()-1;i++) {
+                    KeyFrame currentFrame = a.mFrames.get(i);
+                    KeyFrame nextFrame = a.mFrames.get(i+1);
+                    if(currentFrame.tile==null || nextFrame.tile==null)
+                        continue;
+                    currentFrame.tile.duration = currentFrame.time;
+                    currentFrame.tile.nextTile = nextFrame.tile;
+                }
             }
         } catch (IOException e) {
             Log.e("Map", mMapName);
             e.printStackTrace();
         }
+    }
+
+    private Animation findAnimationByTile(Tile tile) {
+        for(Animation a : mAnimationList) {
+            if(a.tile==tile)
+                return a;
+        }
+        return null;
     }
 }

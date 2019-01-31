@@ -22,4 +22,10 @@ public class Layer {
     public int getTilesAmount() {
         return mTileList.size();
     }
+
+    public Tile getTile(int index) {
+        if(index>=0 && index<mTileList.size())
+            return mTileList.get(index);
+        return null;
+    }
 }

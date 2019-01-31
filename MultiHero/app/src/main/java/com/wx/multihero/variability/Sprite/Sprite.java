@@ -5,9 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import com.wx.multihero.base.Renderable;
-import com.wx.multihero.base.Stepable;
 
-public class Sprite implements Renderable,Stepable {
+public class Sprite implements Renderable {
     private Bitmap bitmap;
     public float x;
     public float y;
@@ -16,7 +15,7 @@ public class Sprite implements Renderable,Stepable {
         CENTER,
         CENTER_BOTTOM
     }
-    private Anchor mAnchor = Anchor.CENTER;
+    private Anchor mAnchor = Anchor.LEFT_TOP;
     public Sprite() {
         x = 0;
         y = 0;
@@ -48,9 +47,5 @@ public class Sprite implements Renderable,Stepable {
             }
             canvas.drawBitmap(bitmap, x, y, paint);
         }
-    }
-
-    public void step() {
-
     }
 }

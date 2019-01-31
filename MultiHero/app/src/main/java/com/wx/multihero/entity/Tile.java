@@ -28,6 +28,8 @@ public class Tile {
     public int followType;
     public float xScrSpeed;
     public float yScrSpeed;
+    public Tile nextTile = null;
+    public int duration = 0;
 
     public Tile(LittleEndianDataInputStream inputStream) throws IOException {
         x = inputStream.readFloat();

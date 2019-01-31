@@ -110,7 +110,6 @@ public class Player extends Sprite implements Stepable {
         mCanFly = false;
     }
 
-    @Override
     public void step() {
         int renderIndex = mFrameCounter%3;
         if(mTempShieldFrames > 0) {

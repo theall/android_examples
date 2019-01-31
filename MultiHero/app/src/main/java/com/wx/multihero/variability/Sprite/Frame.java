@@ -10,6 +10,11 @@ public class Frame {
         duration = -1;
     }
 
+    public Frame(Bitmap bitmap) {
+        this.duration = 0;
+        this.bitmap = bitmap;
+    }
+
     public Frame(int duration, Bitmap bitmap) {
         this.duration = duration;
         this.bitmap = bitmap;

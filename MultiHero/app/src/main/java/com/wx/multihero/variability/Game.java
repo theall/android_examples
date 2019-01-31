@@ -41,6 +41,7 @@ public class Game implements Stepable, Renderable {
     private ArrayList<Player> mPlayers = new ArrayList<Player>();
     private LayersManager mLayersManager;
     private int mBackgroundMusic;
+    private boolean mMapLoading;
 
     public Game() {
         mState = State.PREPARING;
@@ -55,9 +56,11 @@ public class Game implements Stepable, Renderable {
     }
 
     public void loadMap(Map map) {
+        mMapLoading = true;
         mBackgroundMusic = AssetsLoader.getInstance().loadSound(
                 String.format("sound/music%d.mp3",map.mMusicN1));
         mLayersManager.setMap(map);
+        mMapLoading = false;
     }
 
     public Boolean getAttackMate() {
@@ -94,6 +97,8 @@ public class Game implements Stepable, Renderable {
     }
     
     public void step() {
+        if(mMapLoading)
+            return;
         mLayersManager.step();
         if (mState == State.RUNNING || mState == State.OVER) {
 
@@ -110,6 +115,8 @@ public class Game implements Stepable, Renderable {
     }
 
     public void render(Canvas canvas, Paint paint) {
+        if(mMapLoading)
+            return;
         mLayersManager.render(canvas, paint);
     }
 
