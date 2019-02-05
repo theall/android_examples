@@ -133,7 +133,7 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
         mBtnNext.render(canvas, paint);
 	}
 
-	public int processTouchEvent(MotionEvent event) {
+	public boolean processTouchEvent(MotionEvent event) {
 	    float x = event.getX();
 	    float y = event.getY();
 	    int index = 0;
@@ -141,14 +141,14 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
 	        if(pi.touchTest(x, y)) {
                 mCurrentMapSet.setCurrentMapIndex(index);
 	            mSelectBorder.setHost(pi);
-	            return 1;
+	            return true;
             }
             index++;
         }
 	    mBtnModSwitch.processTouchEvent(event);
         mBtnBack.processTouchEvent(event);
         mBtnNext.processTouchEvent(event);
-		return 0;
+		return false;
 	}
 
 	public void shiftIn() {

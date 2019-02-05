@@ -74,9 +74,9 @@ public class Button extends TouchableWidget implements Renderable {
         }
     }
 
-    public int processTouchEvent(MotionEvent event) {
+    public boolean processTouchEvent(MotionEvent event) {
         super.processTouchEvent(event);
-        return 0;
+        return false;
     }
 
     public void positionChanged(float dx, float dy) {

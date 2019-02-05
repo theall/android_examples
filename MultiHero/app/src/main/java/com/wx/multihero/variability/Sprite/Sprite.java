@@ -5,11 +5,16 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import com.wx.multihero.base.Renderable;
+import com.wx.multihero.base.SoundPlayer;
 
 public class Sprite implements Renderable {
     private Bitmap bitmap;
     public float x;
     public float y;
+    public float handX;
+    public float handY;
+    public int sound;
+
     public enum Anchor {
         LEFT_TOP,
         CENTER,
@@ -19,6 +24,9 @@ public class Sprite implements Renderable {
     public Sprite() {
         x = 0;
         y = 0;
+        handX = -1;
+        handY = -1;
+        sound = -1;
     }
 
     public Sprite(Bitmap bitmap) {
@@ -46,6 +54,9 @@ public class Sprite implements Renderable {
                 y -= bitmap.getHeight();
             }
             canvas.drawBitmap(bitmap, x, y, paint);
+        }
+        if(sound != -1) {
+            SoundPlayer.playAudio(sound);
         }
     }
 }

@@ -13,7 +13,7 @@ public class CharacterManager {
 	private static CharacterManager mInstance = null;
 	private static String mRoot = "gfx/character";
 
-    public class SortComparator implements Comparator {
+    private class SortComparator implements Comparator {
         public int compare(Object a, Object b) {
             String na = (String)a;
             String nb = (String)b;

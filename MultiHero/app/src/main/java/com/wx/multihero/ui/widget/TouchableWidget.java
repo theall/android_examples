@@ -38,7 +38,7 @@ public abstract class TouchableWidget extends Widget implements Touchable {
         return new Bundle();
     }
 
-    public int processTouchEvent(MotionEvent event) {
+    public boolean processTouchEvent(MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
 
@@ -56,6 +56,6 @@ public abstract class TouchableWidget extends Widget implements Touchable {
         } else {
             mFingerDown = false;
         }
-        return 0;
+        return false;
     }
 }

@@ -38,8 +38,8 @@ public class LoadingScene extends BaseScene implements AssetsLoader.LoaderNotify
         mProgressBar.render(canvas, paint);
     }
 
-    public int processTouchEvent(MotionEvent event) {
-        return 0;
+    public boolean processTouchEvent(MotionEvent event) {
+        return false;
     }
 
     public void onProgress(int loadedSize, int totalSize) {

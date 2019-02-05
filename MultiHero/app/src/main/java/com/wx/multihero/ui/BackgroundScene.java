@@ -47,8 +47,8 @@ public class BackgroundScene extends BaseScene {
     	}
     }
 
-    public int processTouchEvent(MotionEvent event) {
-        return 0;
+    public boolean processTouchEvent(MotionEvent event) {
+        return false;
     }
 
     public void shiftIn() {

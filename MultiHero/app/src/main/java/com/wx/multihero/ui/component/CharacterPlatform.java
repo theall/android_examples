@@ -61,10 +61,10 @@ public class CharacterPlatform extends Widget implements Player.CharacterChanged
         mStage.offset(dx, dy);
     }
 
-    public int processTouchEvent(MotionEvent event) {
+    public boolean processTouchEvent(MotionEvent event) {
         mRoundBoard.processTouchEvent(event);
         mStage.processTouchEvent(event);
-        return 0;
+        return false;
     }
 
     public void characterChanged(Character oldCharacter, Character newCharacter) {

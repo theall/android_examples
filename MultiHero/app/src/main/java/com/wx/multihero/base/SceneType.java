@@ -10,5 +10,6 @@ public enum SceneType {
 	MAP_CHOOSE,
 	OVER,
 	CREDIT,
-	QUESTION
+	QUESTION,
+	CONTROLLER
 }

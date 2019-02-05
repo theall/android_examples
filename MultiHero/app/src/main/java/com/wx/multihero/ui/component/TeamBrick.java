@@ -135,8 +135,8 @@ public class TeamBrick extends Widget implements Renderable,TouchableWidget.Call
         }
     }
 
-    public int processTouchEvent(MotionEvent event) {
+    public boolean processTouchEvent(MotionEvent event) {
         mBtnColor.processTouchEvent(event);
-        return 0;
+        return false;
     }
 }

@@ -30,8 +30,9 @@ public class AssetsLoader implements Runnable {
         void onProgress(int loadedSize, int totalSize);
     }
     LoaderNotify mNotify = null;
+    private Matrix mMatrix;
     public AssetsLoader() {
-
+        mMatrix = new Matrix();
     }
 
     public void setConfigure(Context context, SoundPool soundPool, LoaderNotify notify) {
@@ -145,11 +146,11 @@ public class AssetsLoader implements Runnable {
         try {
             InputStream is0 = mAssetManager.open(actualFileName);
             bmp = BitmapFactory.decodeStream(is0);
-            Matrix matrix = new Matrix();
             float sx = (float)(MainView.screenWidth/Utils.BASE_SCREEN_WIDTH);
             float sy = (float)(MainView.screenHeight/Utils.BASE_SCREEN_HEIGHT);
-            matrix.postScale(sx, sy);
-            bmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
+            mMatrix.reset();
+            mMatrix.postScale(sx, sy);
+            bmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), mMatrix, true);
             mStringBitmapMap.put(actualFileName, bmp);
         } catch (IOException e) {
             e.printStackTrace();

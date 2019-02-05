@@ -7,17 +7,10 @@ import com.wx.multihero.base.Stepable;
 import java.util.ArrayList;
 
 public class AnimationSprite extends Sprite implements Stepable {
-    private ArrayList<Frame> mFrameList = new ArrayList<Frame>();
-    private Frame mCurrentFrame;
-    private int mCurrentIndex;
-    private int mTotalFrameDuration;
-    private int mRecycleTimes;
+    private SerializedFrames mSerializedFrames;
 
     public AnimationSprite() {
-        mCurrentIndex = -1;
-        mTotalFrameDuration = 0;
-        mCurrentFrame = null;
-        mRecycleTimes = 0;
+        mSerializedFrames = new SerializedFrames();
     }
 
     public void add(Bitmap bitmap) {
@@ -29,44 +22,23 @@ public class AnimationSprite extends Sprite implements Stepable {
     }
 
     public void add(Frame frame) {
-        mFrameList.add(frame);
-        mTotalFrameDuration += frame.getDuration();
+        mSerializedFrames.add(frame);
     }
 
     public void step() {
-        int frameCount = mFrameList.size();
-        if(frameCount > 1) {
-            mCurrentIndex++;
-            if(mCurrentIndex > mTotalFrameDuration) {
-                mRecycleTimes++;
-                mCurrentIndex = 0;
-            }
-
-            int frameCounter = mCurrentIndex;
-            for(Frame frame : mFrameList) {
-                int duration = frame.getDuration();
-                if(frameCounter < duration) {
-                    mCurrentFrame = frame;
-                    break;
-                }
-                frameCounter -= duration;
-            }
-
-        } else if(frameCount==1) {
-            mCurrentFrame = mFrameList.get(0);
-        } else {
-            mCurrentFrame = null;
+        mSerializedFrames.step();
+        Frame currentFrame = mSerializedFrames.getCurrentFrame();
+        if(currentFrame != null) {
+            setBitmap(currentFrame.getBitmap());
         }
-        if(mCurrentFrame != null) {
-            setBitmap(mCurrentFrame.getBitmap());
-        }
+
     }
 
     public Frame getCurrentFrame() {
-        return mCurrentFrame;
+        return mSerializedFrames.getCurrentFrame();
     }
 
     public boolean isRecycled() {
-        return mRecycleTimes>0;
+        return mSerializedFrames.isRecycled();
     }
 }

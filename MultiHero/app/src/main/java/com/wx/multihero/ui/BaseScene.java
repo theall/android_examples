@@ -6,7 +6,6 @@ import com.wx.multihero.base.SoundPlayer;
 import com.wx.multihero.ui.widget.Touchable;
 import com.wx.multihero.base.Renderable;
 import com.wx.multihero.base.SceneType;
-import com.wx.multihero.variability.Game;
 
 public abstract class BaseScene implements Renderable, Touchable {
     protected SceneType mSceneType;

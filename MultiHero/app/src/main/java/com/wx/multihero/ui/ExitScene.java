@@ -28,7 +28,7 @@ public class ExitScene extends BaseScene {
         }
     }
 
-    public int processTouchEvent(MotionEvent event) {
+    public boolean processTouchEvent(MotionEvent event) {
         return  0;
     }
 

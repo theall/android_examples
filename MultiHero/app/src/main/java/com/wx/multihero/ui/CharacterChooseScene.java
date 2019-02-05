@@ -102,7 +102,7 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
         mBtnNext.render(canvas, paint);
 	}
 
-	public int processTouchEvent(MotionEvent event) {
+	public boolean processTouchEvent(MotionEvent event) {
 	    // process select border
         float x = event.getX();
         float y = event.getY();
@@ -114,7 +114,7 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
                 } else {
                     mSelectBorder.setHost(cp);
                 }
-                return 1;
+                return true;
             }
         }
         for(ActorBoard ab : mBoards) {
@@ -126,7 +126,7 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
 	    mBtnLifes.processTouchEvent(event);
 		mBtnBack.processTouchEvent(event);
 		mBtnNext.processTouchEvent(event);
-		return 0;
+		return false;
 	}
 
 	public void shiftIn() {

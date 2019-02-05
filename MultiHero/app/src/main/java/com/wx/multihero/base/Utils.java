@@ -1,6 +1,9 @@
 package com.wx.multihero.base;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 
 import java.util.Random;
 
@@ -55,11 +58,19 @@ public class Utils {
         index++;
         return fileFullName.substring(index);
     }
+
     public static String getStringFromResourceId(int id) {
 		if(mContext != null) {
 			return mContext.getResources().getString(id);
 		}
 		return "";
+	}
+
+	public static Bitmap getBitmapFromResourceId(int id) {
+		if(mContext != null) {
+			return BitmapFactory.decodeResource(mContext.getResources(), id);
+		}
+		return null;
 	}
 
 	public static void setContext(Context context) {
@@ -78,5 +89,9 @@ public class Utils {
 
 	public static float getRandHeight(int below, int up) {
 		return getRealHeight(getRandValue(below, up));
+	}
+
+	public static float getGoldenWidth() {
+		return mScreenWidth * mScreenWidth * GOLD_LINE / BASE_SCREEN_WIDTH;
 	}
 }

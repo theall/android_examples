@@ -83,12 +83,12 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
         }
 	}
 
-	public int processTouchEvent(MotionEvent event) {
+	public boolean processTouchEvent(MotionEvent event) {
 		for(MenuItem mi : mMenuItems) {
 			mi.processTouchEvent(event);
 		}
 		Log.i("event", event.toString());
-		return 0;
+		return false;
 	}
 
 	public void render(Canvas canvas, Paint paint) {

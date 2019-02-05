@@ -66,8 +66,8 @@ public class SceneStack implements Renderable, Touchable {
         }
     }
 
-    public int processTouchEvent(MotionEvent event) {
+    public boolean processTouchEvent(MotionEvent event) {
         mSceneStack.firstElement().processTouchEvent(event);
-        return 0;
+        return false;
     }
 }

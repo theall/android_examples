@@ -78,9 +78,9 @@ public class RoundBoard extends Widget {
         mBtnPlayerType.offset(dx, dy);
     }
 
-    public int processTouchEvent(MotionEvent event) {
+    public boolean processTouchEvent(MotionEvent event) {
         mBtnPlayerType.processTouchEvent(event);
         mBtnTeam.processTouchEvent(event);
-        return 0;
+        return false;
     }
 }

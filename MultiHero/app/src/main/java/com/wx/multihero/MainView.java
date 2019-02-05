@@ -90,6 +90,7 @@ public class MainView extends SurfaceView implements
 		mTitleScene.loadAssets();
         mCharacterChooseScene.loadAssets();
 		mMapChooseScene.loadAssets();
+		mGameScene.loadAssets();
 	}
 	
 	private void init() {

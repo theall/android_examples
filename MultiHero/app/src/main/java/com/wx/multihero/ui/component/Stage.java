@@ -53,7 +53,7 @@ public class Stage extends Widget {
         mForegroundBitmap.offset(dx, dy);
     }
 
-    public int processTouchEvent(MotionEvent event) {
-        return 0;
+    public boolean processTouchEvent(MotionEvent event) {
+        return false;
     }
 }
