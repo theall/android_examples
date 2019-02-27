@@ -5,54 +5,44 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.view.MotionEvent;
 
 import com.wx.multihero.R;
 import com.wx.multihero.base.Utils;
-import com.wx.multihero.ui.widget.TouchableWidget;
+import com.wx.multihero.ui.widget.PictureItem;
+import com.wx.multihero.ui.widget.Touchable;
 
-public class JoyStick extends TouchableWidget {
-    private Bitmap mBackgroundBitmap;// 视图背景图片  假设是一个圆盘
-    private Bitmap mTouchMoveBitmap;// 视图中间的随手指移动的图片  假设是一个圆球
-    private Bitmap mDirectionBmp;// 指示方向的图片  假设是一个箭头  整体是一个正方形的图片
-
-    private float mRoundBgPadding;// 背景圆到view边界的像素
-    private float mWholePadWidth;// 盘的宽度，包括箭头；并不是View的总宽度
-    private float mWholePadHeight;// 盘的高度，包括箭头；并不是View的总宽度
-    private float mRoundBgRadius;
-
-    private float mTouchImageX;
-    private float mTouchImageY;
-
-    private float mTouchBmpDefaultX;// 滚动球图片默认左上角x
-    private float mTouchBmpDefaultY;// 滚动球图片默认左上角y
+public class JoyStick extends PictureItem implements Touchable {
+    private float mTouchX;
+    private float mTouchY;
+    private float mTouchDefaultX;
+    private float mTouchDefaultY;
 
     private boolean mIsMoving;
-    private float mContentCenterX;// 控制盘中心点x坐标
-    private float mContentCenterY;// 控制盘中心点y坐标
+    private float mContentCenterX;
+    private float mContentCenterY;
     private boolean mFixed;
-    private boolean mShowDirection;// 是否显示方向指示图片
+    private boolean mShowDirection;
     private Matrix mRotateMatrix;
     private ValueAnimator mValueAnimatorResetX;
     private ValueAnimator mValueAnimatorResetY;
+    private PictureItem mMovingBallPicture;
+    private PictureItem mIndicatorPicture;
+    private static int PAD_SIZE = 200;
 
-    public JoyStick(int id, RectF boundingRect, Callback callback) {
-        super(id, boundingRect, callback);
+    public JoyStick(int id) {
+        super(id, null, null);
 
         mFixed = true;
         mIsMoving = false;
         mShowDirection = true;
-        mRoundBgPadding = Utils.getRealWidth(20);
-        mWholePadWidth = Utils.getGoldenWidth();
-        mWholePadHeight = mWholePadWidth;
-        mRoundBgRadius = Utils.getRealWidth(90);
+
         mRotateMatrix = new Matrix();
         mValueAnimatorResetX = new ValueAnimator();
         mValueAnimatorResetX.setDuration(200);
         mValueAnimatorResetX.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             public void onAnimationUpdate(ValueAnimator animation) {
-                mTouchImageX = (Float)animation.getAnimatedValue();
+                mTouchX = (Float)animation.getAnimatedValue();
             }
         });
 
@@ -60,42 +50,43 @@ public class JoyStick extends TouchableWidget {
         mValueAnimatorResetY.setDuration(200);
         mValueAnimatorResetY.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             public void onAnimationUpdate(ValueAnimator animation) {
-                mTouchImageY = (Float)animation.getAnimatedValue();
+                mTouchY = (Float)animation.getAnimatedValue();
             }
         });
+
+        mMovingBallPicture = new PictureItem(0, null, null);
+        mIndicatorPicture = new PictureItem(0, null, null);
+        PAD_SIZE = (int)(Utils.getRealWidth(PAD_SIZE));
     }
 
     public void loadAssets() {
         Bitmap tmpBgBmp = Utils.getBitmapFromResourceId(R.drawable.joystick_right_pad);
         Bitmap tmpTouchBmp = Utils.getBitmapFromResourceId(R.drawable.joystick_control_ball);
         Bitmap tmpDirectionBmp = Utils.getBitmapFromResourceId(R.drawable.joystick_arrow);
-        mDirectionBmp = Bitmap.createScaledBitmap(tmpDirectionBmp, (int) mWholePadWidth, (int) mWholePadHeight, true);
-        mBackgroundBitmap = Bitmap.createScaledBitmap(tmpBgBmp, (int) (mRoundBgRadius - mRoundBgPadding) * 2, (int) (mRoundBgRadius - mRoundBgPadding) * 2, true);
-        mTouchMoveBitmap = Bitmap.createScaledBitmap(tmpTouchBmp, 180, 180, true);
+        tmpDirectionBmp = Bitmap.createScaledBitmap(tmpDirectionBmp, PAD_SIZE, PAD_SIZE, true);
+        tmpBgBmp = Bitmap.createScaledBitmap(tmpBgBmp, PAD_SIZE, PAD_SIZE, true);
+        tmpTouchBmp = Bitmap.createScaledBitmap(tmpTouchBmp, PAD_SIZE/2, PAD_SIZE/2, true);
+        setBitmap(tmpBgBmp);
+        mMovingBallPicture.setBitmap(tmpTouchBmp);
+        mIndicatorPicture.setBitmap(tmpDirectionBmp);
 
         setupContentCenter();
-        mTouchBmpDefaultX = mContentCenterX - mTouchMoveBitmap.getWidth() / 2;
-        mTouchBmpDefaultY = mContentCenterY - mTouchMoveBitmap.getWidth() / 2;
-        mTouchImageX = mTouchBmpDefaultX;
-        mTouchImageY = mTouchBmpDefaultY;
     }
 
+    @Override
     public void render(Canvas canvas, Paint paint) {
-        if (mBackgroundBitmap != null) {
-            // 画背景圆
-            canvas.drawBitmap(mBackgroundBitmap, mContentCenterX - mBackgroundBitmap.getWidth() / 2,
-                    mContentCenterY - mBackgroundBitmap.getHeight() / 2, null);
+        super.render(canvas, paint);
 
-            if (mShowDirection && mTouchBmpDefaultX != mTouchImageX && mTouchBmpDefaultY != mTouchImageY) {
-                // 画方向指示箭头
-                float rotationDegree = (float)calTwoPointAngleDegree(mContentCenterX, mContentCenterY,
-                        mTouchImageX + mTouchMoveBitmap.getWidth() / 2, mTouchImageY + mTouchMoveBitmap.getWidth() / 2);
-                drawRotateBitmap(canvas, mDirectionBmp, 180 - rotationDegree, mContentCenterX - mWholePadWidth / 2, mContentCenterY - mWholePadHeight / 2);
-            }
-
-            // 画中心控制圆圈
-            canvas.drawBitmap(mTouchMoveBitmap, mTouchImageX, mTouchImageY, null);
+        if (mShowDirection && mTouchDefaultX != mTouchX && mTouchDefaultY != mTouchY) {
+            float rotationDegree = (float)calTwoPointAngleDegree(mContentCenterX, mContentCenterY, mTouchX, mTouchY);
+            drawRotateBitmap(canvas, mDirectionBitmap, 180 - rotationDegree, mContentCenterX - mWholePadWidth / 2, mContentCenterY - mWholePadWidth / 2);
         }
+
+        // indicator
+        mIndicatorPicture.render(canvas, paint);
+
+        // ball
+        mMovingBallPicture.render(canvas, paint);
     }
 
     /**
@@ -147,6 +138,7 @@ public class JoyStick extends TouchableWidget {
     private void drawRotateBitmap(Canvas canvas, Bitmap bitmap, float rotation, float posX, float posY) {
         int offsetX = bitmap.getWidth() / 2;
         int offsetY = bitmap.getHeight() / 2;
+        mRotateMatrix.reset();
         mRotateMatrix.postTranslate(-offsetX, -offsetY);
         mRotateMatrix.postRotate(rotation);
         mRotateMatrix.postTranslate(posX + offsetX, posY + offsetY);
@@ -155,66 +147,70 @@ public class JoyStick extends TouchableWidget {
 
     // 设定初始位置
     private void setupContentCenter() {
-        mContentCenterX = mWholePadWidth / 2;
-        mContentCenterY = mWholePadHeight / 2;
+        mContentCenterX = mBoundingRect.centerX();
+        mContentCenterY = mBoundingRect.centerY();
+        mTouchDefaultX = mContentCenterX;
+        mTouchDefaultY = mContentCenterY;
+        mTouchX = mTouchDefaultX;
+        mTouchY = mTouchDefaultY;
     }
     
     public boolean processTouchEvent(MotionEvent event) {
         int action = event.getAction();
+        float x = event.getX();
+        float y = event.getY();
         if (action == MotionEvent.ACTION_UP) {
             mIsMoving = false;
             setupContentCenter();
             reset();
         } else if (action == MotionEvent.ACTION_DOWN) {
-            if (event.getX() < mContentCenterX - mWholePadWidth / 2 || event.getX() > mContentCenterX + mWholePadWidth / 2) {
-                return false; // 点击在圆盘外面的不处理
-            } else if (event.getY() < mContentCenterY - mWholePadHeight / 2 || event.getY() > mContentCenterY + mWholePadHeight / 2) {
+            if(!mBoundingRect.contains(x, y))
                 return false;
-            }
             mIsMoving = true;  // 直接移动圆球到点击位置
-            userMoving(event);
+            userMoving(x, y);
         } else if (mIsMoving) {
-            userMoving(event);
+            userMoving(x, y);
         }
         return true;
     }
 
     private void reset() {
-        mValueAnimatorResetX.setFloatValues(mTouchImageX, mTouchBmpDefaultX);
+        mValueAnimatorResetX.setFloatValues(mTouchX, mTouchDefaultX);
         mValueAnimatorResetX.start();
 
-        mValueAnimatorResetY.setFloatValues(mTouchImageY, mTouchBmpDefaultY);
+        mValueAnimatorResetY.setFloatValues(mTouchY, mTouchDefaultY);
         mValueAnimatorResetY.start();
     }
 
-    private void userMoving(MotionEvent event) {
+    private void userMoving(float x, float y) {
         if (mValueAnimatorResetX != null && mValueAnimatorResetY != null) {
             mValueAnimatorResetX.removeAllUpdateListeners();
             mValueAnimatorResetY.removeAllUpdateListeners();
         }
 
-        float tr = (float)calTwoPointDistant(mContentCenterX, mContentCenterY, event.getX(), event.getY());
-        double insideBgDis = (mBackgroundBitmap.getWidth() - mTouchMoveBitmap.getWidth()) / 2;
+        float tr = (float)calTwoPointDistant(mContentCenterX, mContentCenterY, x, y);
+        double insideBgDis = PAD_SIZE / 2;
         if (tr <= insideBgDis) {
             // 点击在背景圆圈内
-            onBallMove(event.getX(), event.getY());
+            onBallMove(x, y);
         } else {
             // 点击后拖出了边界  计算出拖动圆的圆心坐标
             double dotCenterOnShow[] =calPointLocationByAngle(
-                    mContentCenterX, mContentCenterY, event.getX(), event.getY(), insideBgDis);
+                    mContentCenterX, mContentCenterY, x, y, insideBgDis);
             onBallMove((float) dotCenterOnShow[0], (float) dotCenterOnShow[1]);
         }
     }
 
     private void onBallMove(float ballCenterX, float ballCenterY) {
-        mTouchImageX = ballCenterX - mTouchMoveBitmap.getWidth() / 2;
-        mTouchImageY = ballCenterY - mTouchMoveBitmap.getHeight() / 2;
+        mTouchX = ballCenterX - mTouchMoveBitmap.getWidth() / 2;
+        mTouchY = ballCenterY - mTouchMoveBitmap.getHeight() / 2;
         float horizontalPercent = (ballCenterX - mContentCenterX) / (mBackgroundBitmap.getWidth() - mTouchMoveBitmap.getWidth()) * 2.0f;
         float verticalPercent = (mContentCenterY - ballCenterY) / (mBackgroundBitmap.getHeight() - mTouchMoveBitmap.getHeight()) * 2.0f;
 
     }
 
     public void positionChanged(float dx, float dy) {
-
+        mTouchDefaultX += dx;
+        mTouchDefaultY += dy;
     }
 }

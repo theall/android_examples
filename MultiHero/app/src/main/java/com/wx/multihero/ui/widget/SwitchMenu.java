@@ -43,7 +43,7 @@ public class SwitchMenu extends TouchableWidget implements TouchableWidget.Callb
 
     @Override
     public boolean processTouchEvent(MotionEvent event) {
-        int r = 0;
+        boolean r = false;
         r |= mBtnLeft.processTouchEvent(event);
         r |= mBtnRight.processTouchEvent(event);
         return  r;

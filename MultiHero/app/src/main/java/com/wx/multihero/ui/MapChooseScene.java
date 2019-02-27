@@ -16,7 +16,6 @@ import com.wx.multihero.ui.widget.BitmapText;
 import com.wx.multihero.ui.widget.SelectedBorder;
 import com.wx.multihero.ui.widget.TouchableWidget;
 
-import android.app.UiModeManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -35,6 +34,7 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
     private ForwardButton mBtnNext;
     private BackgroundScene mBackgroundScene;
     private ModSwitchButton mBtnModSwitch;
+    private Button mBtnStageSelect;
     private MapSet mCurrentMapSet;
     private static float SPACE_COLUMN = 20;
     private static float SPACE_ROW = 10;
@@ -52,7 +52,11 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
         mBtnModSwitch = new ModSwitchButton(ID_MOD_SHIT, null, this);
         mBtnModSwitch.setBindValue(ModManager.getInstance());
         mSelectBorder = new SelectedBorder(0, null);
+        mBtnStageSelect = new Button(0, null, null);
         mCurrentMapSet = null;
+
+        SPACE_COLUMN = Utils.getRealWidth(20);
+        SPACE_ROW = Utils.getRealHeight(10);
 	}
 
 	private void setMapSet(MapSet mapSet) {
@@ -70,8 +74,8 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
         float screenHeight = mScreenRect.height();
         float validWidth = screenWidth * Utils.GOLD_LINE;
         float validHeight = screenHeight * Utils.GOLD_LINE;
-        float spaceColumn = SPACE_COLUMN * Utils.BASE_SCREEN_WIDTH / screenWidth;
-        float spaceRow = SPACE_ROW * Utils.BASE_SCREEN_HEIGHT / screenHeight;
+        float spaceColumn = SPACE_COLUMN;
+        float spaceRow = SPACE_ROW;
         float bmpWidth = 0;
         for(Map map : mapSet.getMapList()) {
             Bitmap thumb = map.getThumbBitmap();
@@ -162,7 +166,12 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
     public void loadAssets() {
 	    mBackgroundScene.loadAssets();
         mBtnModSwitch.loadAssets();
-        mBtnModSwitch.offset((mScreenRect.width()-mBtnModSwitch.getBoundingRect().width())/2, Utils.getRealHeight(20));
+        mBtnModSwitch.offset((mScreenRect.width()-mBtnModSwitch.getBoundingRect().width())/2, Utils.getRealHeight(40));
+
+        RectF rect = mBtnModSwitch.getBoundingRect();
+        mBtnStageSelect.setBitmap(AssetsLoader.getInstance().loadBitmap("gfx/ui/but_start.png"));
+        mBtnStageSelect.moveTo(rect.left-mBtnStageSelect.getBoundingRect().width()-Utils.getRealWidth(20), rect.top);
+        mBtnStageSelect.setText("SELECT STAGE");
 
         ModManager modMan = ModManager.getInstance();
         modMan.load();

@@ -2,16 +2,43 @@ package com.wx.multihero.ui.widget;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
 public class PictureItem extends Widget {
     private Bitmap mBitmap;
     private Alignment mAlignment = new Alignment();
+    private Matrix mMatrix = null;
     public PictureItem(int id, RectF boundingRect, Bitmap bitmap) {
         super(id, boundingRect);
 
         setBitmap(bitmap);
+    }
+
+    public void enableEnhanceFunction() {
+        if(mMatrix == null)
+            mMatrix = new Matrix();
+    }
+
+    public void resetMatrix() {
+        enableEnhanceFunction();
+        mMatrix.reset();;
+    }
+
+    public void setTranslate(float sx, float sy) {
+        enableEnhanceFunction();
+        mMatrix.setTranslate(sx, sy);
+    }
+
+    public void setScale(float sx, float sy) {
+        enableEnhanceFunction();
+        mMatrix.postScale(sx, sy);
+    }
+
+    public void setRotate(float r) {
+        enableEnhanceFunction();
+        mMatrix.postRotate(r);
     }
 
     public Bitmap getBitmap() {
@@ -55,7 +82,12 @@ public class PictureItem extends Widget {
 
     public void render(Canvas canvas, Paint paint) {
         if(mBitmap != null) {
-            canvas.drawBitmap(mBitmap, mDrawingRect.left, mDrawingRect.top, paint);
+            if(mMatrix == null) {
+                canvas.drawBitmap(mBitmap, mDrawingRect.left, mDrawingRect.top, paint);
+            } else {
+                canvas.drawBitmap(mBitmap, mMatrix, paint);
+            }
+
         }
     }
 

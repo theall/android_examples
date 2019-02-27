@@ -29,7 +29,7 @@ public class ExitScene extends BaseScene {
     }
 
     public boolean processTouchEvent(MotionEvent event) {
-        return  0;
+        return  false;
     }
 
     public void shiftIn() {
