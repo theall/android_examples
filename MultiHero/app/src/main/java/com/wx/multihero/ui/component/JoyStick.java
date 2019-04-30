@@ -79,7 +79,8 @@ public class JoyStick extends PictureItem implements Touchable {
 
         if (mShowDirection && mTouchDefaultX != mTouchX && mTouchDefaultY != mTouchY) {
             float rotationDegree = (float)calTwoPointAngleDegree(mContentCenterX, mContentCenterY, mTouchX, mTouchY);
-            drawRotateBitmap(canvas, mDirectionBitmap, 180 - rotationDegree, mContentCenterX - mWholePadWidth / 2, mContentCenterY - mWholePadWidth / 2);
+            Bitmap ball = mMovingBallPicture.getBitmap();
+            drawRotateBitmap(canvas, ball, 180 - rotationDegree, mContentCenterX - ball.getWidth() / 2, mContentCenterY - ball.getHeight() / 2);
         }
 
         // indicator
@@ -202,11 +203,12 @@ public class JoyStick extends PictureItem implements Touchable {
     }
 
     private void onBallMove(float ballCenterX, float ballCenterY) {
-        mTouchX = ballCenterX - mTouchMoveBitmap.getWidth() / 2;
-        mTouchY = ballCenterY - mTouchMoveBitmap.getHeight() / 2;
-        float horizontalPercent = (ballCenterX - mContentCenterX) / (mBackgroundBitmap.getWidth() - mTouchMoveBitmap.getWidth()) * 2.0f;
-        float verticalPercent = (mContentCenterY - ballCenterY) / (mBackgroundBitmap.getHeight() - mTouchMoveBitmap.getHeight()) * 2.0f;
-
+        int ballWidth = mMovingBallPicture.getBitmap().getWidth();
+        int ballHeight = mMovingBallPicture.getBitmap().getHeight();
+        mTouchX = ballCenterX - ballWidth / 2;
+        mTouchY = ballCenterY - ballHeight / 2;
+        float horizontalPercent = (ballCenterX - mContentCenterX) / (mIndicatorPicture.getBitmap().getWidth() - ballWidth) * 2.0f;
+        float verticalPercent = (mContentCenterY - ballCenterY) / (mIndicatorPicture.getBitmap().getHeight() - ballHeight) * 2.0f;
     }
 
     public void positionChanged(float dx, float dy) {

@@ -28,7 +28,7 @@ public class ControllerScene extends BaseScene {
     public ControllerScene() {
         super(SceneType.INVALID, null);
 
-        mJoyStick = new JoyStick(ID_JOYSTICK, null, null);
+        mJoyStick = new JoyStick(ID_JOYSTICK);
     }
 
     public void shiftIn() {
