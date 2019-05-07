@@ -6,7 +6,6 @@ import android.graphics.RectF;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
-import com.wx.multihero.MainActivity;
 import com.wx.multihero.base.SceneType;
 import com.wx.multihero.base.Utils;
 import com.wx.multihero.entity.CharacterManager;
@@ -14,7 +13,7 @@ import com.wx.multihero.ui.component.ActorBoard;
 import com.wx.multihero.ui.component.BackwardButton;
 import com.wx.multihero.ui.component.CharacterPlatform;
 import com.wx.multihero.ui.component.ForwardButton;
-import com.wx.multihero.ui.component.GameModeBtton;
+import com.wx.multihero.ui.component.GameModeButton;
 import com.wx.multihero.ui.component.LifeSwitchButton;
 import com.wx.multihero.ui.component.TeamAttackButton;
 import com.wx.multihero.ui.component.UseItemButton;
@@ -29,7 +28,7 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
 	private UseItemButton mBtnUseItems;
 	private BackwardButton mBtnBack;
 	private ForwardButton mBtnNext;
-	private GameModeBtton mBtnMode;
+	private GameModeButton mBtnMode;
 	private LifeSwitchButton mBtnLifes;
 	private BackgroundScene mBackgroundScene;
 	private SelectedBorder mSelectBorder;
@@ -65,7 +64,7 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
         mBtnLifes = new LifeSwitchButton(ID_LIVES, null, this);
         mBtnLifes.setBindValue(game.getLifes());
 
-        mBtnMode = new GameModeBtton(ID_GAME_MODE, null, this);
+        mBtnMode = new GameModeButton(ID_GAME_MODE, null, this);
         mBtnMode.setBindValue(game.getGameMode());
 
         mBackgroundScene = new BackgroundScene(SceneType.INVALID, null);
