@@ -36,7 +36,7 @@ public class CharacterManager {
         Collections.sort(fileNameList, new SortComparator());
 		root = Utils.adjustDir(root);
 		for(String fileName : fileNameList) {
-			Character character = new Character();
+			Character character = new Character(0);
 			character.loadAssets(root+fileName);
 			mCharacters.add(character);
 		}

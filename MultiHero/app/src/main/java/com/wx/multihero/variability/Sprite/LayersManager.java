@@ -43,6 +43,7 @@ public class LayersManager implements Renderable, Stepable {
             tilesLayer.loadFromLayer(layer);
             mBackgroundLayerList.add(tilesLayer);
         }
+        mMainLayer.loadMap(map);
         mForegroundLayerList.clear();
         for(int i=3;i<6;i++) {
             Layer layer = map.mLayerList.get(i);

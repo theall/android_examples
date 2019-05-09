@@ -30,7 +30,18 @@ public class Character {
 	public ArrayList<Bitmap> mSuperList = new ArrayList<Bitmap>();
 	public ArrayList<Bitmap> mNoActionList = new ArrayList<Bitmap>();
 	private HashMap<String,Bitmap> mStringBitmapMap = new HashMap<String, Bitmap>();
-	public Character() {
+	private int mId;
+
+	public Character(int id) {
+		mId = id;
+	}
+
+	public int getId() {
+		return mId;
+	}
+
+	public void setId(int id) {
+		mId = id;
 	}
 
 	public void loadAssets(String path) {

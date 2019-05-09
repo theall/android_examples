@@ -3,6 +3,7 @@ import com.wx.multihero.base.Stepable;
 import com.wx.multihero.base.Utils;
 import com.wx.multihero.entity.Character;
 import com.wx.multihero.variability.Chunk.ChunkManager;
+import com.wx.multihero.variability.Hero.Hero;
 
 public class Player extends Sprite implements Stepable {
     public void step() {
@@ -29,6 +30,7 @@ public class Player extends Sprite implements Stepable {
     private Type mType;
     private Team mTeam;
     private Character mCharacter;
+    private Hero mHero;
     private String mName;
 
     public interface CharacterChangedCallback {
