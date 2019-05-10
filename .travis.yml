@@ -7,5 +7,5 @@ android:
   - extra-android-support
   - extra-android-m2repository
 script:
-- ./Multihero/gradlew :app:assembleRelease
+- ./MultiHero/gradlew :app:assembleRelease
 
