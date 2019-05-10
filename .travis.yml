@@ -22,5 +22,7 @@ deploy:
   on:
     repo: theall/android_examples
 after_deploy:
+- pwd
+- find ./ -name *.apk
 - fir p ./app/build/outputs/apk/release/app-release-unsinged.apk -T $FIR_TOKEN -c
   "`git cat-file tag $TRAVIS_TAG`"
