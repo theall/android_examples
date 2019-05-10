@@ -7,9 +7,8 @@ android:
   - extra-android-support
   - extra-android-m2repository
   
-before_install:
-  - chmod +x ./MultiHero/gradlew
-  
 script:
-- ./MultiHero/gradlew :app:assembleRelease
+  - cd MultiHero
+  - chmod +x ./gradlew
+  - ./gradlew :app:assembleRelease
 
