@@ -16,11 +16,11 @@ deploy:
   provider: releases
   api_key:
     secure: ub0J9WqSJ1unkbtL1xb6Tl7v9ZxprWzID/KY3nuG5tpHzae1Cjtv4YxtD0RPahpTpGv3g7kIxw+Z6SjuKH1nVdwTEOqM2ciNhAdLMbozoVKS6iYPOuMhGUahhLbxsu97s2fIRe4lRBm0Uc/KCdpRFHGTKTJuC9r49WHwTSSjHnxxWZikVZIJrmfwg4ZPeL6EWE+yD4eoP4Te9wNxHlPTrWon5K61FUGTU9czHSz7THo0QAV3BscELjgxbeLUFoGDUmeH1kqkioU3uix02BGMjYcERNL7KcidAAgVW5L1iWMLtcH/0djzKPvOSaGwunzhUgZTA/d4aAqUO0nCyNT3Yky9iXBhnub8jecC5jWdUssKJ1rHGSkk9zG1SmHusjlV6sF/KymjxmIcUzmNKv+8nox9IinzO07qzK+rOT3Vp0sRnJsNJFHcx0VsE0isVO3C3/q0cBDPeL/56fQDWr5tLPo9WZZtpXIIV0NSbMpvBpKKHqbO8s+Bulebzh+PZzT7bOyhtzIU8bDkRWCDx0R5o90hhmQA7vnCAKuC6uy1ToBd3fPGaEvK5qEv7QgMPemjkoV75zMVD71esNv2eHwkIOEINSpnd1P5RgY4H0x87vHQuydkNPFeuKuau+hLp+giKfFaYbekFrq69SNxfr9c0ldxgSx94hNONQnWArS5JBM=
-  file: "./app/build/outputs/apk/app-release-unsinged.apk"
+  file: "./app/build/outputs/apk/release/app-release-unsinged.apk"
   draft: true
   skip_cleanup: true
   on:
     repo: theall/android_examples
 after_deploy:
-- fir p ./app/build/outputs/apk/app-release-unsinged.apk -T $FIR_TOKEN -c
+- fir p ./app/build/outputs/apk/release/app-release-unsinged.apk -T $FIR_TOKEN -c
   "`git cat-file tag $TRAVIS_TAG`"
