@@ -2,7 +2,7 @@
 
 ------
 
-[![Build status](https://ci.appveyor.com/api/projects/status/6p814uky0hvqymrm?svg=true)](https://ci.appveyor.com/project/theall68665/android-examples-w3l2p)
+[![Build Status](https://travis-ci.org/theall/android_examples.svg?branch=master)](https://travis-ci.org/theall/android_examples)
 
 # How to build
 ```cmd
