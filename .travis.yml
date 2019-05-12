@@ -14,11 +14,11 @@ before_install:
 script:
 - cd MultiHero
 - chmod +x ./gradlew
-- ./gradlew :app:assembleRelease
+- "./gradlew :app:assembleRelease"
 deploy:
   provider: releases
   api_key:
-    secure: ub0J9WqSJ1unkbtL1xb6Tl7v9ZxprWzID/KY3nuG5tpHzae1Cjtv4YxtD0RPahpTpGv3g7kIxw+Z6SjuKH1nVdwTEOqM2ciNhAdLMbozoVKS6iYPOuMhGUahhLbxsu97s2fIRe4lRBm0Uc/KCdpRFHGTKTJuC9r49WHwTSSjHnxxWZikVZIJrmfwg4ZPeL6EWE+yD4eoP4Te9wNxHlPTrWon5K61FUGTU9czHSz7THo0QAV3BscELjgxbeLUFoGDUmeH1kqkioU3uix02BGMjYcERNL7KcidAAgVW5L1iWMLtcH/0djzKPvOSaGwunzhUgZTA/d4aAqUO0nCyNT3Yky9iXBhnub8jecC5jWdUssKJ1rHGSkk9zG1SmHusjlV6sF/KymjxmIcUzmNKv+8nox9IinzO07qzK+rOT3Vp0sRnJsNJFHcx0VsE0isVO3C3/q0cBDPeL/56fQDWr5tLPo9WZZtpXIIV0NSbMpvBpKKHqbO8s+Bulebzh+PZzT7bOyhtzIU8bDkRWCDx0R5o90hhmQA7vnCAKuC6uy1ToBd3fPGaEvK5qEv7QgMPemjkoV75zMVD71esNv2eHwkIOEINSpnd1P5RgY4H0x87vHQuydkNPFeuKuau+hLp+giKfFaYbekFrq69SNxfr9c0ldxgSx94hNONQnWArS5JBM=
+    secure: 3wOLxxHvSxFBOlugP8A9GJbWaTnINF6/ZRukEtoNIzNaGlHJo+y5Y21lNMYZc8b9Ok5hJEFyk8zSyf1qoZ0D/mW2xwhM8lIT1KKgXaRIV9plIgyBq2qJmbIx5HQWiiejfXlpCMdEYEz9jH8ddVTGAAICaniInLDRFoClUl33o+LDTDtuNpNFyaLMRrK3M6QO26HJ0sLfyRa4bHMxtwPLLMz3Dkd9bXFohnZpE3Q7fd9CQpO18qX3HZL/VfBDC9m3A5WneRy6te8fhUOkkoZO7K3rQuBCU9vNUomWCZyiloU2Sbty2B/1iRPj6iLyfiUQTmZCwdNCrJuh321aLEGh3UD1Y/DrHeYWU058KC6dUrNt1bP5eGcbEWCrOuFsxdQDGMzXwilwY59z7pvQU9IdG4w0OsQj5IMihST3ZqTkT0x2nYrnvH+2+SkCKG3pbXdSDdD/DyzLUqcKQAyfc/ImEPi25ApIlqmZU7NZVcOOGvpkJmnkEvEuvN36PXvoGQyqdQiaX2cWYO5cxv+8BqOc9DlmEvb244iW0fxnsFHSSY7J/WRItIdb08CFzqD7P77J3NLgGhK/XHb9orb2IYByocYeY+jJ6GlPoM2HHexHc2Dg8nQC/M6zY2uSUJD8R4ImdthAEKkfZvQvFreBt9Mz7x7VCBxkoxLaLcmjB/j26qM=
   file: ./app/build/outputs/apk/release/app-release-unsigned.apk
   draft: true
   skip_cleanup: true
@@ -28,4 +28,5 @@ deploy:
 after_deploy:
 - pwd
 - find ./ -name *.apk
-- fir p ./app/build/outputs/apk/release/app-release-unsinged.apk -T $FIR_TOKEN -c "`git cat-file tag $TRAVIS_TAG`"
+- fir p ./app/build/outputs/apk/release/app-release-unsinged.apk -T $FIR_TOKEN -c
+  "`git cat-file tag $TRAVIS_TAG`"
