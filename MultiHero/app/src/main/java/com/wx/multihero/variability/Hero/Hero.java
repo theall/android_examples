@@ -39,12 +39,13 @@ public abstract class Hero extends AnimationSprite {
     public SerializedFrames mCurrentAnimation = null;
     public HashMap<Integer,SerializedFrames> mBlowFramesMap = new HashMap<Integer, SerializedFrames>();
 
-    public Hero() {
+    public Hero(Character character) {
         mDir = FaceDir.NONE;
         mFrameCounter = 0;
         for(int i=0;i<Blow.COUNT;i++) {
             mBlowDist[i] = 0;
         }
+        load(character);
     }
 
     public abstract void load(Character character);
@@ -67,6 +68,10 @@ public abstract class Hero extends AnimationSprite {
         mTrailEffectFrames = 0;
         mIsShield = false;
         mCanFly = false;
+
+        for(SerializedFrames serializedFrames : mBlowFramesMap.values()) {
+            serializedFrames.reset();
+        }
     }
 
     public void step() {

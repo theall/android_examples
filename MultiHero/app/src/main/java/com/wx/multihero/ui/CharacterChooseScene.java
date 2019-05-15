@@ -20,6 +20,7 @@ import com.wx.multihero.ui.component.UseItemButton;
 import com.wx.multihero.ui.widget.SelectedBorder;
 import com.wx.multihero.ui.widget.TouchableWidget;
 import com.wx.multihero.variability.Game;
+import com.wx.multihero.variability.Sprite.Player;
 
 import java.util.ArrayList;
 
@@ -245,5 +246,13 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
 
         CharacterPlatform platform = mPlatforms.get(mCurrentPlatformIndex);
         mSelectBorder.setHost(platform);
+    }
+
+    public ArrayList<Player> getPlayerList() {
+	    ArrayList<Player> playerList = new ArrayList<Player>();
+        for(CharacterPlatform characterPlatform : mPlatforms) {
+            playerList.add(characterPlatform.getBindValue());
+        }
+        return playerList;
     }
 }

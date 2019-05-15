@@ -100,6 +100,10 @@ public class Game implements Stepable, Renderable {
         if(mMapLoading)
             return;
         mLayersManager.step();
+
+        for(Player player : mPlayers)
+            player.step();
+
         if (mState == State.RUNNING || mState == State.OVER) {
 
         }
@@ -118,6 +122,8 @@ public class Game implements Stepable, Renderable {
         if(mMapLoading)
             return;
         mLayersManager.render(canvas, paint);
+        for(Player player : mPlayers)
+            player.render(canvas, paint);
     }
 
     public ArrayList<Player> getPlayerList() {
@@ -128,6 +134,10 @@ public class Game implements Stepable, Renderable {
         if(index<0 || index>=mPlayers.size())
             return null;
         return mPlayers.get(index);
+    }
+
+    public void loadPlayers(ArrayList<Player> playerList) {
+        mPlayers = playerList;
     }
 
     public void earthQuake() {

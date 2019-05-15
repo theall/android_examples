@@ -1,15 +1,16 @@
 package com.wx.multihero.variability.Sprite;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+
 import com.wx.multihero.base.Stepable;
 import com.wx.multihero.base.Utils;
 import com.wx.multihero.entity.Character;
 import com.wx.multihero.variability.Chunk.ChunkManager;
 import com.wx.multihero.variability.Hero.Hero;
+import com.wx.multihero.variability.Hero.HeroFactory;
+import com.wx.multihero.variability.Hero.Ryu;
 
 public class Player extends Sprite implements Stepable {
-    public void step() {
-
-    }
-
     public enum Type {
         HUM,
         CPU,
@@ -104,17 +105,33 @@ public class Player extends Sprite implements Stepable {
     }
 
     public void setCharacter(Character character) {
-        if(mCharacter != character) {
-            if(mCharacter == null) {
-                // Set character first time
-                setType(Type.CPU);
-            }
+        if(mCharacter == character)
+            return;
 
-            Character oldCharacter = mCharacter;
-            mCharacter = character;
-            if(mCharacterChangedCallback != null) {
-                mCharacterChangedCallback.characterChanged(oldCharacter, character);
-            }
+        if(mCharacter == null) {
+            // Set character first time
+            setType(Type.CPU);
         }
+
+        Character oldCharacter = mCharacter;
+        mCharacter = character;
+
+        if(mCharacterChangedCallback != null) {
+            mCharacterChangedCallback.characterChanged(oldCharacter, character);
+        }
+    }
+
+    // Prepare hero
+    public void init() {
+        mHero = HeroFactory.create(mCharacter);
+    }
+
+    public void step() {
+        mHero.step();
+    }
+
+    @Override
+    public void render(Canvas canvas, Paint paint) {
+        super.render(canvas, paint);
     }
 }

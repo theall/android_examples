@@ -11,8 +11,8 @@ public class Ryu extends Hero {
     private int mSndBall = -1;
     private int mSndSpin = -1;
 
-    public Ryu() {
-        super();
+    public Ryu(Character character) {
+        super(character);
 
         mBlowDist[Blow.PUNCH] = 44;
         mBlowDist[Blow.FLYING_KICK] = 48;
@@ -47,7 +47,7 @@ public class Ryu extends Hero {
         punchFrames.add(7, character.mBlowList.get(1));
         punchFrames.add(10, character.mBlowList.get(2));
         punchFrames.add(5, character.mBlowList.get(5));
-        mBlowFramesMap.put(Blow.BLOCKING, punchFrames);
+        mBlowFramesMap.put(Blow.PUNCH, punchFrames);
     }
 
     public void go() {

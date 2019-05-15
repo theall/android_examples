@@ -1,7 +1,5 @@
 package com.wx.multihero;
 
-import java.util.Random;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
@@ -18,8 +16,6 @@ import com.wx.multihero.base.BigFont;
 import com.wx.multihero.base.SceneType;
 import com.wx.multihero.base.SoundPlayer;
 import com.wx.multihero.base.Utils;
-import com.wx.multihero.entity.CharacterManager;
-import com.wx.multihero.entity.ModManager;
 import com.wx.multihero.entity.TriggersManager;
 import com.wx.multihero.ui.BaseScene;
 import com.wx.multihero.ui.CharacterChooseScene;
@@ -35,7 +31,7 @@ public class MainView extends SurfaceView implements
 		BaseScene.Notify
 {
 	public static Context context = null;
-	private static final int FPS = 90;
+	private static final int FPS = 60;
 	private static final float GRAVITY = 0.35f;
 
 	private int mFps;
@@ -278,6 +274,7 @@ public class MainView extends SurfaceView implements
         } else if(sceneType == SceneType.CHARACTER) {
             mSceneStack.clearPush(mMapChooseScene);
 		} else if(sceneType == SceneType.MAP_CHOOSE) {
+            Game.getInstance().loadPlayers(mCharacterChooseScene.getPlayerList());
         	Game.getInstance().loadMap(mMapChooseScene.getSelectedMap());
         	mSceneStack.clearPush(mGameScene);
         } else if(sceneType == SceneType.GAME) {
