@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui.widget;
 
 import android.graphics.Canvas;
@@ -24,8 +25,8 @@ import android.graphics.RectF;
 public class ColorButton extends TouchableWidget {
     private int mColor = 0xFF000000;
 
-    public ColorButton(int id, RectF boundingRect, Callback callback) {
-        super(id, boundingRect, callback);
+    public ColorButton(Callback callback, Widget parent) {
+        super(callback, parent);
     }
 
     public void positionChanged(float dx, float dy) {

@@ -23,6 +23,7 @@ import android.graphics.RectF;
 
 import com.wx.multihero.base.AssetsLoader;
 import com.wx.multihero.ui.widget.Button;
+import com.wx.multihero.ui.widget.Widget;
 import com.wx.multihero.variability.ui.Player;
 
 public class PlayerTypeButton extends Button implements Player.TypeChangedCallback {
@@ -31,8 +32,12 @@ public class PlayerTypeButton extends Button implements Player.TypeChangedCallba
     private Bitmap mActorUnknown;
     private Player mBindValue;
 
-    public PlayerTypeButton(int id, RectF boundingRect, Callback callback) {
-        super(id, boundingRect, callback);
+    public PlayerTypeButton(Widget parent) {
+        super(parent);
+    }
+
+    public PlayerTypeButton(Callback callback, Widget parent) {
+        super(callback, parent);
     }
 
     @Override

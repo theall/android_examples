@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui.widget;
 
 import android.graphics.Canvas;
@@ -24,11 +25,30 @@ import android.graphics.RectF;
 
 public class MenuItem extends TouchableWidget {
     private BitmapText mText;
-    public MenuItem(int id, RectF rect, String text, Callback callback) {
-        super(id, rect, callback);
-        mDrawingRect = new RectF(rect);
-        mText = new BitmapText(id, rect);
+
+    public MenuItem(Widget parent) {
+        super(parent);
+        mText = new BitmapText(this);
+    }
+
+    public MenuItem(String text, Widget parent) {
+        super(parent);
+        mText = new BitmapText(this);
         mText.setText(text);
+    }
+
+    public MenuItem(String text, Callback callback, Widget parent) {
+        super(callback, parent);
+        mText = new BitmapText(this);
+        mText.setText(text);
+    }
+
+    @Override
+    public void setBoundingRect(RectF rect) {
+        super.setBoundingRect(rect);
+
+        mText.setBoundingRect(rect);
+        mText.update();
     }
 
     public void render(Canvas canvas, Paint paint) {

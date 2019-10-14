@@ -28,30 +28,26 @@ import java.util.ArrayList;
 public abstract class Widget implements Renderable {
     protected RectF mBoundingRect;
     protected RectF mDrawingRect;
-    protected int mId;
     private Widget mParent = null;
+    private int mTag;
     private ArrayList<Widget> mChildren = new ArrayList<Widget>();
     public interface Callback {
         void moved(float dx, float dy);
     }
     private Callback mCallback = null;
 
-    public Widget() {
+    public Widget(Widget parent) {
+        mParent = parent;
         mBoundingRect = new RectF();
         mDrawingRect = new RectF();
-        mId = -1;
+        mTag = -1;
+    }
+    public int getTag() {
+        return mTag;
     }
 
-    public Widget(RectF boundingRect) {
-        mBoundingRect = new RectF(boundingRect);
-        mDrawingRect = new RectF();
-        mId = -1;
-    }
-
-    public Widget(int id, RectF boundingRect) {
-        mBoundingRect = new RectF(boundingRect);
-        mDrawingRect = new RectF(boundingRect);
-        mId = id;
+    public void setTag(int tag) {
+        mTag = tag;
     }
 
     public Widget parent() {
@@ -71,14 +67,6 @@ public abstract class Widget implements Renderable {
     }
     public void setCallback(Callback callback) {
         mCallback = callback;
-    }
-
-    public int getId() {
-        return mId;
-    }
-
-    public void setId(int id) {
-        mId = id;
     }
 
     public boolean touchTest(float x, float y) {

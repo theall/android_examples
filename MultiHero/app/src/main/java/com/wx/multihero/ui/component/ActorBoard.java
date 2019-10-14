@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui.component;
 
 import android.graphics.Bitmap;
@@ -26,17 +27,18 @@ import com.wx.multihero.base.AssetsLoader;
 import com.wx.multihero.entity.Character;
 import com.wx.multihero.ui.widget.PictureItem;
 import com.wx.multihero.ui.widget.TouchableWidget;
+import com.wx.multihero.ui.widget.Widget;
 
 public class ActorBoard extends TouchableWidget {
     private PictureItem mBackground;
     private Character mCharacter;
     private PictureItem mForeground;
 
-    public ActorBoard(int id, RectF boundingRect, Callback callback) {
-        super(id, boundingRect, callback);
+    public ActorBoard(Callback callback, Widget parent) {
+        super(callback, parent);
 
-        mBackground = new PictureItem(0, boundingRect, null);
-        mForeground = new PictureItem(0, boundingRect, null);
+        mBackground = new PictureItem(this);
+        mForeground = new PictureItem(this);
     }
 
     public void setBindValue(Character value) {
@@ -78,6 +80,14 @@ public class ActorBoard extends TouchableWidget {
         mForeground.render(canvas, paint);
     }
 
+    @Override
+    public void setBoundingRect(RectF rect) {
+        super.setBoundingRect(rect);
+
+        mBackground.setBoundingRect(rect);
+        mForeground.setBoundingRect(rect);
+    }
+
     public void positionChanged(float dx, float dy) {
         if(mBackground.getBoundingRect() != null) {
             mBackground.offset(dx, dy);
@@ -86,4 +96,5 @@ public class ActorBoard extends TouchableWidget {
             mForeground.offset(dx, dy);
         }
     }
+
 }

@@ -71,14 +71,16 @@ public class Player extends Widget implements Stepable, Renderable {
     private TeamChangedCallback mTeamChangedCallback;
     
     public Player() {
+        super(null);
+
         mType = Type.UNKNOWN;
         mTeam = Team.NONE;
         mCharacterChangedCallback = null;
         mTypeChangedCallback = null;
         mTeamChangedCallback = null;
-        mIcon = new PictureItem();
-        mHpBar = new ProgressBar();
-        mEnergyBar = new ProgressBar();
+        mIcon = new PictureItem(this);
+        mHpBar = new ProgressBar(this);
+        mEnergyBar = new ProgressBar(this);
     }
 
     public void positionChanged(float dx, float dy) {

@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui.widget;
 
 import android.graphics.Bitmap;
@@ -36,13 +37,26 @@ public class SwitchMenu extends TouchableWidget implements TouchableWidget.Callb
     public static final int ID_BUTTON_LEFT = 2;
     public static final int ID_BUTTON_RIGHT = 3;
 
-    public SwitchMenu(int id, RectF boundingRect, Callback callback) {
-        super(id, boundingRect, callback);
+    public SwitchMenu(Callback callback, Widget parent) {
+        super(callback, parent);
 
-        mText = new PrimitiveText(ID_TEXT, null);
-        mBtnLeft = new Button(ID_BUTTON_LEFT, null, this);
-        mBtnRight = new Button(ID_BUTTON_RIGHT, null, this);
-        mBackground = new PictureItem(0, null, null);
+        mText = new PrimitiveText(this);
+        mText.setTag(ID_TEXT);
+
+        mBtnLeft = new Button(this, this);
+        mBtnLeft.setTag(ID_BUTTON_LEFT);
+
+        mBtnRight = new Button(this, this);
+        mBtnRight.setTag(ID_BUTTON_RIGHT);
+
+        mBackground = new PictureItem(this);
+    }
+
+    @Override
+    public void setFireContinous(boolean fireContinous) {
+        super.setFireContinous(fireContinous);
+        mBtnLeft.setFireContinous(fireContinous);
+        mBtnRight.setFireContinous(fireContinous);
     }
 
     public Button getLeftButton() {

@@ -33,10 +33,10 @@ public class CharacterPlatform extends Widget implements Player.CharacterChanged
     private Stage mStage;
     private Player mBindValue;
 
-    public CharacterPlatform(int id, RectF boundingRect) {
-        super(id, boundingRect);
-        mRoundBoard = new RoundBoard(id, null);
-        mStage = new Stage(id, null);
+    public CharacterPlatform(Widget parent) {
+        super(parent);
+        mRoundBoard = new RoundBoard(this);
+        mStage = new Stage(this);
     }
 
     public void setBindValue(Player bindValue) {

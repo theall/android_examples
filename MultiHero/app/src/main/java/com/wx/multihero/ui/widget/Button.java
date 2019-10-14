@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui.widget;
 
 import android.graphics.Bitmap;
@@ -30,24 +31,22 @@ public class Button extends TouchableWidget implements Renderable {
     private Bitmap mDown;
     private PrimitiveText mText;
 
-    public Button(int id, RectF boundingRect, Callback callback) {
-        super(id, boundingRect, callback);
+    public Button(Widget parent) {
+        super(parent);
 
-        mText = new PrimitiveText(0, boundingRect);
+        mText = new PrimitiveText(this);
     }
 
-    public Button(int id, RectF boundingRect, Callback callback, Bitmap normal) {
-        super(id, boundingRect, callback);
-        mText = new PrimitiveText(0, boundingRect);
+    public Button(Callback callback, Widget parent) {
+        super(callback, parent);
 
-        setBitmap(normal);
+        mText = new PrimitiveText(this);
     }
 
-    public Button(int id, RectF boundingRect, Callback callback, Bitmap normal, Bitmap down) {
-        super(id, boundingRect, callback);
-        mText = new PrimitiveText(0, boundingRect);
+    public Button(String caption, Widget parent) {
+        super(parent);
 
-        setBitmap(normal, down);
+        mText = new PrimitiveText(this);
     }
 
     public String getText() {
@@ -70,7 +69,9 @@ public class Button extends TouchableWidget implements Renderable {
             mBoundingRect.top = 0;
             mBoundingRect.right = mNormal.getWidth();
             mBoundingRect.bottom = mNormal.getHeight();
-            mText.setBoundingRect(mBoundingRect);
+
+            if(mText != null)
+                mText.setBoundingRect(mBoundingRect);
         }
     }
 

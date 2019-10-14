@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui;
 
 import android.graphics.Bitmap;
@@ -32,6 +33,7 @@ import com.wx.multihero.base.SoundPlayer;
 import com.wx.multihero.base.Utils;
 import com.wx.multihero.ui.widget.MenuItem;
 import com.wx.multihero.ui.widget.PictureItem;
+import com.wx.multihero.ui.widget.Widget;
 
 import java.util.ArrayList;
 
@@ -39,7 +41,7 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
 	private PictureItem mTitlePicture;
 	private static final String mMenuList[] = {"ADVENTURE MODE","VS MODE","OPTIONS","CREDITS","EXIT"};
 
-    public enum MenuID {
+	public enum MenuID {
 	    ADV,
         VS,
         OPTION,
@@ -62,9 +64,9 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
 
 		if(mTitlePicture == null)
         {
-            mTitlePicture = new PictureItem(0,
-                    new RectF(0,0,screenWidth,titleStubHeight),
-                    AssetsLoader.getInstance().loadBitmap("gfx/ui/title.png"));
+            mTitlePicture = new PictureItem(null);
+            mTitlePicture.setBoundingRect(new RectF(0,0,screenWidth,titleStubHeight));
+            mTitlePicture.setBitmap(AssetsLoader.getInstance().loadBitmap("gfx/ui/title.png"));
             mTitlePicture.center();
         }
 		float remainHeight = screenHeight - titleStubHeight;
@@ -87,7 +89,9 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
 		rect.bottom = rect.top + memuHeight;
 		int soundId = AssetsLoader.getInstance().loadSound("sound/blocked.mp3");
 		for(int i=0;i<5;i++) {
-			MenuItem mi = new MenuItem(i, rect, mMenuList[i], this);
+			MenuItem mi = new MenuItem(mMenuList[i], this, null);
+			mi.setTag(i);
+			mi.setBoundingRect(rect);
 			mi.setTouchedSoundEffect(soundId);
 			rect.offset(0, menuTotalHeight);
 			mMenuItems.add(mi);

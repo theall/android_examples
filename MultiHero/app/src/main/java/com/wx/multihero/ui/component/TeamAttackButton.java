@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui.component;
 
 import android.graphics.Bitmap;
@@ -24,14 +25,17 @@ import com.wx.multihero.R;
 import com.wx.multihero.base.AssetsLoader;
 import com.wx.multihero.base.Utils;
 import com.wx.multihero.ui.widget.Button;
+import com.wx.multihero.ui.widget.Widget;
 
 public class TeamAttackButton extends Button {
     private Boolean mBindValue;
     private String mPrefix;
     private String mOn;
     private String mOff;
-    public TeamAttackButton(int id, RectF boundingRect, Callback callback) {
-        super(id, boundingRect, callback);
+
+    public TeamAttackButton(Callback calback, Widget parent) {
+        super(calback, parent);
+
         mPrefix = Utils.getStringFromResourceId(R.string.team_attack) + "  ";
         mOn = Utils.getStringFromResourceId(R.string.on);
         mOff = Utils.getStringFromResourceId(R.string.off);

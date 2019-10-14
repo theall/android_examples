@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui.widget;
 
 import android.content.Intent;
@@ -29,8 +30,8 @@ public abstract class AbstractText extends Widget {
     protected String mText = "";
 
     private Alignment mAlignment = new Alignment();
-    public AbstractText(int id, RectF boundingRect) {
-        super(id, boundingRect);
+    public AbstractText(Widget parent) {
+        super(parent);
     }
 
     public abstract float getStringWidth(String text);
@@ -73,7 +74,7 @@ public abstract class AbstractText extends Widget {
         update();
     }
 
-    private void update() {
+    public void update() {
         if(mText.isEmpty())
             return;
 

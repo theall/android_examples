@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui.widget;
 
 import android.graphics.Canvas;
@@ -25,8 +26,9 @@ import android.graphics.RectF;
 public class SelectedBorder extends Widget implements Widget.Callback {
     protected Widget mHost;
     private boolean mRenderFlag;
-    public SelectedBorder(int id, RectF boundingRect) {
-        super(id, boundingRect);
+
+    public SelectedBorder(Widget parent) {
+        super(parent);
 
         mRenderFlag = true;
     }
@@ -61,10 +63,10 @@ public class SelectedBorder extends Widget implements Widget.Callback {
     }
 
     public void render(Canvas canvas, Paint paint) {
-        mRenderFlag = !mRenderFlag;
         if(mHost==null)
             return;
 
+        mRenderFlag = !mRenderFlag;
         int oldColor = paint.getColor();
         Paint.Style oldStyle = paint.getStyle();
         int color = mRenderFlag?Color.RED:Color.WHITE;

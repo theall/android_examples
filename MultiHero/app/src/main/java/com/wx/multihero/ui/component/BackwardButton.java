@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui.component;
 
 import android.graphics.Bitmap;
@@ -23,10 +24,11 @@ import android.graphics.RectF;
 import com.wx.multihero.base.AssetsLoader;
 import com.wx.multihero.base.Utils;
 import com.wx.multihero.ui.widget.Button;
+import com.wx.multihero.ui.widget.Widget;
 
 public class BackwardButton extends Button {
-    public BackwardButton(int id, RectF boundingRect, Callback callback) {
-        super(id, boundingRect, callback);
+    public BackwardButton(Callback callback, Widget parent) {
+        super(parent);
     }
 
     public void loadAssets() {

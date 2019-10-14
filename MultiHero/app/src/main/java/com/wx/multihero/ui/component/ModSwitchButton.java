@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui.component;
 
 import android.graphics.Bitmap;
@@ -25,12 +26,13 @@ import com.wx.multihero.base.AssetsLoader;
 import com.wx.multihero.entity.Mod;
 import com.wx.multihero.entity.ModManager;
 import com.wx.multihero.ui.widget.SwitchMenu;
+import com.wx.multihero.ui.widget.Widget;
 
 public class ModSwitchButton extends SwitchMenu {
     private ModManager mBindValue;
 
-    public ModSwitchButton(int id, RectF boundingRect, Callback callback) {
-        super(id, boundingRect, callback);
+    public ModSwitchButton(Callback callback, Widget parent) {
+        super(callback, parent);
     }
 
     @Override

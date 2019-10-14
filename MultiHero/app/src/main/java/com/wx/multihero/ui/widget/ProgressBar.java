@@ -30,17 +30,16 @@ public class ProgressBar extends Widget implements Renderable {
     private float mProgress;
     private RectF mTempRect;
 
-    public ProgressBar() {
+    public ProgressBar(Widget parent) {
+        super(parent);
         init();
     }
 
-    public ProgressBar(RectF boundingRect) {
-        super(boundingRect);
-        init();
-    }
-    public ProgressBar(int id, RectF boundingRect) {
-        super(id, boundingRect);
-        init();
+    @Override
+    public void setBoundingRect(RectF rect) {
+        super.setBoundingRect(rect);
+
+        mDrawingRect = rect;
     }
 
     private void init() {

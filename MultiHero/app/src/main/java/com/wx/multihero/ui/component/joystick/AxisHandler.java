@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui.component.joystick;
 
 import android.animation.ValueAnimator;
@@ -29,6 +30,7 @@ import com.wx.multihero.R;
 import com.wx.multihero.base.Utils;
 import com.wx.multihero.ui.widget.PictureItem;
 import com.wx.multihero.ui.widget.TouchableWidget;
+import com.wx.multihero.ui.widget.Widget;
 
 public class AxisHandler extends TouchableWidget {
     private float mTouchX;
@@ -48,8 +50,8 @@ public class AxisHandler extends TouchableWidget {
     private PictureItem mIndicatorPicture;
     private static int PAD_SIZE = 200;
 
-    public AxisHandler(int id, RectF boundingRect) {
-        super(id, boundingRect, null);
+    public AxisHandler(Widget parent) {
+        super(parent);
 
         mFixed = true;
         mIsMoving = false;
@@ -72,8 +74,8 @@ public class AxisHandler extends TouchableWidget {
             }
         });
 
-        mMovingBallPicture = new PictureItem(0, null, null);
-        mIndicatorPicture = new PictureItem(0, null, null);
+        mMovingBallPicture = new PictureItem(this);
+        mIndicatorPicture = new PictureItem(this);
         PAD_SIZE = (int)(Utils.getRealWidth(PAD_SIZE));
     }
 

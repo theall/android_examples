@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui;
 
 import android.graphics.Canvas;
@@ -45,7 +46,8 @@ public class ControllerScene extends BaseScene {
     public ControllerScene() {
         super(SceneType.INVALID, null);
 
-        mJoyStick = new JoyStick(ID_JOYSTICK);
+        mJoyStick = new JoyStick(null);
+        mJoyStick.setTag(ID_JOYSTICK);
     }
 
     public void shiftIn() {

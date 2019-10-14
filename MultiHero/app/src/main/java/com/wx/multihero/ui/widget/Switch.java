@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui.widget;
 
 import android.graphics.Bitmap;
@@ -28,16 +29,24 @@ public class Switch extends TouchableWidget {
     private PictureItem mSliderPicture;
     private static float MARGIN = 5.0f;
 
-    public Switch(int id, RectF boundingRect, Callback callback, Bitmap background, Bitmap slider) {
-        super(id, boundingRect, callback);
+    public Switch(Callback callback, Widget parent) {
+        super(callback, parent);
 
-        mBackgroundPicture = new PictureItem(id, boundingRect, background);
-        mSliderPicture = new PictureItem(id, boundingRect, slider);
+        mBackgroundPicture = new PictureItem(this);
+        mSliderPicture = new PictureItem(this);
         toggle(true);
     }
 
     public boolean isOn() {
         return mIsOn;
+    }
+
+    public void setBackgroundBitmap(Bitmap background) {
+        mBackgroundPicture.setBitmap(background);
+    }
+
+    public void setSliderBitmap(Bitmap slider) {
+        mSliderPicture.setBitmap(slider);
     }
 
     public void toggle(boolean isOn) {
@@ -66,6 +75,14 @@ public class Switch extends TouchableWidget {
         if(mSliderPicture != null) {
             mSliderPicture.render(canvas, paint);
         }
+    }
+
+    @Override
+    public void setBoundingRect(RectF rect) {
+        super.setBoundingRect(rect);
+
+        mBackgroundPicture.setBoundingRect(rect);
+        mSliderPicture.setBoundingRect(rect);
     }
 
     public void positionChanged(float dx, float dy) {

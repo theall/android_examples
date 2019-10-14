@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui.widget;
 
 import android.graphics.Canvas;
@@ -27,9 +28,8 @@ public class PrimitiveText extends AbstractText {
     private int mColor;
     private int mFontSize;
 
-    public PrimitiveText(int id, RectF boundingRect) {
-        super(id, boundingRect);
-
+    public PrimitiveText(Widget parent) {
+        super(parent);
         mColor = Color.BLACK;
     }
 

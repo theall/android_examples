@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui.component;
 
 import android.graphics.Bitmap;
@@ -22,6 +23,7 @@ import android.graphics.RectF;
 
 import com.wx.multihero.R;
 import com.wx.multihero.base.AssetsLoader;
+import com.wx.multihero.ui.widget.Widget;
 import com.wx.multihero.variability.GameMode;
 import com.wx.multihero.base.Utils;
 import com.wx.multihero.ui.widget.Button;
@@ -32,8 +34,8 @@ public class GameModeButton extends Button {
     private String mDeathMatch;
     private String mHitTarget;
     private String mCatchFlag;
-    public GameModeButton(int id, RectF boundingRect, Callback callback) {
-        super(id, boundingRect, callback);
+    public GameModeButton(Callback callback, Widget parent) {
+        super(callback, parent);
         
         mPrefix = Utils.getStringFromResourceId(R.string.game_mode) + "  ";
         mDeathMatch = Utils.getStringFromResourceId(R.string.death_math);

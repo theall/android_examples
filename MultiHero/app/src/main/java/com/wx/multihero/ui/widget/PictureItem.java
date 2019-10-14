@@ -29,25 +29,13 @@ public class PictureItem extends Widget {
     private Alignment mAlignment = new Alignment();
     private Matrix mMatrix = null;
 
-    public PictureItem() {
-        super();
+    public PictureItem(Widget widget) {
+        super(widget);
         setBitmap(null);
     }
 
-    public PictureItem(RectF boundingRect) {
-        super(boundingRect);
-        setBitmap(null);
-    }
-
-    public PictureItem(RectF boundingRect, Bitmap bitmap) {
-        super(boundingRect);
-
-        setBitmap(bitmap);
-    }
-
-    public PictureItem(int id, RectF boundingRect, Bitmap bitmap) {
-        super(id, boundingRect);
-
+    public PictureItem(Bitmap bitmap, Widget widget) {
+        super(widget);
         setBitmap(bitmap);
     }
 

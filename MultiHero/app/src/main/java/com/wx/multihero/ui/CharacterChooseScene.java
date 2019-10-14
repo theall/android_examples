@@ -72,31 +72,39 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
 		super(sceneType, notify);
 
 		Game game = Game.getInstance();
-        mBtnTeamAttack = new TeamAttackButton(ID_TEAM_ATTACK, null, this);
+        mBtnTeamAttack = new TeamAttackButton(this, null);
+        mBtnTeamAttack.setTag(ID_TEAM_ATTACK);
         mBtnTeamAttack.setBindValue(game.getAttackMate());
-        mBtnUseItems = new UseItemButton(ID_ITEMS, null, this);
+        mBtnUseItems = new UseItemButton(this, null);
+        mBtnUseItems.setTag(ID_ITEMS);
         mBtnUseItems.setBindValue(game.getUseItems());
 
-        mBtnBack = new BackwardButton(ID_BACK, null, this);
-        mBtnNext = new ForwardButton(ID_NEXT, null, this);
+        mBtnBack = new BackwardButton(this, null);
+        mBtnBack.setTag(ID_BACK);
+        mBtnNext = new ForwardButton(this, null);
+        mBtnNext.setTag(ID_NEXT);
 
-        mBtnLifes = new LifeSwitchButton(ID_LIVES, null, this);
+        mBtnLifes = new LifeSwitchButton(this, null);
+        mBtnLifes.setTag(ID_LIVES);
         mBtnLifes.setBindValue(game.getLifes());
 
-        mBtnMode = new GameModeButton(ID_GAME_MODE, null, this);
+        mBtnMode = new GameModeButton(this, null);
+        mBtnMode.setTag(ID_GAME_MODE);
         mBtnMode.setBindValue(game.getGameMode());
 
         mBackgroundScene = new BackgroundScene(SceneType.INVALID, null);
         for(int i = 0; i< BOARD_COUNT; i++) {
-            ActorBoard b = new ActorBoard((i<<16)+ID_BOARD, null, this);
+            ActorBoard b = new ActorBoard(this, null);
+            b.setTag((i<<16)+ID_BOARD);
             mBoards.add(b);
         }
         for(int i=0;i<PLATFORM_COUNT;i++) {
-            CharacterPlatform p = new CharacterPlatform(i<<16+ID_PLATFORM, null);
+            CharacterPlatform p = new CharacterPlatform(null);
+            p.setTag(i<<16+ID_PLATFORM);
             mPlatforms.add(p);
         }
 
-        mSelectBorder = new SelectedBorder(0, null);
+        mSelectBorder = new SelectedBorder(null);
         setCurrentPlatformIndex(0);
 	}
 

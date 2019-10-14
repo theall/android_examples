@@ -40,14 +40,16 @@ public class RoundBoard extends Widget {
     private static final int ID_ACTOR_TYPE = 2;
     private Player mBindValue;
     
-    public RoundBoard(int id, RectF boundingRect) {
-        super(id, boundingRect);
+    public RoundBoard(Widget parent) {
+        super(parent);
 
-        mBackground = new PictureItem(0, null, null);
-        mPlayerName = new PrimitiveText(0, null);
+        mBackground = new PictureItem(this);
+        mPlayerName = new PrimitiveText(this);
         mPlayerName.setAlignment(Alignment.VERTICAL_CENTER);
-        mBtnPlayerType = new PlayerTypeButton(ID_ACTOR_TYPE, null, null);
-        mBtnTeam = new TeamBrick(ID_TEAM, null);
+        mBtnPlayerType = new PlayerTypeButton(null, this);
+        mBtnPlayerType.setTag(ID_ACTOR_TYPE);
+        mBtnTeam = new TeamBrick(this);
+        mBtnTeam.setTag(ID_TEAM);
     }
 
     public void setBindValue(Player value) {

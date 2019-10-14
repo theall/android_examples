@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui.component;
 
 import android.graphics.Bitmap;
@@ -25,13 +26,16 @@ import com.wx.multihero.R;
 import com.wx.multihero.base.AssetsLoader;
 import com.wx.multihero.base.Utils;
 import com.wx.multihero.ui.widget.SwitchMenu;
+import com.wx.multihero.ui.widget.Widget;
 
 public class LifeSwitchButton extends SwitchMenu {
     private String mPrefix;
     private Integer mBindValue;
-    public LifeSwitchButton(int id, RectF boundingRect, Callback callback) {
-        super(id, boundingRect, callback);
 
+    public LifeSwitchButton(Callback callback, Widget parent) {
+        super(callback, parent);
+
+        setFireContinous(true);
         mPrefix = Utils.getStringFromResourceId(R.string.lifes) + "  ";
     }
 

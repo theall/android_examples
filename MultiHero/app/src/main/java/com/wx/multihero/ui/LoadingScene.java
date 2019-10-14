@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui;
 
 import android.graphics.Canvas;
@@ -36,14 +37,15 @@ public class LoadingScene extends BaseScene implements AssetsLoader.LoaderNotify
 
     public LoadingScene(SceneType sceneType, Notify notify) {
         super(sceneType, notify);
-        mLoadingText = new PrimitiveText(0, null);
+        mLoadingText = new PrimitiveText(null);
         mLoadingText.setText(Utils.getStringFromResourceId(R.string.loading));
 
         float pbWidth = mScreenRect.width() * Utils.GOLD_LINE;
         float pbHeight = pbWidth / 20;
         RectF rect = new RectF(0, 0, pbWidth, pbHeight);
         rect.offset((mScreenRect.width() - pbWidth) / 2, (mScreenRect.height() - pbHeight) / 2);
-        mProgressBar = new ProgressBar(0, rect);
+        mProgressBar = new ProgressBar(null);
+        mProgressBar.setBoundingRect(rect);
         mLoadingText.setColor(Color.WHITE);
         mLoadingText.moveTo((mScreenRect.width()-mLoadingText.getBoundingRect().width())/2,
                 rect.top-mLoadingText.getBoundingRect().height()-Utils.getRealHeight(10));

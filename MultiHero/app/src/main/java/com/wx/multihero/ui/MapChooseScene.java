@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui;
 
 import com.wx.multihero.base.AssetsLoader;
@@ -62,14 +63,17 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
 	public MapChooseScene(SceneType sceneType, Notify notify) {
 		super(sceneType, notify);
 
-        mModName = new BitmapText(0, new RectF());
-        mBtnBack = new BackwardButton(ID_BACK, null, this);
-        mBtnNext = new ForwardButton(ID_NEXT, null, this);
+        mModName = new BitmapText(null);
+        mBtnBack = new BackwardButton(this, null);
+        mBtnBack.setTag(ID_BACK);
+        mBtnNext = new ForwardButton(this, null);
+        mBtnNext.setTag(ID_NEXT);
         mBackgroundScene = new BackgroundScene(SceneType.INVALID, null);
-        mBtnModSwitch = new ModSwitchButton(ID_MOD_SHIT, null, this);
+        mBtnModSwitch = new ModSwitchButton(this,null);
+        mBtnModSwitch.setTag(ID_MOD_SHIT);
         mBtnModSwitch.setBindValue(ModManager.getInstance());
-        mSelectBorder = new SelectedBorder(0, null);
-        mBtnStageSelect = new Button(0, null, null);
+        mSelectBorder = new SelectedBorder(null);
+        mBtnStageSelect = new Button(null);
         mCurrentMapSet = null;
 
         SPACE_COLUMN = Utils.getRealWidth(20);
@@ -121,7 +125,10 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
                 continue;
             r.right = r.left + thumb.getWidth();
             r.bottom = r.top + thumb.getHeight();
-            PictureItem pi = new PictureItem(ID_MAP, r, thumb);
+            PictureItem pi = new PictureItem(null);
+            pi.setTag(ID_MAP);
+            pi.setBoundingRect(r);
+            pi.setBitmap(thumb);
             r.left = r.right + spaceColumn;
             if(r.left > rightBound) {
                 r.left = leftBound;

@@ -14,16 +14,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui.component;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import com.wx.multihero.ui.widget.TouchableWidget;
+import com.wx.multihero.ui.widget.Widget;
 
 public class JoyStick extends TouchableWidget {
-    public JoyStick(int id) {
-        super(id, null, null);
+    public JoyStick(Widget parent) {
+        super(parent);
     }
 
     public void loadAssets() {

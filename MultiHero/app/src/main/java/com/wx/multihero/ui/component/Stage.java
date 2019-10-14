@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui.component;
 
 import android.graphics.Bitmap;
@@ -33,11 +34,11 @@ public class Stage extends Widget {
     private PictureItem mForegroundBitmap;
     private Character mBindValue;
 
-    public Stage(int id, RectF boundingRect) {
-        super(id, boundingRect);
+    public Stage(Widget parent) {
+        super(parent);
 
-        mStageBitmap = new PictureItem(0, null, null);
-        mForegroundBitmap = new PictureItem(0, null, null);
+        mStageBitmap = new PictureItem(this);
+        mForegroundBitmap = new PictureItem(this);
     }
 
     public void setBindValue(Character value) {

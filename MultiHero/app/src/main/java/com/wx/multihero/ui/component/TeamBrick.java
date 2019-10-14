@@ -42,12 +42,12 @@ public class TeamBrick extends Widget implements Renderable,TouchableWidget.Call
     private Player mBindValue;
     private boolean mRenderRect;
 
-    public TeamBrick(int id, RectF boundingRect) {
-        super(id, boundingRect);
+    public TeamBrick(Widget parent) {
+        super(parent);
 
-        mLabel = new PrimitiveText(0, boundingRect);
-        mTextNone = new PrimitiveText(0, boundingRect);
-        mBtnColor = new ColorButton(0, boundingRect, this);
+        mLabel = new PrimitiveText(this);
+        mTextNone = new PrimitiveText(this);
+        mBtnColor = new ColorButton(this, this);
         mRenderRect = false;
     }
 

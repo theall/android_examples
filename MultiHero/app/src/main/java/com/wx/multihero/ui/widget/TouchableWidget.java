@@ -14,31 +14,47 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui.widget;
 
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.MotionEvent;
 
 import com.wx.multihero.base.SoundPlayer;
 
 public abstract class TouchableWidget extends Widget implements Touchable {
     private boolean mFingerDown = false;
+    private boolean mFireContinous = false;
     private int mTouchedSoundEffect = -1;
+    private long mLastFireTick = 0;
 
     public interface Callback {
         void selected(int id, Bundle parameters);
     }
     private Callback mCallback = null;
 
-    public TouchableWidget(int id, RectF boundingRect, Callback callback) {
-        super(id, boundingRect);
+    public TouchableWidget(Widget parent) {
+        super(parent);
+    }
+
+    public TouchableWidget(Callback callback, Widget parent) {
+        super(parent);
         mCallback = callback;
     }
 
     public boolean isTouchingDown() {
         return mFingerDown;
+    }
+
+    public boolean isFireContinous() {
+        return mFireContinous;
+    }
+
+    public void setFireContinous(boolean fireContinous) {
+        mFireContinous = fireContinous;
     }
 
     public void setTouchedSoundEffect(int soundEffect) {
@@ -47,7 +63,7 @@ public abstract class TouchableWidget extends Widget implements Touchable {
 
     public void touched() {
         if(mCallback != null) {
-            mCallback.selected(mId, getParameters());
+            mCallback.selected(getTag(), getParameters());
         }
     }
 
@@ -63,6 +79,7 @@ public abstract class TouchableWidget extends Widget implements Touchable {
             int action = event.getAction();
             if(action == MotionEvent.ACTION_DOWN) {
                 mFingerDown = true;
+                mLastFireTick = SystemClock.elapsedRealtime();
                 if(mTouchedSoundEffect != -1) {
                     SoundPlayer.playSound(mTouchedSoundEffect);
                 }
@@ -70,6 +87,13 @@ public abstract class TouchableWidget extends Widget implements Touchable {
                 mFingerDown = false;
                 touched();
             }
+//            if(mFingerDown && mFireContinous) {
+//                long currentTick = SystemClock.elapsedRealtime();
+//                if(currentTick-mLastFireTick > 100) {
+//                    mLastFireTick = SystemClock.elapsedRealtime();
+//                    touched();
+//                }
+//            }
         } else {
             mFingerDown = false;
         }
