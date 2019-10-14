@@ -1,18 +1,52 @@
+/**
+ * Copyright (C) Bilge Theall, wazcd_1608@qq.com
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
 package com.wx.multihero.ui.widget;
 
+import android.graphics.PointF;
 import android.graphics.RectF;
 
 import com.wx.multihero.base.Renderable;
+
+import java.util.ArrayList;
 
 public abstract class Widget implements Renderable {
     protected RectF mBoundingRect;
     protected RectF mDrawingRect;
     protected int mId;
-
+    private Widget mParent = null;
+    private ArrayList<Widget> mChildren = new ArrayList<Widget>();
     public interface Callback {
         void moved(float dx, float dy);
     }
     private Callback mCallback = null;
+
+    public Widget() {
+        mBoundingRect = new RectF();
+        mDrawingRect = new RectF();
+        mId = -1;
+    }
+
+    public Widget(RectF boundingRect) {
+        mBoundingRect = new RectF(boundingRect);
+        mDrawingRect = new RectF();
+        mId = -1;
+    }
 
     public Widget(int id, RectF boundingRect) {
         mBoundingRect = new RectF(boundingRect);
@@ -20,6 +54,21 @@ public abstract class Widget implements Renderable {
         mId = id;
     }
 
+    public Widget parent() {
+        return mParent;
+    }
+
+    public ArrayList<Widget> children() {
+        return mChildren;
+    }
+
+    public void addChild(Widget child) {
+        if(child == null)
+            return;
+        if(mChildren.indexOf(child) != -1)
+            return;
+        mChildren.add(child);
+    }
     public void setCallback(Callback callback) {
         mCallback = callback;
     }
@@ -56,6 +105,12 @@ public abstract class Widget implements Renderable {
 
     public void setDrawingRect(RectF rect) {
         mDrawingRect.set(rect);
+    }
+
+    public PointF getPos() {
+        PointF pos = new PointF();
+        pos.set(mBoundingRect.left, mBoundingRect.top);
+        return pos;
     }
 
     public void moveTo(float x, float y) {

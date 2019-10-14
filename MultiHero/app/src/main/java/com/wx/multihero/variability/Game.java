@@ -1,7 +1,26 @@
+/**
+ * Copyright (C) Bilge Theall, wazcd_1608@qq.com
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
 package com.wx.multihero.variability;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 
 import com.wx.multihero.R;
 import com.wx.multihero.base.AssetsLoader;
@@ -10,8 +29,8 @@ import com.wx.multihero.base.SoundPlayer;
 import com.wx.multihero.base.Stepable;
 import com.wx.multihero.base.Utils;
 import com.wx.multihero.entity.Map;
-import com.wx.multihero.variability.Sprite.LayersManager;
-import com.wx.multihero.variability.Sprite.Player;
+import com.wx.multihero.variability.sprite.LayersManager;
+import com.wx.multihero.variability.ui.Player;
 
 import java.util.ArrayList;
 
@@ -42,14 +61,47 @@ public class Game implements Stepable, Renderable {
     private LayersManager mLayersManager;
     private int mBackgroundMusic;
     private boolean mMapLoading;
-
+    private ArrayList<Player> mTeamRed = new ArrayList<Player>();
+    private ArrayList<Player> mTeamBlue = new ArrayList<Player>();
+    private ArrayList<Player> mTeamGreen = new ArrayList<Player>();
     public Game() {
         mState = State.PREPARING;
+
+        RectF playerRect = new RectF(0,
+                0,
+                Utils.getRealWidth(100),
+                Utils.getRealHeight(60));
         for(int i=0;i<PLAYER_COUNT;i++) {
             Player player = new Player();
+            Player.Team team = player.getTeam();
+            if(team == Player.Team.BLUE) {
+                mTeamBlue.add(player);
+            } else if(team == Player.Team.RED) {
+                mTeamRed.add(player);
+            } else if(team == Player.Team.GREEN) {
+                mTeamGreen.add(player);
+            }
             player.setName(Utils.getStringFromResourceId(R.string.player)+" "+(i+1));
+            player.setBoundingRect(playerRect);
             mPlayers.add(player);
         }
+
+        float marginTopOrigin = Utils.getRealHeight(6);
+        float marginTop = marginTopOrigin;
+        float marginLeft = Utils.getRealWidth(10);
+        float marginSpace = Utils.getRealHeight(5);
+        for(Player player : mTeamBlue) {
+            player.moveTo(marginLeft, marginTop);
+            marginTop += playerRect.height() + marginSpace;
+        }
+
+        marginTop = marginTopOrigin;
+        float marginRight = Utils.getScreenWidth() - playerRect.width() - marginLeft;
+        for(Player player : mTeamRed) {
+            player.moveTo(marginRight, marginTop);
+            marginTop += playerRect.height() + marginSpace;
+        }
+
         mPlayers.get(0).setType(Player.Type.HUM);
         mLayersManager = new LayersManager();
         mBackgroundMusic = -1;
@@ -57,8 +109,7 @@ public class Game implements Stepable, Renderable {
 
     public void loadMap(Map map) {
         mMapLoading = true;
-        mBackgroundMusic = AssetsLoader.getInstance().loadSound(
-                String.format("sound/music%d.mp3",map.mMusicN1));
+        mBackgroundMusic = AssetsLoader.getInstance().loadSound(String.format("sound/music%d.mp3",map.getMusicN1()));
         mLayersManager.setMap(map);
         mMapLoading = false;
     }
@@ -121,9 +172,12 @@ public class Game implements Stepable, Renderable {
     public void render(Canvas canvas, Paint paint) {
         if(mMapLoading)
             return;
+
         mLayersManager.render(canvas, paint);
-        for(Player player : mPlayers)
+
+        for(Player player : mPlayers) {
             player.render(canvas, paint);
+        }
     }
 
     public ArrayList<Player> getPlayerList() {

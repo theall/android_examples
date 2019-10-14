@@ -1,3 +1,20 @@
+/**
+ * Copyright (C) Bilge Theall, wazcd_1608@qq.com
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
 package com.wx.multihero.ui.component.joystick;
 
 import android.animation.ValueAnimator;
@@ -91,14 +108,14 @@ public class AxisHandler extends TouchableWidget {
 
 
     /**
-     * @return 计算(x1, y1)和(x0, y0)两点之间的直线距离
+     * @return Compute the distance between (x1, y1) and (x0, y0)
      */
     private double calTwoPointDistant(double x0, double y0, double x1, double y1) {
         return Math.sqrt(Math.pow((x1 - x0), 2) + Math.pow((y1 - y0), 2));
     }
 
     /**
-     * @return 计算(x1, y1)相对于(x0, y0)为圆点的圆的角度[0, 360]
+     * @return Compute the angle of (x1, y1) to (x0, y0)
      */
     private double calTwoPointAngleDegree(double x0, double y0, double x1, double y1) {
         double z = calTwoPointDistant(x0, y0, x1, y1);
@@ -114,11 +131,11 @@ public class AxisHandler extends TouchableWidget {
     }
 
     /**
-     * (x0, y0)为圆心
-     * (x1, y1)为触摸点
+     * (x0, y0) the circle center
+     * (x1, y1) touch point
      *
-     * @param limitRadius 滚动球的圆心能移动的最大范围  限制滚动球（圆心）的移动半径
-     * @return 计算得到滚动球的圆心坐标
+     * @param limitRadius maximize radius ball can move
+     * @return the center of moving ball
      */
     private double[] calPointLocationByAngle(double x0, double y0, double x1, double y1, double limitRadius) {
         double angle = calTwoPointAngleDegree(x0, y0, x1, y1);
@@ -130,11 +147,11 @@ public class AxisHandler extends TouchableWidget {
     }
 
     /**
-     * @param canvas   画布
-     * @param bitmap   要绘制的bitmap
-     * @param rotation 旋转角度
-     * @param posX     左上角顶点的x值 - left
-     * @param posY     左上角顶点的y值 - top
+     * @param canvas
+     * @param bitmap
+     * @param rotation
+     * @param posX     left
+     * @param posY     top
      */
     private void drawRotateBitmap(Canvas canvas, Bitmap bitmap, float rotation, float posX, float posY) {
         int offsetX = bitmap.getWidth() / 2;
@@ -146,7 +163,6 @@ public class AxisHandler extends TouchableWidget {
         canvas.drawBitmap(bitmap, mRotateMatrix, null);
     }
 
-    // 设定初始位置
     private void setupContentCenter() {
         mContentCenterX = mBoundingRect.centerX();
         mContentCenterY = mBoundingRect.centerY();
@@ -167,7 +183,7 @@ public class AxisHandler extends TouchableWidget {
         } else if (action == MotionEvent.ACTION_DOWN) {
             if(!mBoundingRect.contains(x, y))
                 return false;
-            mIsMoving = true;  // 直接移动圆球到点击位置
+            mIsMoving = true;
             userMoving(x, y);
         } else if (mIsMoving) {
             userMoving(x, y);
@@ -192,10 +208,8 @@ public class AxisHandler extends TouchableWidget {
         float tr = (float)calTwoPointDistant(mContentCenterX, mContentCenterY, x, y);
         double insideBgDis = PAD_SIZE / 2;
         if (tr <= insideBgDis) {
-            // 点击在背景圆圈内
             onBallMove(x, y);
         } else {
-            // 点击后拖出了边界  计算出拖动圆的圆心坐标
             double dotCenterOnShow[] =calPointLocationByAngle(
                     mContentCenterX, mContentCenterY, x, y, insideBgDis);
             onBallMove((float) dotCenterOnShow[0], (float) dotCenterOnShow[1]);
