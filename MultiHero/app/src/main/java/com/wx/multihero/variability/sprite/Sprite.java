@@ -38,22 +38,36 @@ public class Sprite implements Renderable {
         CENTER,
         CENTER_BOTTOM
     }
-    private Anchor mAnchor = Anchor.LEFT_TOP;
+    private Anchor mAnchor;
     public Sprite() {
         x = 0;
         y = 0;
         handX = -1;
         handY = -1;
         sound = -1;
+        mAnchor = Anchor.LEFT_TOP;
     }
 
     public Sprite(Bitmap bitmap) {
         this.bitmap = bitmap;
     }
 
-    public void move(float x, float y) {
+    public Anchor getAnchor() {
+        return mAnchor;
+    }
+
+    public void setAnchor(Anchor anchor) {
+        mAnchor = anchor;
+    }
+
+    public void moveTo(float x, float y) {
         this.x = x;
         this.y = y;
+    }
+
+    public void move(float dx, float dy) {
+        this.x += dx;
+        this.y += dy;
     }
 
     public void setBitmap(Bitmap bitmap) {

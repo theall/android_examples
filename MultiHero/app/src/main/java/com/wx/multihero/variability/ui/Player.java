@@ -18,14 +18,16 @@
 
 package com.wx.multihero.variability.ui;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
 
 import com.wx.multihero.base.Renderable;
 import com.wx.multihero.base.Stepable;
+import com.wx.multihero.base.Utils;
 import com.wx.multihero.entity.Character;
+import com.wx.multihero.ui.widget.ColorProgressBar;
 import com.wx.multihero.ui.widget.PictureItem;
-import com.wx.multihero.ui.widget.ProgressBar;
+import com.wx.multihero.ui.widget.PrimitiveText;
 import com.wx.multihero.ui.widget.Widget;
 import com.wx.multihero.variability.hero.Hero;
 import com.wx.multihero.variability.hero.HeroFactory;
@@ -52,10 +54,10 @@ public class Player extends Widget implements Stepable, Renderable {
     private Team mTeam;
     private Character mCharacter;
     private Hero mHero;
-    private String mName;
     private PictureItem mIcon;
-    private ProgressBar mHpBar;
-    private ProgressBar mEnergyBar;
+    private ColorProgressBar mHpBar;
+    private ColorProgressBar mEnergyBar;
+    private PrimitiveText mCaption;
     public interface CharacterChangedCallback {
         void characterChanged(Character oldCharacter, Character newCharacter);
     }
@@ -78,13 +80,46 @@ public class Player extends Widget implements Stepable, Renderable {
         mCharacterChangedCallback = null;
         mTypeChangedCallback = null;
         mTeamChangedCallback = null;
+
+        float width = Utils.getRealWidth(100);
+        float height = Utils.getRealHeight(24);
+        float marginH = Utils.getRealWidth(2);
+        float marginV = Utils.getRealHeight(1);
+        setBoundingRect(0, 0, width, height);
+
         mIcon = new PictureItem(this);
-        mHpBar = new ProgressBar(this);
-        mEnergyBar = new ProgressBar(this);
+        float iconLeft = marginH;
+        float iconTop = height - marginV;
+        float iconWidth = Utils.getRealWidth(32);
+        float iconHeight =  Utils.getRealHeight(32);
+        mIcon.setBoundingRect(marginH, marginV, iconWidth, iconHeight);
+
+        mEnergyBar = new ColorProgressBar(this);
+        float barLeft = iconLeft + iconWidth + marginH;
+        float barHeight = Utils.getRealHeight(4);
+        float barTop = height - barHeight - marginV;
+        float barWidth = width - iconWidth - iconLeft - marginH * 2;
+        mEnergyBar.setBoundingRect(barLeft, barTop, barWidth, barHeight);
+        mEnergyBar.setColor(Color.WHITE, Color.BLUE);
+
+        mHpBar = new ColorProgressBar(this);
+        barTop -= barHeight + marginV;
+        mHpBar.setBoundingRect(barLeft, barTop, barWidth, barHeight);
+        mEnergyBar.setColor(Color.WHITE, Color.YELLOW);
+
+        mCaption = new PrimitiveText(this);
+        mCaption.setFontSize(16);
+        mCaption.setColor(Color.WHITE);
+        mCaption.setBoundingRect(barLeft, iconTop, width-barLeft-marginH,barTop-marginV-iconTop);
+    }
+
+    public Hero getHero() {
+        return mHero;
     }
 
     public void positionChanged(float dx, float dy) {
         mIcon.offset(dx, dy);
+        mCaption.offset(dx, dy);
         mHpBar.offset(dx, dy);
         mEnergyBar.offset(dx, dy);
     }
@@ -95,6 +130,10 @@ public class Player extends Widget implements Stepable, Renderable {
     
     public void setTypeChangedCallback(TypeChangedCallback callback) {
         mTypeChangedCallback = callback;
+    }
+
+    public void setTeamChangedCallback(TeamChangedCallback callback) {
+        mTeamChangedCallback = callback;
     }
 
     public Type getType() {
@@ -109,6 +148,10 @@ public class Player extends Widget implements Stepable, Renderable {
                 mTypeChangedCallback.typeChanged(oldType, type);
             }
         }
+    }
+
+    public boolean isActived() {
+        return mTeam!=Team.NONE && mType!=Type.UNKNOWN && mHero!=null;
     }
 
     public Team getTeam() {
@@ -126,11 +169,11 @@ public class Player extends Widget implements Stepable, Renderable {
     }
 
     public String getName() {
-        return mName;
+        return mCaption.getText();
     }
 
     public void setName(String name) {
-        mName = name;
+        mCaption.setText(name);
     }
 
     public Character getCharacter() {
@@ -143,7 +186,12 @@ public class Player extends Widget implements Stepable, Renderable {
 
         if(mCharacter == null) {
             // Set character first time
-            setType(Type.CPU);
+            if(mType == Type.UNKNOWN) {
+                setType(Type.CPU);
+            }
+            if(mTeam == Team.NONE) {
+                setTeam(Team.GREEN);
+            }
         }
 
         Character oldCharacter = mCharacter;
@@ -152,15 +200,25 @@ public class Player extends Widget implements Stepable, Renderable {
         if(mCharacterChangedCallback != null) {
             mCharacterChangedCallback.characterChanged(oldCharacter, character);
         }
+        update();
     }
 
     // Prepare hero
-    public void init() {
+    private void update() {
+        if(mCharacter == null)
+            return;
+
         mHero = HeroFactory.create(mCharacter);
+        mIcon.setBitmap(mCharacter.getIcon());
     }
 
     public void step() {
+        // Update value from hero
+        if(mHero == null)
+            return;
 
+        mHpBar.setProgress((float)mHero.hp / 100);
+        mEnergyBar.setProgress((float)mHero.sp / 100);
     }
 
     public void render(Canvas canvas, Paint paint) {
@@ -168,5 +226,6 @@ public class Player extends Widget implements Stepable, Renderable {
         mIcon.render(canvas, paint);
         mHpBar.render(canvas, paint);
         mEnergyBar.render(canvas, paint);
+        mCaption.render(canvas, paint);
     }
 }

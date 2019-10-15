@@ -18,8 +18,9 @@
 
 package com.wx.multihero.variability.hero;
 
-public class Blow {
-    public static final int NONE = 0;
+public class Action {
+    public static final int NONE = -1;
+    public static final int READY = 0;
     public static final int BLOCKING = 1;
     public static final int PUNCH = 2;
     public static final int FLYING_KICK = 3;
@@ -39,7 +40,7 @@ public class Blow {
     public static final int COUNT = 17;
     public int value;
     public float distance;
-    public Blow(int value, float distance) {
+    public Action(int value, float distance) {
         this.value = value;
         this.distance = distance;
     }

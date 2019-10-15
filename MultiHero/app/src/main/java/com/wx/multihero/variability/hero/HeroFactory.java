@@ -26,19 +26,65 @@ import static com.wx.multihero.variability.hero.HeroFactory.ID.RYU;
 
 public class HeroFactory {
     public enum ID {
+        UNKNNOWN,
         RYU,
-        RASH
+        RASH,
+        SPIDERMAN,
+        MARIO,
+        MIKEY,
+        NINYA,
+        BATMAN,
+        ALIEN,
+        GOKU,
+        BELMONT,
+        YUN,
+        JIMMY
     }
     private static final HashMap<Integer, ID> ID_MAP = new HashMap<Integer, ID>();
     static {
         ID_MAP.put(0, RYU);
     }
     public static Hero create(Character character) {
-        ID id = ID_MAP.get(character.getId());
-        switch (id) {
+        int id = character.getId();
+        ID heroId = ID.values()[id];
+        Hero hero = null;
+        switch (heroId) {
             case RYU:
-                return new Ryu(character);
+                hero = new Ryu(character);
+            case RASH:
+                hero = new Rash(character);
+                break;
+            case SPIDERMAN:
+
+                break;
+            case MARIO:
+
+                break;
+            case MIKEY:
+
+                break;
+            case NINYA:
+
+                break;
+            case BATMAN:
+
+                break;
+            case ALIEN:
+
+                break;
+            case GOKU:
+
+                break;
+            case BELMONT:
+
+                break;
+            case YUN:
+
+                break;
+            case JIMMY:
+
+                break;
         }
-        return null;
+        return new Ryu(character);
     }
 }

@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.entity;
 
 import com.wx.multihero.base.LittleEndianDataInputStream;
@@ -26,6 +27,8 @@ public class PawnPoint {
     public Point respawn;
     public PawnPoint(LittleEndianDataInputStream inputStream) throws IOException {
         start = new Point(inputStream);
+//        start.x += 13.5;
+//        start.y += 46;
         respawn = new Point(inputStream);
     }
 }

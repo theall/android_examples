@@ -29,6 +29,18 @@ public class AnimationSprite extends Sprite implements Stepable {
         mSerializedFrames = new SerializedFrames();
     }
 
+    public SerializedFrames getSerializedFrames() {
+        return mSerializedFrames;
+    }
+
+    public void setSerializedFrames(SerializedFrames serializedFrames) {
+        mSerializedFrames = serializedFrames;
+    }
+
+    public void reset() {
+        mSerializedFrames.reset();
+    }
+
     public void add(Bitmap bitmap) {
         add(new Frame(bitmap));
     }

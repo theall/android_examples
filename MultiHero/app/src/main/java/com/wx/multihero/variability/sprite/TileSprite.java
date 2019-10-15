@@ -32,7 +32,7 @@ public class TileSprite extends AnimationSprite {
     }
 
     public void loadFromTile(Tile tile) {
-        move(tile.x, tile.y);
+        moveTo(tile.x, tile.y);
 
         Bitmap bitmap = null;
         if(tile.nextTile == null) {

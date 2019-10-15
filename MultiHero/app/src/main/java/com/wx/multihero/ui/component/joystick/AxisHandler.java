@@ -136,7 +136,7 @@ public class AxisHandler extends TouchableWidget {
      * (x0, y0) the circle center
      * (x1, y1) touch point
      *
-     * @param limitRadius maximize radius ball can move
+     * @param limitRadius maximize radius ball can moveTo
      * @return the center of moving ball
      */
     private double[] calPointLocationByAngle(double x0, double y0, double x1, double y1, double limitRadius) {

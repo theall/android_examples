@@ -27,6 +27,7 @@ import com.wx.multihero.base.Stepable;
 import com.wx.multihero.base.Utils;
 import com.wx.multihero.entity.Layer;
 import com.wx.multihero.entity.Map;
+import com.wx.multihero.variability.ui.Player;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -50,7 +51,7 @@ public class LayersManager implements Renderable, Stepable {
         mMainLayer = new MainLayer();
     }
 
-    public void setMap(Map map) {
+    public void setMap(Map map, ArrayList<Player> playerList) {
         mBackgroundColor = map.getBackgroundColor();
         mOffsetX = map.getXScrStart();
         mOffsetY = map.getYScrStart();
@@ -61,7 +62,7 @@ public class LayersManager implements Renderable, Stepable {
             tilesLayer.loadFromLayer(layer);
             mBackgroundLayerList.add(tilesLayer);
         }
-        mMainLayer.loadMap(map);
+        mMainLayer.loadMap(map, playerList);
 
         mForegroundLayerList.clear();
         for(int i=3;i<6;i++) {
@@ -103,8 +104,9 @@ public class LayersManager implements Renderable, Stepable {
     }
 
     private final float getRandValue() {
-        float value = mRandom.nextBoolean()?1:-1;
-        return Utils.getRealHeight(value);
+        int sign = mRandom.nextBoolean()?1:-1;
+        int value = mRandom.nextInt(5);
+        return Utils.getRealHeight(value)*sign;
     }
 
     public void earthQuake() {

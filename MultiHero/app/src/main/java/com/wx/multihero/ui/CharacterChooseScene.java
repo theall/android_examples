@@ -63,7 +63,7 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
     private static final int ID_GAME_MODE = 6;
     private static final int ID_BOARD = 7;
     private static final int ID_PLATFORM = 8;
-    private static final int BOARD_COUNT = 10;
+    private static final int BOARD_COUNT = 12;
     private static final int PLATFORM_COUNT = 10;
     private static final float PLATFORM_SPACE_HORIZONTAL = 10;
     private static final float PLATFORM_SPACE_VERTICAL = 10;

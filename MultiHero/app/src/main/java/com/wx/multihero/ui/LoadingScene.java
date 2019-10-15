@@ -28,11 +28,11 @@ import com.wx.multihero.R;
 import com.wx.multihero.base.AssetsLoader;
 import com.wx.multihero.base.SceneType;
 import com.wx.multihero.base.Utils;
+import com.wx.multihero.ui.widget.ColorProgressBar;
 import com.wx.multihero.ui.widget.PrimitiveText;
-import com.wx.multihero.ui.widget.ProgressBar;
 
 public class LoadingScene extends BaseScene implements AssetsLoader.LoaderNotify {
-    private ProgressBar mProgressBar;
+    private ColorProgressBar mProgressBar;
     private PrimitiveText mLoadingText;
 
     public LoadingScene(SceneType sceneType, Notify notify) {
@@ -44,8 +44,9 @@ public class LoadingScene extends BaseScene implements AssetsLoader.LoaderNotify
         float pbHeight = pbWidth / 20;
         RectF rect = new RectF(0, 0, pbWidth, pbHeight);
         rect.offset((mScreenRect.width() - pbWidth) / 2, (mScreenRect.height() - pbHeight) / 2);
-        mProgressBar = new ProgressBar(null);
+        mProgressBar = new ColorProgressBar(null);
         mProgressBar.setBoundingRect(rect);
+        mProgressBar.setColor(Color.GREEN, Color.RED);
         mLoadingText.setColor(Color.WHITE);
         mLoadingText.moveTo((mScreenRect.width()-mLoadingText.getBoundingRect().width())/2,
                 rect.top-mLoadingText.getBoundingRect().height()-Utils.getRealHeight(10));

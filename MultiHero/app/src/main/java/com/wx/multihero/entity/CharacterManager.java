@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.entity;
 
 import com.wx.multihero.base.AssetsLoader;
@@ -53,7 +54,8 @@ public class CharacterManager {
         Collections.sort(fileNameList, new SortComparator());
 		root = Utils.adjustDir(root);
 		for(String fileName : fileNameList) {
-			Character character = new Character(0);
+			int id = Integer.parseInt(fileName);
+			Character character = new Character(id);
 			character.loadAssets(root+fileName);
 			mCharacters.add(character);
 		}

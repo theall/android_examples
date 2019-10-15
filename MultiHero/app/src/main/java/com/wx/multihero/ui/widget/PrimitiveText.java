@@ -31,6 +31,7 @@ public class PrimitiveText extends AbstractText {
     public PrimitiveText(Widget parent) {
         super(parent);
         mColor = Color.BLACK;
+        mFontSize = 12;
     }
 
     public void setColor(int color) {
@@ -51,6 +52,7 @@ public class PrimitiveText extends AbstractText {
     public float getStringHeight(String text) {
         Paint paint = new Paint();
         Rect rect = new Rect();
+        paint.setTextSize(mFontSize);
         paint.getTextBounds(text,0,text.length(), rect);
         return rect.height();
     }
@@ -60,9 +62,12 @@ public class PrimitiveText extends AbstractText {
             Paint.FontMetrics fm = paint.getFontMetrics();
             float realTop = mDrawingRect.top + getStringHeight(mText) - fm.descent;
             int oldColor = paint.getColor();
+            float oldTextSize = paint.getTextSize();
             paint.setColor(mColor);
+            paint.setTextSize(mFontSize);
             canvas.drawText(mText, mDrawingRect.left, realTop, paint);
             paint.setColor(oldColor);
+            paint.setTextSize(oldTextSize);
         }
     }
 }

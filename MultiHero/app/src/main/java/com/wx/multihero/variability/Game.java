@@ -67,42 +67,16 @@ public class Game implements Stepable, Renderable {
     public Game() {
         mState = State.PREPARING;
 
-        RectF playerRect = new RectF(0,
-                0,
-                Utils.getRealWidth(100),
-                Utils.getRealHeight(60));
         for(int i=0;i<PLAYER_COUNT;i++) {
             Player player = new Player();
-            Player.Team team = player.getTeam();
-            if(team == Player.Team.BLUE) {
-                mTeamBlue.add(player);
-            } else if(team == Player.Team.RED) {
-                mTeamRed.add(player);
-            } else if(team == Player.Team.GREEN) {
-                mTeamGreen.add(player);
-            }
+            player.setTag(i);
             player.setName(Utils.getStringFromResourceId(R.string.player)+" "+(i+1));
-            player.setBoundingRect(playerRect);
             mPlayers.add(player);
         }
 
-        float marginTopOrigin = Utils.getRealHeight(6);
-        float marginTop = marginTopOrigin;
-        float marginLeft = Utils.getRealWidth(10);
-        float marginSpace = Utils.getRealHeight(5);
-        for(Player player : mTeamBlue) {
-            player.moveTo(marginLeft, marginTop);
-            marginTop += playerRect.height() + marginSpace;
-        }
-
-        marginTop = marginTopOrigin;
-        float marginRight = Utils.getScreenWidth() - playerRect.width() - marginLeft;
-        for(Player player : mTeamRed) {
-            player.moveTo(marginRight, marginTop);
-            marginTop += playerRect.height() + marginSpace;
-        }
-
-        mPlayers.get(0).setType(Player.Type.HUM);
+        Player firstPlayer = mPlayers.get(0);
+        firstPlayer.setType(Player.Type.HUM);
+        firstPlayer.setTeam(Player.Team.GREEN);
         mLayersManager = new LayersManager();
         mBackgroundMusic = -1;
     }
@@ -110,7 +84,7 @@ public class Game implements Stepable, Renderable {
     public void loadMap(Map map) {
         mMapLoading = true;
         mBackgroundMusic = AssetsLoader.getInstance().loadSound(String.format("sound/music%d.mp3",map.getMusicN1()));
-        mLayersManager.setMap(map);
+        mLayersManager.setMap(map, mPlayers);
         mMapLoading = false;
     }
 
@@ -176,7 +150,9 @@ public class Game implements Stepable, Renderable {
         mLayersManager.render(canvas, paint);
 
         for(Player player : mPlayers) {
-            player.render(canvas, paint);
+            if(player.isActived()) {
+                player.render(canvas, paint);
+            }
         }
     }
 
@@ -187,11 +163,44 @@ public class Game implements Stepable, Renderable {
     public Player getPlayer(int index) {
         if(index<0 || index>=mPlayers.size())
             return null;
+
         return mPlayers.get(index);
     }
 
     public void loadPlayers(ArrayList<Player> playerList) {
-        mPlayers = playerList;
+        mTeamBlue.clear();
+        mTeamGreen.clear();
+        mTeamRed.clear();
+        for(Player player : playerList) {
+            Player.Team team = player.getTeam();
+            if(team == Player.Team.BLUE) {
+                mTeamBlue.add(player);
+            } else if(team == Player.Team.RED) {
+                mTeamRed.add(player);
+            } else if(team == Player.Team.GREEN) {
+                mTeamGreen.add(player);
+            } else {
+                mTeamGreen.add(player);
+            }
+        }
+
+        float marginTopOrigin = Utils.getRealHeight(6);
+        float marginTop = marginTopOrigin;
+        float marginLeft = Utils.getRealWidth(10);
+        float marginSpace = Utils.getRealHeight(5);
+        for(Player player : mTeamBlue) {
+            player.moveTo(marginLeft, marginTop);
+            RectF playerRect = player.getBoundingRect();
+            marginTop += playerRect.height() + marginSpace;
+        }
+
+        marginTop = marginTopOrigin;
+        for(Player player : mTeamRed) {
+            RectF playerRect = player.getBoundingRect();
+            float marginRight = Utils.getScreenWidth() - playerRect.width() - marginLeft;
+            player.moveTo(marginRight, marginTop);
+            marginTop += playerRect.height() + marginSpace;
+        }
     }
 
     public void earthQuake() {

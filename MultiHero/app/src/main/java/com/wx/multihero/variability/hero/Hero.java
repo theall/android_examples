@@ -18,6 +18,9 @@
 
 package com.wx.multihero.variability.hero;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
+
 import com.wx.multihero.base.Utils;
 import com.wx.multihero.entity.Character;
 import com.wx.multihero.variability.chunk.ChunkManager;
@@ -28,8 +31,8 @@ import com.wx.multihero.variability.sprite.SerializedFrames;
 import java.util.HashMap;
 
 public abstract class Hero extends AnimationSprite {
-    public int mHP;
-    public int mSP;
+    public int hp;
+    public int sp;
     public int mLifes;
     public FaceDir mDir;
     public float mSpeed;
@@ -48,30 +51,49 @@ public abstract class Hero extends AnimationSprite {
     private boolean mIsShield;
     private boolean mCanFly;
     private boolean mIsBlocking;
-    private boolean mIsBlowing;
+    private boolean mIsActioning;
     private boolean mIsGrabbed;
-    private int mCurrentBlow;
+    private int mCurrentAction;
     private Hero mTarget;
-    public int[] mBlowDist = new int[Blow.COUNT];
-    public SerializedFrames mCurrentAnimation = null;
-    public HashMap<Integer,SerializedFrames> mBlowFramesMap = new HashMap<Integer, SerializedFrames>();
+    public int[] mActionDist = new int[Action.COUNT];
+    public HashMap<Integer,SerializedFrames> mActionFramesMap = new HashMap<Integer, SerializedFrames>();
 
     public Hero(Character character) {
         mDir = FaceDir.NONE;
         mFrameCounter = 0;
-        for(int i=0;i<Blow.COUNT;i++) {
-            mBlowDist[i] = 0;
+        mCurrentAction = Action.NONE;
+        setAnchor(Anchor.CENTER_BOTTOM);
+        for(int i = 0; i< Action.COUNT; i++) {
+            mActionDist[i] = 0;
         }
         load(character);
+
+        setCurrentAction(Action.READY);
     }
 
     public abstract void load(Character character);
 
     public abstract void go();
 
-    private void reset() {
-        mHP = 100;
-        mSP = 0;
+    public void setCurrentAction(int blow) {
+        if(mCurrentAction == blow)
+            return;
+
+        SerializedFrames serializedFrames = mActionFramesMap.get(blow);
+        if(serializedFrames == null)
+            return;
+
+        SerializedFrames currentSerializedFrames = mActionFramesMap.get(mCurrentAction);
+        if(currentSerializedFrames != null)
+            currentSerializedFrames.reset();
+
+        mCurrentAction = blow;
+        setSerializedFrames(serializedFrames);
+    }
+
+    public void reset() {
+        hp = 100;
+        sp = 0;
         mLifes = 3;
         mHeight = 45;
         mUpHeight = mHeight;
@@ -86,12 +108,14 @@ public abstract class Hero extends AnimationSprite {
         mIsShield = false;
         mCanFly = false;
 
-        for(SerializedFrames serializedFrames : mBlowFramesMap.values()) {
+        for(SerializedFrames serializedFrames : mActionFramesMap.values()) {
             serializedFrames.reset();
         }
     }
 
     public void step() {
+        super.step();
+
         int renderIndex = mFrameCounter%3;
         if(mTempShieldFrames > 0) {
             mTempShieldFrames--;
@@ -128,5 +152,10 @@ public abstract class Hero extends AnimationSprite {
 
     public void setTrailEffect(int type) {
 
+    }
+
+    @Override
+    public void render(Canvas canvas, Paint paint) {
+        super.render(canvas, paint);
     }
 }

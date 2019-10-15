@@ -46,8 +46,8 @@ public class SerializedFrames implements Stepable {
         add(new Frame(bitmap));
     }
 
-    public void add(int n, Bitmap bitmap) {
-        add(new Frame(n, bitmap));
+    public void add(int duration, Bitmap bitmap) {
+        add(new Frame(duration, bitmap));
     }
 
     public void add(Frame frame) {

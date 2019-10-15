@@ -21,7 +21,6 @@ package com.wx.multihero.ui.widget;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
 
 public class SelectedBorder extends Widget implements Widget.Callback {
     protected Widget mHost;
@@ -63,7 +62,7 @@ public class SelectedBorder extends Widget implements Widget.Callback {
     }
 
     public void render(Canvas canvas, Paint paint) {
-        if(mHost==null)
+        if(mHost == null)
             return;
 
         mRenderFlag = !mRenderFlag;

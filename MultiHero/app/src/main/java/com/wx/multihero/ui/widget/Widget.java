@@ -20,26 +20,25 @@ package com.wx.multihero.ui.widget;
 
 import android.graphics.PointF;
 import android.graphics.RectF;
-
 import com.wx.multihero.base.Renderable;
-
 import java.util.ArrayList;
 
 public abstract class Widget implements Renderable {
     protected RectF mBoundingRect;
     protected RectF mDrawingRect;
-    private Widget mParent = null;
+    private Widget mParent;
     private int mTag;
     private ArrayList<Widget> mChildren = new ArrayList<Widget>();
     public interface Callback {
         void moved(float dx, float dy);
+        //void resized(float width, float height);
     }
     private Callback mCallback = null;
 
     public Widget(Widget parent) {
         mParent = parent;
-        mBoundingRect = new RectF();
-        mDrawingRect = new RectF();
+        mBoundingRect = new RectF(0,0,0,0);
+        mDrawingRect = new RectF(0,0,0,0);
         mTag = -1;
     }
     public int getTag() {
@@ -77,14 +76,23 @@ public abstract class Widget implements Renderable {
         return mBoundingRect;
     }
 
+    public void setBoundingRect(float left, float top, float width, float height) {
+        mBoundingRect.left = left;
+        mBoundingRect.top = top;
+        mBoundingRect.right = mBoundingRect.left + width;
+        mBoundingRect.bottom = mBoundingRect.top + height;
+    }
+
     public void setBoundingRect(RectF rect) {
         float dx = rect.left - mBoundingRect.left;
         float dy = rect.top - mBoundingRect.top;
         mBoundingRect.set(rect);
-        positionChanged(dx, dy);
-        if(mCallback != null) {
-            mCallback.moved(dx, dy);
-        }
+        emitPositionChanged(dx, dy);
+    }
+
+    public void setSize(float width, float height) {
+        mBoundingRect.right = mBoundingRect.left + width;
+        mBoundingRect.bottom = mBoundingRect.top + height;
     }
 
     public RectF getDrawingRect() {
@@ -96,40 +104,27 @@ public abstract class Widget implements Renderable {
     }
 
     public PointF getPos() {
-        PointF pos = new PointF();
-        pos.set(mBoundingRect.left, mBoundingRect.top);
-        return pos;
+        return new PointF(mBoundingRect.left, mBoundingRect.top);
     }
 
     public void moveTo(float x, float y) {
-        if(mBoundingRect == null)
-            return;
-
         float dx = x - mBoundingRect.left;
         float dy = y - mBoundingRect.top;
-        mBoundingRect.offset(dx, dy);
-
-        if(mDrawingRect != null) {
-            mDrawingRect.offset(dx, dy);
-        }
-        positionChanged(dx, dy);
-        if(mCallback != null) {
-            mCallback.moved(dx, dy);
-        }
+        offset(dx, dy);
     }
 
     public void offset(float dx, float dy) {
-        if(mBoundingRect != null)
-            mBoundingRect.offset(dx, dy);
+        mBoundingRect.offset(dx, dy);
+        mDrawingRect.offset(dx, dy);
 
-        if(mDrawingRect != null)
-            mDrawingRect.offset(dx, dy);
+        emitPositionChanged(dx, dy);
+    }
 
+    private void emitPositionChanged(float dx, float dy) {
         positionChanged(dx, dy);
         if(mCallback != null) {
             mCallback.moved(dx, dy);
         }
     }
-
     public abstract void positionChanged(float dx, float dy);
 }

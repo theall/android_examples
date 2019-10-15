@@ -27,24 +27,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Character {
-	public Bitmap mIcon;
-	public Bitmap mPreview;
-	public Bitmap mDuckBitmap;
-	public Bitmap mAirBitmap;
-	public ArrayList<Bitmap> mWalkList = new ArrayList<Bitmap>();
-	public ArrayList<Bitmap> mFallingList = new ArrayList<Bitmap>();
-	public ArrayList<Bitmap> mFlipList = new ArrayList<Bitmap>();
-	public ArrayList<Bitmap> mBlowList = new ArrayList<Bitmap>();
-	public ArrayList<Bitmap> mUpSpecialList = new ArrayList<Bitmap>();
-	public ArrayList<Bitmap> mFlyKickList = new ArrayList<Bitmap>();
-	public ArrayList<Bitmap> mLowKickList = new ArrayList<Bitmap>();
-	public ArrayList<Bitmap> mSpecialList = new ArrayList<Bitmap>();
-	public ArrayList<Bitmap> mDSpecialList = new ArrayList<Bitmap>();
-	public ArrayList<Bitmap> mBlockList = new ArrayList<Bitmap>();
-	public ArrayList<Bitmap> mUpBlowList = new ArrayList<Bitmap>();
-	public ArrayList<Bitmap> mGrabList = new ArrayList<Bitmap>();
-	public ArrayList<Bitmap> mSuperList = new ArrayList<Bitmap>();
-	public ArrayList<Bitmap> mNoActionList = new ArrayList<Bitmap>();
+	private Bitmap mIcon;
+	private Bitmap mPreview;
+	private Bitmap mDuckBitmap;
+	private Bitmap mAirBitmap;
+	private ArrayList<Bitmap> mWalkList = new ArrayList<Bitmap>();
+	private ArrayList<Bitmap> mFallingList = new ArrayList<Bitmap>();
+	private ArrayList<Bitmap> mFlipList = new ArrayList<Bitmap>();
+	private ArrayList<Bitmap> mActionList = new ArrayList<Bitmap>();
+	private ArrayList<Bitmap> mUpSpecialList = new ArrayList<Bitmap>();
+	private ArrayList<Bitmap> mFlyKickList = new ArrayList<Bitmap>();
+	private ArrayList<Bitmap> mLowKickList = new ArrayList<Bitmap>();
+	private ArrayList<Bitmap> mSpecialList = new ArrayList<Bitmap>();
+	private ArrayList<Bitmap> mDSpecialList = new ArrayList<Bitmap>();
+	private ArrayList<Bitmap> mBlockList = new ArrayList<Bitmap>();
+	private ArrayList<Bitmap> mUpActionList = new ArrayList<Bitmap>();
+	private ArrayList<Bitmap> mGrabList = new ArrayList<Bitmap>();
+	private ArrayList<Bitmap> mSuperList = new ArrayList<Bitmap>();
+	private ArrayList<Bitmap> mNoActionList = new ArrayList<Bitmap>();
 	private HashMap<String,Bitmap> mStringBitmapMap = new HashMap<String, Bitmap>();
 	private int mId;
 
@@ -83,17 +83,20 @@ public class Character {
 		mFallingList.add(0, mStringBitmapMap.get("zfallen.png"));
 
 		loadBitmapList("flip", mFlipList);
-		loadBitmapList("blow", mBlowList);
+		loadBitmapList("blow", mActionList);
 		loadBitmapList("upspecial", mUpSpecialList);
 		loadBitmapList("flykick", mFlyKickList);
 		loadBitmapList("lowkick", mLowKickList);
 		loadBitmapList("special", mSpecialList);
 		loadBitmapList("dspecial", mDSpecialList);
 		loadBitmapList("block", mBlockList);
-		loadBitmapList("upblow", mUpBlowList);
+		loadBitmapList("upblow", mUpActionList);
 		loadBitmapList("grab", mGrabList);
 		loadBitmapList("super", mSuperList);
 		loadBitmapList("noaction", mNoActionList);
+		if(mNoActionList.isEmpty()) {
+			mNoActionList.add(mPreview);
+		}
 	}
 
 	public Bitmap getIcon() {
@@ -102,6 +105,70 @@ public class Character {
 
 	public Bitmap getPreview() {
 		return mPreview;
+	}
+
+	public Bitmap getDuckBitmap() {
+		return mDuckBitmap;
+	}
+
+	public Bitmap getAirBitmap() {
+		return mAirBitmap;
+	}
+
+	public ArrayList<Bitmap> getWalkList() {
+		return mWalkList;
+	}
+
+	public ArrayList<Bitmap> getFallingList() {
+		return mFallingList;
+	}
+
+	public ArrayList<Bitmap> getFlipList() {
+		return mFlipList;
+	}
+
+	public ArrayList<Bitmap> getActionList() {
+		return mActionList;
+	}
+
+	public ArrayList<Bitmap> getUpSpecialList() {
+		return mUpSpecialList;
+	}
+
+	public ArrayList<Bitmap> getFlyKickList() {
+		return mFlyKickList;
+	}
+
+	public ArrayList<Bitmap> getLowKickList() {
+		return mLowKickList;
+	}
+
+	public ArrayList<Bitmap> getSpecialList() {
+		return mSpecialList;
+	}
+
+	public ArrayList<Bitmap> getDSpecialList() {
+		return mDSpecialList;
+	}
+
+	public ArrayList<Bitmap> getBlockList() {
+		return mBlockList;
+	}
+
+	public ArrayList<Bitmap> getUpActionList() {
+		return mUpActionList;
+	}
+
+	public ArrayList<Bitmap> getGrabList() {
+		return mGrabList;
+	}
+
+	public ArrayList<Bitmap> getSuperList() {
+		return mSuperList;
+	}
+
+	public ArrayList<Bitmap> getNoActionList() {
+		return mNoActionList;
 	}
 
 	private void loadBitmapList(String prefix, ArrayList<Bitmap> container) {

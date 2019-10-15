@@ -22,31 +22,43 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import com.wx.multihero.entity.Map;
+import com.wx.multihero.entity.PawnPoint;
 import com.wx.multihero.variability.hero.Hero;
 import com.wx.multihero.variability.ui.Player;
 
 import java.util.ArrayList;
 
 public class MainLayer extends TilesLayer {
-    private ArrayList<Hero> mPlayerList = new ArrayList<Hero>();
+    private ArrayList<Hero> mHeroList = new ArrayList<Hero>();
 
     public MainLayer() {
     }
 
-    public void loadMap(Map map) {
-
+    public void loadMap(Map map, ArrayList<Player> playerList) {
+        ArrayList<PawnPoint> pawnPoints = map.getPawnPointList();
+        int pawnCount = pawnPoints.size();
+        mHeroList.clear();
+        for(Player player : playerList) {
+            int index = player.getTag() % pawnCount;
+            PawnPoint pp = pawnPoints.get(index);
+            Hero hero = player.getHero();
+            if(hero == null)
+                continue;
+            hero.move(pp.start.x, pp.start.y);
+            mHeroList.add(hero);
+        }
     }
 
     @Override
     public void render(Canvas canvas, Paint paint) {
-        super.render(canvas, paint);
+        for(Hero hero : mHeroList) {
+            hero.render(canvas, paint);
+        }
     }
 
     @Override
     public void step() {
-        super.step();
-
-        for(Hero hero : mPlayerList) {
+        for(Hero hero : mHeroList) {
             hero.step();
         }
     }

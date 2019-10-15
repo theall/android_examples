@@ -28,13 +28,10 @@ import com.wx.multihero.variability.Game;
 
 public class MainActivity extends Activity {
     private MainView mMainView;
-    
     private static String ICICLE_KEY = "multihero";
 
     /**
-     * Called when Activity is first created. Turns off the title bar, sets up
-     * the content views, and fires up the SnakeView.
-     * 
+     * Called when Activity is first created.
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {

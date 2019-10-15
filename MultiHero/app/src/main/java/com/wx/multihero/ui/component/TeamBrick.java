@@ -35,7 +35,7 @@ import com.wx.multihero.ui.widget.TouchableWidget;
 import com.wx.multihero.ui.widget.Widget;
 import com.wx.multihero.variability.ui.Player;
 
-public class TeamBrick extends Widget implements Renderable,TouchableWidget.Callback{
+public class TeamBrick extends Widget implements Renderable,TouchableWidget.Callback,Player.TeamChangedCallback{
     private PrimitiveText mLabel;
     private PrimitiveText mTextNone;
     private ColorButton mBtnColor;
@@ -52,7 +52,14 @@ public class TeamBrick extends Widget implements Renderable,TouchableWidget.Call
     }
 
     public void setBindValue(Player value) {
+        if(mBindValue != null) {
+            mBindValue.setTeamChangedCallback(null);
+        }
         mBindValue = value;
+        if(mBindValue != null) {
+            mBindValue.setTeamChangedCallback(this);
+        }
+
         update();
     }
 
@@ -107,20 +114,19 @@ public class TeamBrick extends Widget implements Renderable,TouchableWidget.Call
     public void selected(int id, Bundle parameters) {
         if(mBindValue != null) {
             Player.Team team = mBindValue.getTeam();
-            Player.Team newTeam = Player.Team.NONE;
+            Player.Team newTeam = Player.Team.RED;
             switch (team) {
                 case RED:
                     newTeam = Player.Team.GREEN;
                     break;
                 case BLUE:
-                    newTeam = Player.Team.NONE;
+                    newTeam = Player.Team.RED;
                     break;
                 case GREEN:
                     newTeam = Player.Team.BLUE;
                     break;
                 case NONE:
                 default:
-                    newTeam = Player.Team.RED;
                     break;
             }
             mBindValue.setTeam(newTeam);
@@ -156,5 +162,9 @@ public class TeamBrick extends Widget implements Renderable,TouchableWidget.Call
     public boolean processTouchEvent(MotionEvent event) {
         mBtnColor.processTouchEvent(event);
         return false;
+    }
+
+    public void teamChanged(Player.Team oldTeam, Player.Team newTeam) {
+        update();
     }
 }

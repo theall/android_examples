@@ -28,7 +28,7 @@ import com.wx.multihero.ui.widget.Widget;
 
 public class BackwardButton extends Button {
     public BackwardButton(Callback callback, Widget parent) {
-        super(parent);
+        super(callback, parent);
     }
 
     public void loadAssets() {
