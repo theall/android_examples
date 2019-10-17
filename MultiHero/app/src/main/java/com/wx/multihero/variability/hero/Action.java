@@ -18,7 +18,9 @@
 
 package com.wx.multihero.variability.hero;
 
-public class Action {
+import com.wx.multihero.variability.sprite.SerializedFrames;
+
+public class Action extends SerializedFrames {
     public static final int NONE = -1;
     public static final int READY = 0;
     public static final int BLOCKING = 1;
@@ -38,10 +40,36 @@ public class Action {
     public static final int THROW = 15;
     public static final int WALK = 16;
     public static final int COUNT = 17;
-    public int value;
-    public float distance;
-    public Action(int value, float distance) {
-        this.value = value;
-        this.distance = distance;
+    private int mValue;
+    private float mDistance;
+    private boolean mBreakable;
+    private int mId;
+
+    public Action(int id) {
+        super();
+
+        mBreakable = false;
+        mId = id;
+    }
+    public Action(int id, int value, float distance) {
+        mId = id;
+        mValue = value;
+        mDistance = distance;
+    }
+
+    public boolean isBreakable() {
+        return mBreakable;
+    }
+
+    public void setBreakable(boolean breakable) {
+        mBreakable = breakable;
+    }
+
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int id) {
+        mId = id;
     }
 }

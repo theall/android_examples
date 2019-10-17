@@ -61,9 +61,8 @@ public class SerializedFrames implements Stepable {
             mCurrentIndex++;
             if(mCurrentIndex > mTotalFrameDuration) {
                 mRecycleTimes++;
-                mCurrentIndex = 0;
+                mCurrentIndex = -1;
             }
-
             int frameCounter = mCurrentIndex;
             for(Frame frame : mFrameList) {
                 int duration = frame.getDuration();
@@ -76,6 +75,8 @@ public class SerializedFrames implements Stepable {
 
         } else if(frameCount==1) {
             mCurrentFrame = mFrameList.get(0);
+            mRecycleTimes++;
+            mCurrentIndex = -1;
         } else {
             mCurrentFrame = null;
         }
@@ -87,5 +88,9 @@ public class SerializedFrames implements Stepable {
 
     public boolean isRecycled() {
         return mRecycleTimes>0;
+    }
+
+    public boolean isEnd() {
+        return mFrameList.isEmpty() || (mRecycleTimes>0 && mCurrentIndex<0);
     }
 }

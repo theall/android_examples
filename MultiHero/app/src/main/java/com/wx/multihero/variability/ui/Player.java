@@ -21,6 +21,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.wx.multihero.base.Button;
 import com.wx.multihero.base.Renderable;
 import com.wx.multihero.base.Stepable;
 import com.wx.multihero.base.Utils;
@@ -29,6 +30,9 @@ import com.wx.multihero.ui.widget.ColorProgressBar;
 import com.wx.multihero.ui.widget.PictureItem;
 import com.wx.multihero.ui.widget.PrimitiveText;
 import com.wx.multihero.ui.widget.Widget;
+import com.wx.multihero.variability.controller.Controller;
+import com.wx.multihero.variability.controller.KeyboardController;
+import com.wx.multihero.variability.hero.Action;
 import com.wx.multihero.variability.hero.Hero;
 import com.wx.multihero.variability.hero.HeroFactory;
 
@@ -58,6 +62,7 @@ public class Player extends Widget implements Stepable, Renderable {
     private ColorProgressBar mHpBar;
     private ColorProgressBar mEnergyBar;
     private PrimitiveText mCaption;
+    private Controller mController;
     public interface CharacterChangedCallback {
         void characterChanged(Character oldCharacter, Character newCharacter);
     }
@@ -80,6 +85,7 @@ public class Player extends Widget implements Stepable, Renderable {
         mCharacterChangedCallback = null;
         mTypeChangedCallback = null;
         mTeamChangedCallback = null;
+        mController = new KeyboardController();
 
         float width = Utils.getRealWidth(100);
         float height = Utils.getRealHeight(24);
@@ -213,10 +219,24 @@ public class Player extends Widget implements Stepable, Renderable {
     }
 
     public void step() {
+        mController.prepare();
+
         // Update value from hero
         if(mHero == null)
             return;
 
+        Action currentAction = mHero.getCurrentAction();
+        if(currentAction.isBreakable() || currentAction.isEnd()) {
+            int action = Action.READY;
+            if(mController.isButtonDown(Button.DOWN)) {
+                action = Action.BLOCKING;
+            } else if(mController.isButtonDown(Button.LEFT) || mController.isButtonDown(Button.RIGHT)) {
+                action = Action.WALK;
+            }
+            mHero.setCurrentAction(action);
+        }
+
+        mHero.step();
         mHpBar.setProgress((float)mHero.hp / 100);
         mEnergyBar.setProgress((float)mHero.sp / 100);
     }

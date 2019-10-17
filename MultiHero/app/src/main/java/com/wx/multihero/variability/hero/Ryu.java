@@ -19,10 +19,7 @@
 package com.wx.multihero.variability.hero;
 
 import android.graphics.Bitmap;
-
 import com.wx.multihero.entity.Character;
-import com.wx.multihero.variability.sprite.SerializedFrames;
-
 import java.util.ArrayList;
 
 public class Ryu extends Hero {
@@ -46,36 +43,36 @@ public class Ryu extends Hero {
     }
 
     public void load(Character character) {
-        mActionFramesMap.clear();
+        mActionMap.clear();
 
         // Ready
-        SerializedFrames readyFrames = new SerializedFrames();
+        Action readyAction = new Action(Action.READY);
         for(Bitmap bitmap : character.getNoActionList()) {
-            readyFrames.add(bitmap);
+            readyAction.add(bitmap);
         }
-        mActionFramesMap.put(Action.READY, readyFrames);
+        add(readyAction);
 
         // walk
-        SerializedFrames walkFrames = new SerializedFrames();
-        for(Bitmap bitmap : character.getBlockList()) {
-            walkFrames.add(10, bitmap);
+        Action walkAction = new Action(Action.WALK);
+        for(Bitmap bitmap : character.getWalkList()) {
+            walkAction.add(10, bitmap);
         }
-        mActionFramesMap.put(Action.WALK, walkFrames);
+        add(walkAction);
 
         // Blocking
-        SerializedFrames blockFrames = new SerializedFrames();
+        Action blockAction = new Action(Action.BLOCKING);
         for(Bitmap bitmap : character.getBlockList()) {
-            blockFrames.add(bitmap);
+            blockAction.add(20, bitmap);
         }
-        mActionFramesMap.put(Action.BLOCKING, blockFrames);
+        add(blockAction);
 
         // punch
-        SerializedFrames punchFrames = new SerializedFrames();
+        Action punchAction = new Action(Action.PUNCH);
         ArrayList<Bitmap> blowList = character.getActionList();
-        punchFrames.add(8, blowList.get(0));
-        punchFrames.add(7, blowList.get(1));
-        punchFrames.add(10, blowList.get(2));
-        mActionFramesMap.put(Action.PUNCH, punchFrames);
+        punchAction.add(8, blowList.get(0));
+        punchAction.add(7, blowList.get(1));
+        punchAction.add(10, blowList.get(2));
+        add(punchAction);
     }
 
     public void go() {

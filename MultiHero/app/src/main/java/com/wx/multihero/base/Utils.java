@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.base;
 
 import android.content.Context;
@@ -33,6 +34,7 @@ public class Utils {
 	private static Context mContext = null;
 	private static Random mRandom = null;
 
+	public static boolean DEBUG = true;
 	public static float getScreenWidth() {
 		return mScreenWidth;
 	}

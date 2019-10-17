@@ -32,6 +32,7 @@ import android.view.SurfaceView;
 
 import com.wx.multihero.base.AssetsLoader;
 import com.wx.multihero.base.BigFont;
+import com.wx.multihero.base.KeyboardState;
 import com.wx.multihero.base.SceneType;
 import com.wx.multihero.base.SoundPlayer;
 import com.wx.multihero.base.Utils;
@@ -210,7 +211,7 @@ public class MainView extends SurfaceView implements
 		if(topSceneType == SceneType.TITLE) {
 
 		} else if(topSceneType == SceneType.GAME) {
-			Game.getInstance().earthQuake();
+			//Game.getInstance().earthQuake();
 		}
 		mSceneStack.processTouchEvent(event);
 		return true;
@@ -246,11 +247,13 @@ public class MainView extends SurfaceView implements
 	}
 
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-
+		KeyboardState.getInstance().setKeyState(keyCode, true);
 		return false;
 	}
 
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		KeyboardState.getInstance().setKeyState(keyCode, false);
+
 		if(keyCode == KeyEvent.KEYCODE_K) {
 
 		} else if(keyCode == KeyEvent.KEYCODE_J) {

@@ -53,16 +53,16 @@ public abstract class Hero extends AnimationSprite {
     private boolean mIsBlocking;
     private boolean mIsActioning;
     private boolean mIsGrabbed;
-    private int mCurrentAction;
+    private Action mCurrentAction;
     private Hero mTarget;
     public int[] mActionDist = new int[Action.COUNT];
-    public HashMap<Integer,SerializedFrames> mActionFramesMap = new HashMap<Integer, SerializedFrames>();
+    public HashMap<Integer, Action> mActionMap = new HashMap<Integer, Action>();
 
     public Hero(Character character) {
         mDir = FaceDir.NONE;
         mFrameCounter = 0;
-        mCurrentAction = Action.NONE;
-        setAnchor(Anchor.CENTER_BOTTOM);
+        mCurrentAction = new Action(Action.NONE);
+        //setAnchor(Anchor.CENTER_BOTTOM);
         for(int i = 0; i< Action.COUNT; i++) {
             mActionDist[i] = 0;
         }
@@ -76,19 +76,25 @@ public abstract class Hero extends AnimationSprite {
     public abstract void go();
 
     public void setCurrentAction(int blow) {
-        if(mCurrentAction == blow)
+        Action action = mActionMap.get(blow);
+        setCurrentAction(action);
+    }
+
+    public void setCurrentAction(Action action) {
+        if(mCurrentAction == action)
             return;
 
-        SerializedFrames serializedFrames = mActionFramesMap.get(blow);
-        if(serializedFrames == null)
-            return;
+        if(mCurrentAction != null) {
+            mCurrentAction.reset();;
+        }
+        mCurrentAction = action;
+        if(action != null) {
+            setSerializedFrames(action);
+        }
+    }
 
-        SerializedFrames currentSerializedFrames = mActionFramesMap.get(mCurrentAction);
-        if(currentSerializedFrames != null)
-            currentSerializedFrames.reset();
-
-        mCurrentAction = blow;
-        setSerializedFrames(serializedFrames);
+    public boolean isCurrentActionEnd() {
+        return mCurrentAction.isEnd();
     }
 
     public void reset() {
@@ -108,7 +114,7 @@ public abstract class Hero extends AnimationSprite {
         mIsShield = false;
         mCanFly = false;
 
-        for(SerializedFrames serializedFrames : mActionFramesMap.values()) {
+        for(SerializedFrames serializedFrames : mActionMap.values()) {
             serializedFrames.reset();
         }
     }
@@ -157,5 +163,13 @@ public abstract class Hero extends AnimationSprite {
     @Override
     public void render(Canvas canvas, Paint paint) {
         super.render(canvas, paint);
+    }
+
+    public void add(Action action) {
+        mActionMap.put(action.getId(), action);
+    }
+
+    public Action getCurrentAction() {
+        return mCurrentAction;
     }
 }

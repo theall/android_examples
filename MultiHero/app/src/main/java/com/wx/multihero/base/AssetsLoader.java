@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.base;
 
 import java.io.IOException;
@@ -198,17 +199,20 @@ public class AssetsLoader implements Runnable {
             mAssetsTotalCount = fileList.size();
             for(String fileName : fileList) {
                 if(fileName.endsWith("mp3")) {
-                    int id = loadSound(fileName);
-                    mStringSoundMap.put(fileName, id);
+                    if(Utils.DEBUG == false) {
+                        int id = loadSound(fileName);
+                        mStringSoundMap.put(fileName, id);
+                    }
                 } else if(fileName.endsWith("png")) {
                     Bitmap bitmap = loadBitmap(fileName);
                     mStringBitmapMap.put(fileName, bitmap);
                 }
 
-                Thread.sleep(1);
+                if(Utils.DEBUG == false) {
+                    Thread.sleep(1);
+                }
                 mAssetsLoadedCount++;
-                if(mNotify != null)
-                {
+                if(mNotify != null) {
                     mNotify.onProgress(mAssetsLoadedCount, mAssetsTotalCount);
                 }
             }
