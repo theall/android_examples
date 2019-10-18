@@ -27,15 +27,20 @@ import com.wx.multihero.entity.Map;
 import com.wx.multihero.entity.PawnPoint;
 import com.wx.multihero.entity.Platform;
 import com.wx.multihero.entity.Wall;
+import com.wx.multihero.variability.Game;
+import com.wx.multihero.variability.collide.Collide;
 import com.wx.multihero.variability.hero.Hero;
+import com.wx.multihero.variability.object.Plat;
 import com.wx.multihero.variability.ui.Player;
 
 import java.util.ArrayList;
 
 public class MainLayer extends TilesLayer {
     private ArrayList<Hero> mHeroList = new ArrayList<Hero>();
+    private ArrayList<Plat> mPlatList = new ArrayList<Plat>();
     private Map mMap;
     public MainLayer() {
+
     }
 
     public void loadMap(Map map, ArrayList<Player> playerList) {
@@ -51,6 +56,13 @@ public class MainLayer extends TilesLayer {
             hero.move(pp.start.x, pp.start.y);
             mHeroList.add(hero);
         }
+
+        mPlatList.clear();
+        for(Platform platform : map.getPlatformList()) {
+            Plat plat = new Plat(platform);
+            mPlatList.add(plat);
+        }
+
         mMap = map;
     }
 
@@ -79,6 +91,29 @@ public class MainLayer extends TilesLayer {
     public void step() {
         for(Hero hero : mHeroList) {
             hero.step();
+        }
+        for(Plat plat : mPlatList) {
+            plat.step();
+        }
+
+        for(Hero hero : mHeroList) {
+            Plat heroPlat = null;
+            for(Plat plat : mPlatList) {
+                boolean isCollided = Collide.test(hero, plat);
+                if(isCollided) {
+                    hero.y = plat.y;
+                    heroPlat = plat;
+                    break;
+                }
+            }
+            hero.setPlat(heroPlat);
+
+            // In the air
+            if(heroPlat == null) {
+                hero.gravity = Game.getInstance().getCurrentMap().gravity;
+            } else {
+                hero.gravity = 0;
+            }
         }
     }
 }

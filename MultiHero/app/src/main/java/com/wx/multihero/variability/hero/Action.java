@@ -25,6 +25,8 @@ public class Action extends SerializedFrames {
         NULL,
         READY,
         BLOCKING,
+        JUMP,
+        JUMP2,
         PUNCH,
         FLYING_KICK,
         LOW_KICK,

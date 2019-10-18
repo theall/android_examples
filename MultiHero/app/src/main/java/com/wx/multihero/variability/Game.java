@@ -64,6 +64,7 @@ public class Game implements Stepable, Renderable {
     private ArrayList<Player> mTeamRed = new ArrayList<Player>();
     private ArrayList<Player> mTeamBlue = new ArrayList<Player>();
     private ArrayList<Player> mTeamGreen = new ArrayList<Player>();
+    private Map mCurrentMap;
     public Game() {
         mState = State.PREPARING;
 
@@ -85,7 +86,12 @@ public class Game implements Stepable, Renderable {
         mMapLoading = true;
         mBackgroundMusic = AssetsLoader.getInstance().loadSound(String.format("sound/music%d.mp3",map.getMusicN1()));
         mLayersManager.setMap(map, mPlayers);
+        mCurrentMap = map;
         mMapLoading = false;
+    }
+
+    public Map getCurrentMap() {
+        return mCurrentMap;
     }
 
     public Boolean getAttackMate() {

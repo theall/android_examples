@@ -20,11 +20,13 @@ package com.wx.multihero.variability.hero;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.hardware.Camera;
 
 import com.wx.multihero.base.Utils;
 import com.wx.multihero.entity.Character;
 import com.wx.multihero.variability.chunk.ChunkManager;
+import com.wx.multihero.variability.object.Plat;
 import com.wx.multihero.variability.sprite.AnimationSprite;
 import com.wx.multihero.variability.sprite.FaceDir;
 import com.wx.multihero.variability.sprite.SerializedFrames;
@@ -46,13 +48,17 @@ public abstract class Hero extends AnimationSprite {
     private int mAntiPlatFrames;
     private int mTrailEffectFrames;
     private int mFrameCounter;
+    public boolean air;
+    public boolean ground;
     private boolean mIsShield;
     private boolean mCanFly;
     private boolean mIsBlocking;
     private boolean mIsActioning;
     private boolean mIsGrabbed;
+    private Plat mPlat;
     private Action mCurrentAction;
     private Hero mTarget;
+    private RectF mFootRect = new RectF();
 
     public interface Instruction {
         Action.ID next();
@@ -191,5 +197,25 @@ public abstract class Hero extends AnimationSprite {
             mCurrentAction.reset();
         }
         return dirChanged;
+    }
+
+    public RectF getFootRect() {
+        mFootRect.left = x - 8;
+        mFootRect.right = x + 8;
+        mFootRect.top = y - 0.5f;
+        mFootRect.bottom = y + 0.5f;
+        return  mFootRect;
+    }
+
+    public boolean isOnGround() {
+        return mPlat!=null;
+    }
+
+    public boolean isInAie() {
+        return mPlat==null;
+    }
+
+    public void setPlat(Plat plat) {
+        mPlat = plat;
     }
 }

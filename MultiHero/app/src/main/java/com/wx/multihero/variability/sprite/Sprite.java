@@ -36,6 +36,7 @@ public class Sprite implements Renderable, Stepable {
     private FaceDir mFaceDir;
     public float accx;
     public float accy;
+    public float gravity;
     public int sound;
     private boolean mFlipHorizontal;
 
@@ -59,6 +60,8 @@ public class Sprite implements Renderable, Stepable {
 
     public void step() {
         sx += accx;
+
+        accy += gravity;
         sy += accy;
         if(mFaceDir == FaceDir.LEFT) {
             x -= sx;
@@ -159,4 +162,8 @@ public class Sprite implements Renderable, Stepable {
         return true;
     }
 
+    public void addVector(float dx, float dy) {
+        accx = dx;
+        accy = dy;
+    }
 }

@@ -74,8 +74,10 @@ public class Map {
     private int mRScrLimit;
     private int mMusicN1;
     private int mMusicN2;
+    public float gravity;
 
     public Map(String assetFileName) {
+        gravity = 0.2f;
         mMapName = Utils.extractFileName(assetFileName);
         load(assetFileName);
     }
