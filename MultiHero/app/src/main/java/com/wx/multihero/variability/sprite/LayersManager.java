@@ -80,11 +80,11 @@ public class LayersManager implements Renderable, Stepable {
             offsetY += getRandValue();
         }
         canvas.translate(-mOffsetX, -offsetY);
-        for(TilesLayer tilesLayer : mBackgroundLayerList) {
+        for (TilesLayer tilesLayer : mBackgroundLayerList) {
             tilesLayer.render(canvas, paint);
         }
         mMainLayer.render(canvas, paint);
-        for(TilesLayer tilesLayer : mForegroundLayerList) {
+        for (TilesLayer tilesLayer : mForegroundLayerList) {
             tilesLayer.render(canvas, paint);
         }
         canvas.translate(mOffsetX, offsetY);
@@ -98,8 +98,8 @@ public class LayersManager implements Renderable, Stepable {
         for(TilesLayer tilesLayer : mBackgroundLayerList) {
             tilesLayer.step();
         }
-        for(int i=0;i<mForegroundLayerList.size()-1;i++) {
-            mForegroundLayerList.get(i).step();
+        for(TilesLayer tilesLayer : mForegroundLayerList) {
+            tilesLayer.step();
         }
     }
 

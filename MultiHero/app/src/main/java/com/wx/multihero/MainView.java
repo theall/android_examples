@@ -25,6 +25,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -118,9 +119,13 @@ public class MainView extends SurfaceView implements
         setFocusableInTouchMode(true);
         setKeepScreenOn(true);
 
-        screenWidth = getResources().getDisplayMetrics().widthPixels;
-		screenHeight = getResources().getDisplayMetrics().heightPixels;
+        int scrWidth = getResources().getDisplayMetrics().widthPixels;
+		int scrHeight = getResources().getDisplayMetrics().heightPixels;
+		screenWidth = Math.max(scrWidth, scrHeight);
+		screenHeight = Math.min(scrWidth, scrHeight);
 		Utils.setResolution(screenWidth, screenHeight);
+		Log.i("multihero", "Resolution:" + screenWidth + " " + screenHeight);
+
 		BaseScene.setResolution(screenWidth, screenHeight);
 		mLoadingScene = new LoadingScene(SceneType.LOADING, this);
         AssetsLoader.getInstance().setConfigure(this.getContext(), SoundPlayer.initialize(), mLoadingScene);
@@ -253,12 +258,6 @@ public class MainView extends SurfaceView implements
 
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		KeyboardState.getInstance().setKeyState(keyCode, false);
-
-		if(keyCode == KeyEvent.KEYCODE_K) {
-
-		} else if(keyCode == KeyEvent.KEYCODE_J) {
-			back();
-		}
 		return false;
 	}
 

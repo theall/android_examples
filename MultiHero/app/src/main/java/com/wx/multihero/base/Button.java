@@ -7,5 +7,7 @@ public enum Button {
     RIGHT,
     ATTACK,
     JUMP,
+    BLOCKING,
+    THROW,
     COUNT
 }

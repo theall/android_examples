@@ -20,6 +20,7 @@ package com.wx.multihero.variability.hero;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.hardware.Camera;
 
 import com.wx.multihero.base.Utils;
 import com.wx.multihero.entity.Character;
@@ -34,9 +35,6 @@ public abstract class Hero extends AnimationSprite {
     public int hp;
     public int sp;
     public int mLifes;
-    public FaceDir mDir;
-    public float mSpeed;
-    public float mAcceleration;
     public float mBlockSpeed;
     public int mShieldTime;
     public int mHeight;
@@ -55,29 +53,37 @@ public abstract class Hero extends AnimationSprite {
     private boolean mIsGrabbed;
     private Action mCurrentAction;
     private Hero mTarget;
-    public int[] mActionDist = new int[Action.COUNT];
-    public HashMap<Integer, Action> mActionMap = new HashMap<Integer, Action>();
+
+    public interface Instruction {
+        Action.ID next();
+    }
+
+    public HashMap<Action.ID, Action> mActionMap = new HashMap<Action.ID, Action>();
 
     public Hero(Character character) {
-        mDir = FaceDir.NONE;
         mFrameCounter = 0;
-        mCurrentAction = new Action(Action.NONE);
-        //setAnchor(Anchor.CENTER_BOTTOM);
-        for(int i = 0; i< Action.COUNT; i++) {
-            mActionDist[i] = 0;
-        }
-        load(character);
+        mCurrentAction = null;
+        setAnchor(Anchor.CENTER_BOTTOM);
 
-        setCurrentAction(Action.READY);
+        for(Action.ID actionId : Action.ID.values()) {
+            mActionMap.put(actionId, new Action(actionId));
+        }
+
+        load(character);
+        setCurrentAction(Action.ID.READY);
     }
 
     public abstract void load(Character character);
 
     public abstract void go();
 
-    public void setCurrentAction(int blow) {
+    public void setCurrentAction(Action.ID blow) {
         Action action = mActionMap.get(blow);
         setCurrentAction(action);
+    }
+
+    public Action getAction(Action.ID actionID) {
+        return mActionMap.get(actionID);
     }
 
     public void setCurrentAction(Action action) {
@@ -85,7 +91,8 @@ public abstract class Hero extends AnimationSprite {
             return;
 
         if(mCurrentAction != null) {
-            mCurrentAction.reset();;
+            mCurrentAction.reset();
+            stop();
         }
         mCurrentAction = action;
         if(action != null) {
@@ -106,7 +113,7 @@ public abstract class Hero extends AnimationSprite {
         mDuckHeight = 25;
         mBlockLife = 100;
         mBlockMaxLife = 100;
-        mAcceleration = 0.2f;
+        accx = accy = 0.2f;
         mBlockSpeed = 0.8f;
         mTempShieldFrames = 0;
         mAntiPlatFrames = 0;
@@ -117,6 +124,10 @@ public abstract class Hero extends AnimationSprite {
         for(SerializedFrames serializedFrames : mActionMap.values()) {
             serializedFrames.reset();
         }
+    }
+
+    public void setActionAttackDistance(Action.ID actionID, int distance) {
+        getAction(actionID).setDistance(distance);
     }
 
     public void step() {
@@ -171,5 +182,14 @@ public abstract class Hero extends AnimationSprite {
 
     public Action getCurrentAction() {
         return mCurrentAction;
+    }
+
+    @Override
+    public boolean setFaceDir(FaceDir faceDir) {
+        boolean dirChanged = super.setFaceDir(faceDir);
+        if(dirChanged) {
+            mCurrentAction.reset();
+        }
+        return dirChanged;
     }
 }

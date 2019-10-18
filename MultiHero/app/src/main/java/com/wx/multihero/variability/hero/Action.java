@@ -21,40 +21,39 @@ package com.wx.multihero.variability.hero;
 import com.wx.multihero.variability.sprite.SerializedFrames;
 
 public class Action extends SerializedFrames {
-    public static final int NONE = -1;
-    public static final int READY = 0;
-    public static final int BLOCKING = 1;
-    public static final int PUNCH = 2;
-    public static final int FLYING_KICK = 3;
-    public static final int LOW_KICK = 4;
-    public static final int UPPERCUT = 5;
-    public static final int THROWING_ITEM = 6;
-    public static final int SPECIAL = 7;
-    public static final int DOGDING = 8;
-    public static final int DOWN_SPECIAL = 9;
-    public static final int HIGH_KICK = 10;
-    public static final int CLUB = 11;
-    public static final int SHOOTING_POSITION = 12;
-    public static final int ITEM_PICKUP = 13;
-    public static final int SUPER_SPECIAL = 14;
-    public static final int THROW = 15;
-    public static final int WALK = 16;
-    public static final int COUNT = 17;
+    public enum ID {
+        NULL,
+        READY,
+        BLOCKING,
+        PUNCH,
+        FLYING_KICK,
+        LOW_KICK,
+        UPPERCUT,
+        THROWING_ITEM,
+        SPECIAL,
+        DOGDING,
+        DOWN_SPECIAL,
+        HIGH_KICK,
+        CLUB,
+        SHOOTING_POSITION,
+        ITEM_PICKUP,
+        SUPER_SPECIAL,
+        THROW,
+        WALK,
+        DUCK
+    }
     private int mValue;
-    private float mDistance;
+    private int mDistance;
     private boolean mBreakable;
-    private int mId;
+    private ID mId;
 
-    public Action(int id) {
+    public Action(ID id) {
         super();
 
+        mValue = 0;
+        mDistance = 0;
         mBreakable = false;
         mId = id;
-    }
-    public Action(int id, int value, float distance) {
-        mId = id;
-        mValue = value;
-        mDistance = distance;
     }
 
     public boolean isBreakable() {
@@ -65,11 +64,24 @@ public class Action extends SerializedFrames {
         mBreakable = breakable;
     }
 
-    public int getId() {
+    public ID getId() {
         return mId;
     }
 
-    public void setId(int id) {
+    public void setId(ID id) {
         mId = id;
+    }
+
+    public void setDistance(int distance) {
+        mDistance = distance;
+    }
+
+    public int getDistance() {
+        return mDistance;
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
     }
 }

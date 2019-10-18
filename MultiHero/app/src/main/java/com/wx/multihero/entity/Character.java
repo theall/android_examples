@@ -23,29 +23,36 @@ import android.graphics.Bitmap;
 import com.wx.multihero.base.AssetsLoader;
 import com.wx.multihero.base.Utils;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class Character {
+	public enum SetID {
+		ICON,
+		PREVIEW,
+		DUCK,
+		AIR,
+		WALK,
+		FALLING,
+		FLIP,
+		BLOW,
+		UPSPECIAL,
+		FLYKICK,
+		LOWKICK,
+		SPECIAL,
+		DSPECIAL,
+		BLOCK,
+		UPBLOW,
+		GRAB,
+		SUPER,
+		READY
+	}
 	private Bitmap mIcon;
 	private Bitmap mPreview;
-	private Bitmap mDuckBitmap;
-	private Bitmap mAirBitmap;
-	private ArrayList<Bitmap> mWalkList = new ArrayList<Bitmap>();
-	private ArrayList<Bitmap> mFallingList = new ArrayList<Bitmap>();
-	private ArrayList<Bitmap> mFlipList = new ArrayList<Bitmap>();
-	private ArrayList<Bitmap> mActionList = new ArrayList<Bitmap>();
-	private ArrayList<Bitmap> mUpSpecialList = new ArrayList<Bitmap>();
-	private ArrayList<Bitmap> mFlyKickList = new ArrayList<Bitmap>();
-	private ArrayList<Bitmap> mLowKickList = new ArrayList<Bitmap>();
-	private ArrayList<Bitmap> mSpecialList = new ArrayList<Bitmap>();
-	private ArrayList<Bitmap> mDSpecialList = new ArrayList<Bitmap>();
-	private ArrayList<Bitmap> mBlockList = new ArrayList<Bitmap>();
-	private ArrayList<Bitmap> mUpActionList = new ArrayList<Bitmap>();
-	private ArrayList<Bitmap> mGrabList = new ArrayList<Bitmap>();
-	private ArrayList<Bitmap> mSuperList = new ArrayList<Bitmap>();
-	private ArrayList<Bitmap> mNoActionList = new ArrayList<Bitmap>();
-	private HashMap<String,Bitmap> mStringBitmapMap = new HashMap<String, Bitmap>();
+	private HashMap<String, Bitmap> mStringBitmapMap = new HashMap<String, Bitmap>();
+	private HashMap<SetID, ArrayList<Bitmap>> mPictureCollection = new HashMap<SetID, ArrayList<Bitmap>>();
 	private int mId;
 
 	public Character(int id) {
@@ -72,30 +79,36 @@ public class Character {
 				mStringBitmapMap.put(fileNameNoCase, bitmap);
 			}
 		}
+		for(SetID sid : SetID.values()) {
+			mPictureCollection.put(sid, new ArrayList<Bitmap>());
+		}
 		mIcon = mStringBitmapMap.get("zicon.png");
-		mDuckBitmap = mStringBitmapMap.get("zduck.png");
-		mAirBitmap = mStringBitmapMap.get("zair.png");
 
-		loadBitmapList("walk", mWalkList);
-		mPreview = mStringBitmapMap.get("zwalk0.png");
+		putBitmap("zduck.png", SetID.DUCK);
+		putBitmap("zair.png", SetID.AIR);
+		ArrayList<Bitmap> previewSet = putBitmap("zwalk0.png", SetID.PREVIEW);
+		if(!previewSet.isEmpty()) {
+			mPreview = previewSet.get(0);
+		}
 
-		loadBitmapList("falling", mFallingList);
-		mFallingList.add(0, mStringBitmapMap.get("zfallen.png"));
+		loadBitmapList("walk", SetID.WALK);
+		ArrayList<Bitmap> fallingSet = loadBitmapList("falling", SetID.FALLING);
+		fallingSet.add(0, mStringBitmapMap.get("zfallen.png"));
 
-		loadBitmapList("flip", mFlipList);
-		loadBitmapList("blow", mActionList);
-		loadBitmapList("upspecial", mUpSpecialList);
-		loadBitmapList("flykick", mFlyKickList);
-		loadBitmapList("lowkick", mLowKickList);
-		loadBitmapList("special", mSpecialList);
-		loadBitmapList("dspecial", mDSpecialList);
-		loadBitmapList("block", mBlockList);
-		loadBitmapList("upblow", mUpActionList);
-		loadBitmapList("grab", mGrabList);
-		loadBitmapList("super", mSuperList);
-		loadBitmapList("noaction", mNoActionList);
-		if(mNoActionList.isEmpty()) {
-			mNoActionList.add(mPreview);
+		loadBitmapList("flip", SetID.FLIP);
+		loadBitmapList("blow", SetID.BLOW);
+		loadBitmapList("upspecial", SetID.UPSPECIAL);
+		loadBitmapList("flykick", SetID.FLYKICK);
+		loadBitmapList("lowkick", SetID.LOWKICK);
+		loadBitmapList("special", SetID.SPECIAL);
+		loadBitmapList("dspecial", SetID.DSPECIAL);
+		loadBitmapList("block", SetID.BLOCK);
+		loadBitmapList("upblow", SetID.UPBLOW);
+		loadBitmapList("grab", SetID.GRAB);
+		loadBitmapList("super", SetID.SUPER);
+		ArrayList<Bitmap> readySet = loadBitmapList("noaction", SetID.READY);
+		if(readySet.isEmpty()) {
+			readySet.add(mPreview);
 		}
 	}
 
@@ -108,71 +121,86 @@ public class Character {
 	}
 
 	public Bitmap getDuckBitmap() {
-		return mDuckBitmap;
+		ArrayList<Bitmap> bitmaps = mPictureCollection.get(SetID.DUCK);
+		if(!bitmaps.isEmpty())
+			return bitmaps.get(0);
+		return null;
 	}
 
 	public Bitmap getAirBitmap() {
-		return mAirBitmap;
+		ArrayList<Bitmap> bitmaps = mPictureCollection.get(SetID.AIR);
+		if(!bitmaps.isEmpty())
+			return bitmaps.get(0);
+		return null;
 	}
 
 	public ArrayList<Bitmap> getWalkList() {
-		return mWalkList;
+		return mPictureCollection.get(SetID.WALK);
 	}
 
 	public ArrayList<Bitmap> getFallingList() {
-		return mFallingList;
+		return mPictureCollection.get(SetID.FALLING);
 	}
 
 	public ArrayList<Bitmap> getFlipList() {
-		return mFlipList;
+		return mPictureCollection.get(SetID.FLIP);
 	}
 
-	public ArrayList<Bitmap> getActionList() {
-		return mActionList;
+	public ArrayList<Bitmap> getBlowList() {
+		return mPictureCollection.get(SetID.BLOW);
 	}
 
 	public ArrayList<Bitmap> getUpSpecialList() {
-		return mUpSpecialList;
+		return mPictureCollection.get(SetID.UPSPECIAL);
 	}
 
 	public ArrayList<Bitmap> getFlyKickList() {
-		return mFlyKickList;
+		return mPictureCollection.get(SetID.FLYKICK);
 	}
 
 	public ArrayList<Bitmap> getLowKickList() {
-		return mLowKickList;
+		return mPictureCollection.get(SetID.LOWKICK);
 	}
 
 	public ArrayList<Bitmap> getSpecialList() {
-		return mSpecialList;
+		return mPictureCollection.get(SetID.SPECIAL);
 	}
 
 	public ArrayList<Bitmap> getDSpecialList() {
-		return mDSpecialList;
+		return mPictureCollection.get(SetID.DSPECIAL);
 	}
 
 	public ArrayList<Bitmap> getBlockList() {
-		return mBlockList;
+		return mPictureCollection.get(SetID.BLOCK);
 	}
 
-	public ArrayList<Bitmap> getUpActionList() {
-		return mUpActionList;
+	public ArrayList<Bitmap> getUpBlowList() {
+		return mPictureCollection.get(SetID.UPBLOW);
 	}
 
 	public ArrayList<Bitmap> getGrabList() {
-		return mGrabList;
+		return mPictureCollection.get(SetID.GRAB);
 	}
 
 	public ArrayList<Bitmap> getSuperList() {
-		return mSuperList;
+		return mPictureCollection.get(SetID.SUPER);
 	}
 
-	public ArrayList<Bitmap> getNoActionList() {
-		return mNoActionList;
+	public ArrayList<Bitmap> getReadyList() {
+		return mPictureCollection.get(SetID.READY);
+	}
+	public ArrayList<Bitmap> getDuckList() {
+		return mPictureCollection.get(SetID.DUCK);
 	}
 
-	private void loadBitmapList(String prefix, ArrayList<Bitmap> container) {
-		container.clear();
+	private ArrayList<Bitmap> loadBitmapList(String prefix, SetID sid) {
+		ArrayList<Bitmap> container = mPictureCollection.get(sid);
+		if(container == null) {
+			container = new ArrayList<Bitmap>();
+			mPictureCollection.put(sid, container);
+		} else {
+			container.clear();
+		}
 		for(int i=1;i<100;i++) {
 			String fileName = String.format("z%s%d.png", prefix, i);
 			Bitmap bitmap = mStringBitmapMap.get(fileName);
@@ -180,5 +208,22 @@ public class Character {
 				break;
 			container.add(bitmap);
 		}
+		return container;
+	}
+	
+	private ArrayList<Bitmap> putBitmap(String name, SetID sid) {
+		ArrayList<Bitmap> bmpList = mPictureCollection.get(sid);
+		if(bmpList == null) {
+			bmpList = new ArrayList<Bitmap>();
+			mPictureCollection.put(sid, bmpList);
+		}
+		Bitmap bitmap = mStringBitmapMap.get(name);
+		if(bitmap != null)
+			bmpList.add(bitmap);
+		return bmpList;
+	}
+	
+	public ArrayList<Bitmap> getBitmapList(SetID sid) {
+		return mPictureCollection.get(sid);
 	}
 }

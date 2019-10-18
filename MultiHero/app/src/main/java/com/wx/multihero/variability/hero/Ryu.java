@@ -31,48 +31,64 @@ public class Ryu extends Hero {
     public Ryu(Character character) {
         super(character);
 
-        mActionDist[Action.PUNCH] = 44;
-        mActionDist[Action.FLYING_KICK] = 48;
-        mActionDist[Action.LOW_KICK] = 44;
-        mActionDist[Action.UPPERCUT] = 48;
-        mActionDist[Action.SPECIAL] = 300;
-        mActionDist[Action.DOWN_SPECIAL] = 70;
-        mActionDist[Action.HIGH_KICK] = 44;
-        mActionDist[Action.CLUB] = 150;
-        mActionDist[Action.SUPER_SPECIAL] = 600;
+        setActionAttackDistance(Action.ID.PUNCH, 44);
+        setActionAttackDistance(Action.ID.FLYING_KICK, 48);
+        setActionAttackDistance(Action.ID.LOW_KICK, 44);
+        setActionAttackDistance(Action.ID.UPPERCUT, 48);
+        setActionAttackDistance(Action.ID.SPECIAL, 300);
+        setActionAttackDistance(Action.ID.DOWN_SPECIAL, 70);
+        setActionAttackDistance(Action.ID.HIGH_KICK, 44);
+        setActionAttackDistance(Action.ID.CLUB, 150);
+        setActionAttackDistance(Action.ID.SUPER_SPECIAL, 600);
     }
 
     public void load(Character character) {
-        mActionMap.clear();
-
         // Ready
-        Action readyAction = new Action(Action.READY);
-        for(Bitmap bitmap : character.getNoActionList()) {
+        Action readyAction = getAction(Action.ID.READY);
+        readyAction.clear();
+        for(Bitmap bitmap : character.getReadyList()) {
             readyAction.add(bitmap);
         }
-        add(readyAction);
 
         // walk
-        Action walkAction = new Action(Action.WALK);
+        Action walkAction = getAction(Action.ID.WALK);
+        walkAction.clear();
         for(Bitmap bitmap : character.getWalkList()) {
             walkAction.add(10, bitmap);
         }
-        add(walkAction);
+        walkAction.setBreakable(true);
 
         // Blocking
-        Action blockAction = new Action(Action.BLOCKING);
+        Action blockAction = getAction(Action.ID.BLOCKING);
+        blockAction.clear();
         for(Bitmap bitmap : character.getBlockList()) {
-            blockAction.add(20, bitmap);
+            blockAction.add(60, bitmap);
         }
-        add(blockAction);
 
-        // punch
-        Action punchAction = new Action(Action.PUNCH);
-        ArrayList<Bitmap> blowList = character.getActionList();
-        punchAction.add(8, blowList.get(0));
-        punchAction.add(7, blowList.get(1));
-        punchAction.add(10, blowList.get(2));
-        add(punchAction);
+        // Duck
+        Action duckAction = getAction(Action.ID.DUCK);
+        duckAction.clear();
+        ArrayList<Bitmap> duckList = character.getDuckList();
+        duckAction.add(20, duckList.get(0));
+        duckAction.setBreakable(true);
+
+        // Punch
+        Action action = getAction(Action.ID.PUNCH);
+        action.clear();
+        ArrayList<Bitmap> bmpSet = character.getBitmapList(Character.SetID.BLOW);
+        action.add(8, bmpSet.get(0));
+        action.add(7, bmpSet.get(1));
+        action.add(10, bmpSet.get(2));
+        action.add(3, bmpSet.get(1));
+        action.add(5, bmpSet.get(0));
+
+        // Low kick
+        action = getAction(Action.ID.LOW_KICK);
+        action.clear();
+        bmpSet = character.getBitmapList(Character.SetID.LOWKICK);
+        action.add(8, bmpSet.get(0));
+        action.add(15, bmpSet.get(1));
+        action.add(12, bmpSet.get(0));
     }
 
     public void go() {

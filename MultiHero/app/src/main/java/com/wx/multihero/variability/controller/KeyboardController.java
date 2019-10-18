@@ -17,6 +17,10 @@ public class KeyboardController extends Controller {
         mButtonKeyMap.put(Button.DOWN, KeyEvent.KEYCODE_S);
         mButtonKeyMap.put(Button.LEFT, KeyEvent.KEYCODE_A);
         mButtonKeyMap.put(Button.RIGHT, KeyEvent.KEYCODE_D);
+        mButtonKeyMap.put(Button.ATTACK, KeyEvent.KEYCODE_J);
+        mButtonKeyMap.put(Button.JUMP, KeyEvent.KEYCODE_K);
+        mButtonKeyMap.put(Button.BLOCKING, KeyEvent.KEYCODE_SHIFT_LEFT);
+        mButtonKeyMap.put(Button.THROW, KeyEvent.KEYCODE_U);
     }
 
     public void fillState(int[] mState) {

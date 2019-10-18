@@ -14,12 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 import com.wx.multihero.base.Renderable;
@@ -85,6 +87,10 @@ public class SceneStack implements Renderable, Touchable {
 
     public boolean processTouchEvent(MotionEvent event) {
         mSceneStack.firstElement().processTouchEvent(event);
+        return false;
+    }
+
+    public boolean processKeyEvent(int keyCode, KeyEvent event) {
         return false;
     }
 }

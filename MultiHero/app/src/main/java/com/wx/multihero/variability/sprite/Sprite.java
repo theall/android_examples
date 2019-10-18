@@ -20,18 +20,24 @@ package com.wx.multihero.variability.sprite;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 
 import com.wx.multihero.base.Renderable;
 import com.wx.multihero.base.SoundPlayer;
+import com.wx.multihero.base.Stepable;
 
-public class Sprite implements Renderable {
+public class Sprite implements Renderable, Stepable {
     private Bitmap bitmap;
     public float x;
     public float y;
-    public float handX;
-    public float handY;
+    public float sx;
+    public float sy;
+    private FaceDir mFaceDir;
+    public float accx;
+    public float accy;
     public int sound;
+    private boolean mFlipHorizontal;
 
     public enum Anchor {
         LEFT_TOP,
@@ -42,14 +48,24 @@ public class Sprite implements Renderable {
     public Sprite() {
         x = 0;
         y = 0;
-        handX = -1;
-        handY = -1;
+        sx = 0;
+        sy = 0;
+        accx = 0;
+        accy = 0;
         sound = -1;
         mAnchor = Anchor.LEFT_TOP;
+        mFaceDir = FaceDir.NONE;
     }
 
-    public Sprite(Bitmap bitmap) {
-        this.bitmap = bitmap;
+    public void step() {
+        sx += accx;
+        sy += accy;
+        if(mFaceDir == FaceDir.LEFT) {
+            x -= sx;
+        } else {
+            x += sx;
+        }
+        y += sy;
     }
 
     public Anchor getAnchor() {
@@ -78,17 +94,69 @@ public class Sprite implements Renderable {
         if(bitmap != null) {
             float x = this.x;
             float y = this.y;
+            float width = bitmap.getWidth();
+            float height = bitmap.getHeight();
             if(mAnchor == Anchor.CENTER) {
-                x -= bitmap.getWidth()/2;
-                y -= bitmap.getHeight()/2;
+                x -= width/2;
+                y -= height/2;
             } else if(mAnchor == Anchor.CENTER_BOTTOM) {
-                x -= bitmap.getWidth()/2;
-                y -= bitmap.getHeight();
+                x -= width/2;
+                y -= height;
             }
-            canvas.drawBitmap(bitmap, x, y, paint);
+            Matrix m = canvas.getMatrix();
+            if(mFlipHorizontal) {
+                m.setScale(-1, 1);
+                m.postTranslate(x+width, y);
+            } else {
+                m.setTranslate(x, y);
+            }
+            canvas.drawBitmap(bitmap, m, paint);
         }
         if(sound != -1) {
             SoundPlayer.playAudio(sound);
         }
     }
+
+    public boolean isFlipHorizontal() {
+        return mFlipHorizontal;
+    }
+
+    public void setFlipHorizontal(boolean flipHorizontal) {
+        mFlipHorizontal = flipHorizontal;
+    }
+
+    public void stop() {
+        sx = 0;
+        sy = 0;
+    }
+
+    public void setSpeed(float x, float y) {
+        sx = x;
+        sy = y;
+    }
+
+    public void setSpeedX(float x) {
+        sx = x;
+    }
+
+    public void setSpeedY(float y) {
+        sy = y;
+    }
+
+    public FaceDir getFaceDir() {
+        return mFaceDir;
+    }
+
+    public boolean setFaceDir(FaceDir faceDir) {
+        if(mFaceDir == faceDir)
+            return false;
+
+        mFaceDir = faceDir;
+        setFlipHorizontal(mFaceDir==FaceDir.LEFT);
+
+        float sx = Math.abs(this.sx);
+        setSpeedX(mFaceDir==FaceDir.LEFT?-sx:sx);
+        return true;
+    }
+
 }

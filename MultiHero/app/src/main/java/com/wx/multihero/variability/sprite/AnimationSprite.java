@@ -20,9 +20,7 @@ package com.wx.multihero.variability.sprite;
 
 import android.graphics.Bitmap;
 
-import com.wx.multihero.base.Stepable;
-
-public class AnimationSprite extends Sprite implements Stepable {
+public class AnimationSprite extends Sprite {
     private SerializedFrames mSerializedFrames;
 
     public AnimationSprite() {
@@ -53,7 +51,10 @@ public class AnimationSprite extends Sprite implements Stepable {
         mSerializedFrames.add(frame);
     }
 
+    @Override
     public void step() {
+        super.step();
+
         mSerializedFrames.step();
         Frame currentFrame = mSerializedFrames.getCurrentFrame();
         if(currentFrame != null) {

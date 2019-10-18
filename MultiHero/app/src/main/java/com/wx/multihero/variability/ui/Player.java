@@ -35,6 +35,7 @@ import com.wx.multihero.variability.controller.KeyboardController;
 import com.wx.multihero.variability.hero.Action;
 import com.wx.multihero.variability.hero.Hero;
 import com.wx.multihero.variability.hero.HeroFactory;
+import com.wx.multihero.variability.sprite.FaceDir;
 
 public class Player extends Widget implements Stepable, Renderable {
     public enum Type {
@@ -227,16 +228,32 @@ public class Player extends Widget implements Stepable, Renderable {
 
         Action currentAction = mHero.getCurrentAction();
         if(currentAction.isBreakable() || currentAction.isEnd()) {
-            int action = Action.READY;
+            // Process face dir
+            boolean leftDown = mController.isButtonDown(Button.LEFT);
+            boolean rightDown = mController.isButtonDown(Button.RIGHT);
+            Action.ID actionID = Action.ID.READY;
             if(mController.isButtonDown(Button.DOWN)) {
-                action = Action.BLOCKING;
-            } else if(mController.isButtonDown(Button.LEFT) || mController.isButtonDown(Button.RIGHT)) {
-                action = Action.WALK;
+                if (mController.isButtonPressed(Button.ATTACK)) {
+                    actionID = Action.ID.LOW_KICK;
+                } else {
+                    actionID = Action.ID.DUCK;
+                }
+            } else if(leftDown || rightDown) {
+                actionID = Action.ID.WALK;
+                mHero.setSpeedX(1.5f);
+            } else if(mController.isButtonPressed(Button.ATTACK)) {
+                actionID = Action.ID.PUNCH;
+            } else if(mController.isButtonDown(Button.BLOCKING)) {
+                actionID = Action.ID.BLOCKING;
             }
-            mHero.setCurrentAction(action);
+            if(leftDown) {
+                mHero.setFaceDir(FaceDir.LEFT);
+            } else if(rightDown) {
+                mHero.setFaceDir(FaceDir.RIGHT);
+            }
+            mHero.setCurrentAction(actionID);
         }
 
-        mHero.step();
         mHpBar.setProgress((float)mHero.hp / 100);
         mEnergyBar.setProgress((float)mHero.sp / 100);
     }

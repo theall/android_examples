@@ -124,18 +124,11 @@ public class Game implements Stepable, Renderable {
     public void step() {
         if(mMapLoading)
             return;
-        mLayersManager.step();
 
         for(Player player : mPlayers)
             player.step();
 
-        if (mState == State.RUNNING || mState == State.OVER) {
-
-        }
-
-        if (mState==State.RUNNING && mAutoPilot) {
-            autoPilot();
-        }
+        mLayersManager.step();
     }
 
     private void autoPilot() {

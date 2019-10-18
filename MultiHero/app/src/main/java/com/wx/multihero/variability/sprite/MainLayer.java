@@ -19,10 +19,14 @@
 package com.wx.multihero.variability.sprite;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.wx.multihero.base.Utils;
 import com.wx.multihero.entity.Map;
 import com.wx.multihero.entity.PawnPoint;
+import com.wx.multihero.entity.Platform;
+import com.wx.multihero.entity.Wall;
 import com.wx.multihero.variability.hero.Hero;
 import com.wx.multihero.variability.ui.Player;
 
@@ -30,7 +34,7 @@ import java.util.ArrayList;
 
 public class MainLayer extends TilesLayer {
     private ArrayList<Hero> mHeroList = new ArrayList<Hero>();
-
+    private Map mMap;
     public MainLayer() {
     }
 
@@ -47,12 +51,27 @@ public class MainLayer extends TilesLayer {
             hero.move(pp.start.x, pp.start.y);
             mHeroList.add(hero);
         }
+        mMap = map;
     }
 
     @Override
     public void render(Canvas canvas, Paint paint) {
         for(Hero hero : mHeroList) {
             hero.render(canvas, paint);
+        }
+
+        if(Utils.DEBUG) {
+            paint.setStyle(Paint.Style.STROKE);
+            for (Platform plat : mMap.getPlatformList()) {
+                paint.setColor(Color.RED);
+                canvas.drawRect(plat.x, plat.y, plat.width+plat.x, plat.height+plat.y+1, paint);
+                canvas.drawText("plat", plat.x, plat.y, paint);
+            }
+            for (Wall wall : mMap.getWallList()) {
+                paint.setColor(Color.YELLOW);
+                canvas.drawRect(wall.x, wall.y, wall.w+wall.x, wall.h+wall.y+1, paint);
+                canvas.drawText("wall", wall.x, wall.y, paint);
+            }
         }
     }
 

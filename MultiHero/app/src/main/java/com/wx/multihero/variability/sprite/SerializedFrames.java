@@ -56,30 +56,32 @@ public class SerializedFrames implements Stepable {
     }
 
     public void step() {
-        int frameCount = mFrameList.size();
-        if(frameCount > 1) {
-            mCurrentIndex++;
-            if(mCurrentIndex > mTotalFrameDuration) {
-                mRecycleTimes++;
-                mCurrentIndex = -1;
-            }
+        if(mFrameList.isEmpty()) {
+            mCurrentFrame = null;
+            return;
+        }
+        mCurrentIndex++;
+        if(mCurrentIndex >= mTotalFrameDuration) {
+            mRecycleTimes++;
+            mCurrentIndex = -1;
+            mCurrentFrame = mFrameList.get(0);
+        } else {
             int frameCounter = mCurrentIndex;
-            for(Frame frame : mFrameList) {
+            for (Frame frame : mFrameList) {
                 int duration = frame.getDuration();
-                if(frameCounter < duration) {
+                if (frameCounter < duration) {
                     mCurrentFrame = frame;
                     break;
                 }
                 frameCounter -= duration;
             }
-
-        } else if(frameCount==1) {
-            mCurrentFrame = mFrameList.get(0);
-            mRecycleTimes++;
-            mCurrentIndex = -1;
-        } else {
-            mCurrentFrame = null;
         }
+    }
+
+    public void clear() {
+        mFrameList.clear();
+        mCurrentFrame = null;
+        mCurrentIndex = -1;
     }
 
     public Frame getCurrentFrame() {
