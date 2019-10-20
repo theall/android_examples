@@ -23,6 +23,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.hardware.Camera;
 
+import com.wx.multihero.base.PointF;
 import com.wx.multihero.base.Utils;
 import com.wx.multihero.entity.Character;
 import com.wx.multihero.variability.chunk.ChunkManager;
@@ -92,6 +93,12 @@ public abstract class Hero extends AnimationSprite {
         return mActionMap.get(actionID);
     }
 
+    public void clearActions() {
+        for(Action action : mActionMap.values()) {
+            action.clear();
+        }
+    }
+
     public void setCurrentAction(Action action) {
         if(mCurrentAction == action)
             return;
@@ -103,6 +110,7 @@ public abstract class Hero extends AnimationSprite {
         mCurrentAction = action;
         if(action != null) {
             setSerializedFrames(action);
+            setVector(action.getVector());
         }
     }
 
@@ -110,7 +118,10 @@ public abstract class Hero extends AnimationSprite {
         return mCurrentAction.isEnd();
     }
 
+    @Override
     public void reset() {
+        //super.reset();
+
         hp = 100;
         sp = 0;
         mLifes = 3;
@@ -207,11 +218,19 @@ public abstract class Hero extends AnimationSprite {
         return  mFootRect;
     }
 
+    public RectF getLastFootRect() {
+        mFootRect.left = _x - 8;
+        mFootRect.right = _x + 8;
+        mFootRect.top = _y - 0.5f;
+        mFootRect.bottom = _y + 0.5f;
+        return  mFootRect;
+    }
+
     public boolean isOnGround() {
         return mPlat!=null;
     }
 
-    public boolean isInAie() {
+    public boolean isInAir() {
         return mPlat==null;
     }
 

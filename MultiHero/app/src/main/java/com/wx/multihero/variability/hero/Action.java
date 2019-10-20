@@ -18,6 +18,7 @@
 
 package com.wx.multihero.variability.hero;
 
+import com.wx.multihero.base.PointF;
 import com.wx.multihero.variability.sprite.SerializedFrames;
 
 public class Action extends SerializedFrames {
@@ -42,11 +43,13 @@ public class Action extends SerializedFrames {
         SUPER_SPECIAL,
         THROW,
         WALK,
+        WALK_IN_AIR,
         DUCK
     }
     private int mValue;
     private int mDistance;
     private boolean mBreakable;
+    private PointF mVector = new PointF();
     private ID mId;
 
     public Action(ID id) {
@@ -85,5 +88,14 @@ public class Action extends SerializedFrames {
     @Override
     public void reset() {
         super.reset();
+    }
+
+    public PointF getVector() {
+        return mVector;
+    }
+
+    public void setVector(float dx, float dy) {
+        mVector.x = dx;
+        mVector.y = dy;
     }
 }

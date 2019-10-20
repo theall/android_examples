@@ -15,7 +15,7 @@ public class Collide {
         RectF footRect = hero.getFootRect();
         boolean r = false;
         if((footRect.left>=plat.x && footRect.left<=plat.right) || (footRect.right>=plat.x && footRect.right<=plat.right)) {
-            if(footRect.bottom>=plat.y) {
+            if(plat.y<=footRect.bottom && plat.y>=hero._y) {
                 r = true;
             }
         }

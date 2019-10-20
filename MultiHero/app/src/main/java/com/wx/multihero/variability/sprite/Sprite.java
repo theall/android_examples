@@ -23,6 +23,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 
+import com.wx.multihero.base.PointF;
 import com.wx.multihero.base.Renderable;
 import com.wx.multihero.base.SoundPlayer;
 import com.wx.multihero.base.Stepable;
@@ -30,7 +31,9 @@ import com.wx.multihero.base.Stepable;
 public class Sprite implements Renderable, Stepable {
     private Bitmap bitmap;
     public float x;
+    public float _x;
     public float y;
+    public float _y;
     public float sx;
     public float sy;
     private FaceDir mFaceDir;
@@ -47,8 +50,14 @@ public class Sprite implements Renderable, Stepable {
     }
     private Anchor mAnchor;
     public Sprite() {
+        init();
+    }
+
+    public void init() {
         x = 0;
+        _x = 0;
         y = 0;
+        _y = 0;
         sx = 0;
         sy = 0;
         accx = 0;
@@ -59,10 +68,11 @@ public class Sprite implements Renderable, Stepable {
     }
 
     public void step() {
-        sx += accx;
+        _x = this.x;
+        _y = this.y;
 
-        accy += gravity;
-        sy += accy;
+        sx += accx;
+        sy += gravity;
         if(mFaceDir == FaceDir.LEFT) {
             x -= sx;
         } else {
@@ -80,11 +90,15 @@ public class Sprite implements Renderable, Stepable {
     }
 
     public void moveTo(float x, float y) {
+        _x = this.x;
+        _y = this.y;
         this.x = x;
         this.y = y;
     }
 
     public void move(float dx, float dy) {
+        _x = this.x;
+        _y = this.y;
         this.x += dx;
         this.y += dy;
     }
@@ -131,6 +145,8 @@ public class Sprite implements Renderable, Stepable {
     public void stop() {
         sx = 0;
         sy = 0;
+        accy = 0;
+        accx = 0;
     }
 
     public void setSpeed(float x, float y) {
@@ -163,7 +179,22 @@ public class Sprite implements Renderable, Stepable {
     }
 
     public void addVector(float dx, float dy) {
-        accx = dx;
-        accy = dy;
+        sx += x;
+        sy += y;
+    }
+
+    public void addVector(PointF vector) {
+        sx += vector.x;
+        sy += vector.y;
+    }
+
+    public void setVector(float x, float y) {
+        sx = x;
+        sy = y;
+    }
+
+    public void setVector(PointF vector) {
+        sx = vector.x;
+        sy = vector.y;
     }
 }

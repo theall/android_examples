@@ -242,18 +242,15 @@ public class Player extends Widget implements Stepable, Renderable {
                 Action.ID currentActionId = currentAction.getId();
                 if(currentActionId!=Action.ID.JUMP2 && mController.isButtonPressed(Button.JUMP)) {
                     if(currentAction.getId() == Action.ID.JUMP) {
-                        mHero.addVector(0, -1.5f);
                         actionID = Action.ID.JUMP2;
                     } else {
-                        mHero.addVector(0, -2.0f);
                         actionID = Action.ID.JUMP;
                     }
                 } else {
                     if(mHero.isOnGround()) {
                         actionID = Action.ID.WALK;
-                        mHero.setSpeedX(1.5f);
                     } else {
-                        mHero.setSpeedX(.5f);
+                        actionID = Action.ID.WALK_IN_AIR;
                     }
                 }
             } else if(mController.isButtonPressed(Button.ATTACK)) {

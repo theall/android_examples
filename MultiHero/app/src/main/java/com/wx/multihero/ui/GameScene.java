@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ */
+
 package com.wx.multihero.ui;
 
 import android.graphics.Canvas;
@@ -23,19 +24,23 @@ import android.view.MotionEvent;
 
 import com.wx.multihero.base.SceneType;
 import com.wx.multihero.variability.Game;
+import com.wx.multihero.variability.ui.Debug;
 
 public class GameScene extends BaseScene {
     private ControllerScene mControllerScene;
     private boolean mShowController;
+    private Debug mDebug = new Debug(null);
     public GameScene(SceneType sceneType, Notify notify) {
         super(sceneType, notify);
 
         mShowController = false;
         mControllerScene = new ControllerScene();
+        mDebug.moveTo(400, 10);
     }
 
     public void render(Canvas canvas, Paint paint) {
         Game.getInstance().render(canvas, paint);
+        mDebug.render(canvas, paint);
 
         if(mShowController)
             mControllerScene.render(canvas, paint);
@@ -43,6 +48,7 @@ public class GameScene extends BaseScene {
 
     public boolean processTouchEvent(MotionEvent event) {
         mControllerScene.processTouchEvent(event);
+        mDebug.processTouchEvent(event);
         return false;
     }
 
@@ -56,6 +62,7 @@ public class GameScene extends BaseScene {
 
     public void loadAssets() {
         mControllerScene.loadAssets();
+        mDebug.loadAssets();
     }
 
     public boolean ismShowController() {

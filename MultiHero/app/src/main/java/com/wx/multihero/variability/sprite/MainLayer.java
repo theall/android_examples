@@ -96,6 +96,13 @@ public class MainLayer extends TilesLayer {
             plat.step();
         }
 
+        // Check if is death
+        for(Hero hero : mHeroList) {
+            if(hero.x<-2000 || hero.x>2000 || hero.y<-2000 || hero.y>2000) {
+                hero.stop();
+                hero.moveTo(100, 200);
+            }
+        }
         for(Hero hero : mHeroList) {
             Plat heroPlat = null;
             for(Plat plat : mPlatList) {
@@ -106,14 +113,14 @@ public class MainLayer extends TilesLayer {
                     break;
                 }
             }
-            hero.setPlat(heroPlat);
 
             // In the air
             if(heroPlat == null) {
                 hero.gravity = Game.getInstance().getCurrentMap().gravity;
-            } else {
+            } else if(hero.isInAir()){
                 hero.gravity = 0;
             }
+            hero.setPlat(heroPlat);
         }
     }
 }

@@ -43,38 +43,36 @@ public class Ryu extends Hero {
     }
 
     public void load(Character character) {
+        clearActions();
+
         // Ready
         Action readyAction = getAction(Action.ID.READY);
-        readyAction.clear();
         for(Bitmap bitmap : character.getReadyList()) {
             readyAction.add(bitmap);
         }
 
         // walk
         Action walkAction = getAction(Action.ID.WALK);
-        walkAction.clear();
         for(Bitmap bitmap : character.getWalkList()) {
             walkAction.add(10, bitmap);
         }
         walkAction.setBreakable(true);
+        walkAction.setVector(1.5f, 0);
 
         // Blocking
         Action blockAction = getAction(Action.ID.BLOCKING);
-        blockAction.clear();
         for(Bitmap bitmap : character.getBlockList()) {
             blockAction.add(60, bitmap);
         }
 
         // Duck
         Action duckAction = getAction(Action.ID.DUCK);
-        duckAction.clear();
         ArrayList<Bitmap> duckList = character.getDuckList();
         duckAction.add(20, duckList.get(0));
         duckAction.setBreakable(true);
 
         // Punch
         Action action = getAction(Action.ID.PUNCH);
-        action.clear();
         ArrayList<Bitmap> bmpSet = character.getBitmapList(Character.SetID.BLOW);
         action.add(8, bmpSet.get(0));
         action.add(7, bmpSet.get(1));
@@ -84,11 +82,27 @@ public class Ryu extends Hero {
 
         // Low kick
         action = getAction(Action.ID.LOW_KICK);
-        action.clear();
         bmpSet = character.getBitmapList(Character.SetID.LOWKICK);
         action.add(8, bmpSet.get(0));
         action.add(15, bmpSet.get(1));
         action.add(12, bmpSet.get(0));
+
+        // Jump
+        action = getAction(Action.ID.JUMP);
+        bmpSet = character.getBitmapList(Character.SetID.FLIP);
+        action.add(54, bmpSet.get(0));
+        action.setVector(0, -4.0f);
+        action = getAction(Action.ID.JUMP2);
+        action.add(10, bmpSet.get(1));
+        action.add(10, bmpSet.get(2));
+        action.add(10, bmpSet.get(3));
+
+        // Falling
+        action = getAction(Action.ID.WALK_IN_AIR);
+        bmpSet = character.getBitmapList(Character.SetID.FALLING);
+        action.add(5, bmpSet.get(0));
+        action.setVector(0.5f, 0);
+        action.setBreakable(true);
     }
 
     public void go() {
