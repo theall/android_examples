@@ -24,7 +24,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
-import com.wx.multihero.variability.Game;
+import com.wx.multihero.game.variability.Game;
 
 public class MainActivity extends Activity {
     private MainView mMainView;
@@ -43,14 +43,14 @@ public class MainActivity extends Activity {
 
         if (savedInstanceState == null) {
             // We were just launched -- set up a new game
-            mMainView.setGameState(Game.State.READY);
+            mMainView.start();
         } else {
             // We are being restored
             Bundle map = savedInstanceState.getBundle(ICICLE_KEY);
             if (map != null) {
-                mMainView.restoreState(map);
+                mMainView.resume(map);
             } else {
-                mMainView.setGameState(Game.State.PAUSED);
+                mMainView.resume();
             }
         }
     }
@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
     protected void onPause() {
         super.onPause();
         // Pause the game along with the activity
-        mMainView.setGameState(Game.State.PAUSED);
+        mMainView.pause();
     }
 
     @Override
@@ -79,9 +79,7 @@ public class MainActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if(mMainView != null) {
-            mMainView.back();
-        }
+
     }
 
     @Override

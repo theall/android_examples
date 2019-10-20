@@ -21,7 +21,6 @@ package com.wx.multihero;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -31,131 +30,80 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.wx.multihero.base.AssetsLoader;
-import com.wx.multihero.base.BigFont;
-import com.wx.multihero.base.KeyboardState;
-import com.wx.multihero.base.SceneType;
-import com.wx.multihero.base.SoundPlayer;
-import com.wx.multihero.base.Utils;
-import com.wx.multihero.entity.TriggersManager;
-import com.wx.multihero.ui.BaseScene;
-import com.wx.multihero.ui.CharacterChooseScene;
-import com.wx.multihero.ui.GameScene;
-import com.wx.multihero.ui.LoadingScene;
-import com.wx.multihero.ui.MapChooseScene;
-import com.wx.multihero.ui.TitleScene;
-import com.wx.multihero.variability.Game;
+import com.wx.multihero.game.Game;
+import com.wx.multihero.game.base.AssetsLoader;
+import com.wx.multihero.game.base.Utils;
+import com.wx.multihero.os.KeyboardState;
+import com.wx.multihero.os.SoundPlayer;
+import com.wx.multihero.os.TouchState;
 
 public class MainView extends SurfaceView implements
 		SurfaceHolder.Callback,
-		Runnable,
-		BaseScene.Notify
+		Runnable
 {
 	public static Context context = null;
-	private static final int FPS = 60;
-	private static final float GRAVITY = 0.35f;
-
-	private int mFps;
-	private boolean mShowFPS = true;
-	private int mFrameCounter;
-	public static int screenWidth;
-	public static int screenHeight;
-	private SceneType mSceneState;
-	private int mScore;
-	private int mHighScore;
-	private float mVelocity;
-	private float mGravity;
-	private boolean mFlyOver;
-
-	private int mMapOffsetX;
-	
 	private final Paint mPaint = new Paint();
 	private SurfaceHolder mSurfaceHolder;
 	private Canvas mCanvas;
-	
-	private TriggersManager mTriggersManager = new TriggersManager();
 
-	// scene
-    private SceneStack mSceneStack = new SceneStack();
-	private LoadingScene mLoadingScene;
-	private TitleScene mTitleScene;
-    private CharacterChooseScene mCharacterChooseScene;
-	private MapChooseScene mMapChooseScene;
-	private GameScene mGameScene;
-	private BigFont mBigFont = new BigFont();
+	private Game mGame;
+
+	private class PendingTouch {
+		boolean actived;
+		float x;
+		float y;
+		TouchState.Action action;
+	}
+
+	PendingTouch mPendingTouch = new PendingTouch();
 
 	public MainView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		
 		init();
-		loadAssets();
-		initNewGame();
 	}
 
 	public MainView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
 		init();
-		loadAssets();
-		initNewGame();
-	}
-
-	private void loadAssets() {
-		AssetsLoader.getInstance().asycLoad();
-		mBigFont.loadAssets();
-		mLoadingScene.loadAssets();
-		mTitleScene.loadAssets();
-        mCharacterChooseScene.loadAssets();
-		mMapChooseScene.loadAssets();
-		mGameScene.loadAssets();
 	}
 	
 	private void init() {
+		mPendingTouch.actived = false;
 		context = getContext();
 		Utils.setContext(context);
+
+		AssetsLoader.getInstance().setAssetManager(this.getContext().getAssets());
+		AssetsLoader.getInstance().setSoundPool(SoundPlayer.initialize());
+
 		mSurfaceHolder = getHolder();
         mSurfaceHolder.addCallback(this);
         setFocusable(true);
         setFocusableInTouchMode(true);
         setKeepScreenOn(true);
 
+		mGame = new Game();
         int scrWidth = getResources().getDisplayMetrics().widthPixels;
 		int scrHeight = getResources().getDisplayMetrics().heightPixels;
-		screenWidth = Math.max(scrWidth, scrHeight);
-		screenHeight = Math.min(scrWidth, scrHeight);
-		Utils.setResolution(screenWidth, screenHeight);
+		int screenWidth = Math.max(scrWidth, scrHeight);
+		int screenHeight = Math.min(scrWidth, scrHeight);
+		mGame.setResolution(screenWidth, screenHeight);
+		mGame.start();
 		Log.i("multihero", "Resolution:" + screenWidth + " " + screenHeight);
-
-		BaseScene.setResolution(screenWidth, screenHeight);
-		mLoadingScene = new LoadingScene(SceneType.LOADING, this);
-        AssetsLoader.getInstance().setConfigure(this.getContext(), SoundPlayer.initialize(), mLoadingScene);
-
-        mTitleScene = new TitleScene(SceneType.TITLE, this);
-        mCharacterChooseScene = new CharacterChooseScene(SceneType.CHARACTER, this);
-        mMapChooseScene = new MapChooseScene(SceneType.MAP_CHOOSE, this);
-		mGameScene = new GameScene(SceneType.GAME, this);
-        mSceneStack.clearPush(mLoadingScene);
-	}
-
-	private void gameOver() {
-		Game.getInstance().setState(Game.State.OVER);
-		if (mScore > mHighScore) {
-			mHighScore = mScore;
-		}
 	}
 
 	public void update() {
-		Game.getInstance().step();
-	}
-
-	private void initNewGame() {
-		mScore = 0;
-		mFlyOver = false;
-		mGravity = GRAVITY;
-		mMapOffsetX = 0;
-		mVelocity = 0;
-		mSceneState = SceneType.GAME;
-		Game.getInstance().reset();
+		TouchState ts = TouchState.getInstance();
+		TouchState.Action touchAction = TouchState.Action.NONE;
+		if(mPendingTouch.actived) {
+			mPendingTouch.actived = false;
+			ts.mPos.x = mPendingTouch.x;
+			ts.mPos.y = mPendingTouch.y;
+			touchAction = mPendingTouch.action;
+		}
+		ts.setAction(touchAction);
+		mGame.step();
 	}
 
 	public Bundle saveState() {
@@ -163,40 +111,37 @@ public class MainView extends SurfaceView implements
 		return map;
 	}
 
-	public void restoreState(Bundle icicle) {
-		Game.getInstance().setState(Game.State.PAUSED);
+	public void restore(Bundle icicle) {
+
+	}
+
+	public void pause() {
+
+	}
+
+	public void start() {
+
+	}
+
+	public void resume() {
+
+	}
+
+	public void resume(Bundle mao) {
+
 	}
 
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-		screenWidth = w;
-		screenHeight = h;
+		mGame.setResolution(w, h);
 	}
-
-	private void drawFPS() {
-        if(mCanvas != null) {
-            int oldColor = mPaint.getColor();
-            mPaint.setColor(Color.GREEN);
-            mCanvas.drawText(String.format("FPS:%2d", mFps),
-					Utils.getRealWidth(10),
-					Utils.getRealHeight(20),
-					mPaint);
-            mPaint.setColor(oldColor);
-        }
-    }
 
 	private void drawing() {
 		try {
 			mCanvas = mSurfaceHolder.lockCanvas();
 			if(mCanvas==null)
 				return;
-
-			mSceneStack.render(mCanvas, mPaint);
-
-			if(mShowFPS)
-            {
-                drawFPS();
-            }
+			mGame.render(mCanvas, mPaint);
             mSurfaceHolder.unlockCanvasAndPost(mCanvas);
             mCanvas = null;
 		} catch (Exception e) {
@@ -211,27 +156,29 @@ public class MainView extends SurfaceView implements
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		SceneType topSceneType = mSceneStack.getTopSceneType();
-		SceneType topLessSceneType = mSceneStack.getTopLessSceneType();
-		if(topSceneType == SceneType.TITLE) {
-
-		} else if(topSceneType == SceneType.GAME) {
-			//Game.getInstance().earthQuake();
+		float x = event.getX();
+		float y = event.getY();
+		int action = event.getAction();
+		TouchState.Action touchAction = TouchState.Action.NONE;
+		if(action == MotionEvent.ACTION_DOWN) {
+			touchAction = TouchState.Action.PRESSED;
+		} else if(action == MotionEvent.ACTION_UP) {
+			touchAction = TouchState.Action.RELEASED;
 		}
-		mSceneStack.processTouchEvent(event);
+		mPendingTouch.action = touchAction;
+		mPendingTouch.x = x;
+		mPendingTouch.y = y;
+		mPendingTouch.actived = true;
+		Log.i("event", event.toString());
 		return true;
 	}
 
 	public void run() {
 		try {
-			long time = System.currentTimeMillis();
 			while (true) {
 				update();
 				drawing();
 				Thread.sleep(1);
-				mFrameCounter++;
-				long diff = System.currentTimeMillis() - time;
-                mFps = (int)((float)mFrameCounter*1000/diff);
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -243,8 +190,7 @@ public class MainView extends SurfaceView implements
 	}
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-		screenWidth = width;
-		screenHeight = height;
+		mGame.setResolution(width, height);
 	}
 
 	public void surfaceDestroyed(SurfaceHolder holder) {
@@ -258,76 +204,9 @@ public class MainView extends SurfaceView implements
 
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		KeyboardState.getInstance().setKeyState(keyCode, false);
+		if(keyCode == KeyEvent.KEYCODE_BACK)
+			mGame.back();
 		return false;
-	}
-
-	public void back() {
-	    back(mSceneStack.getTopSceneType());
-    }
-
-	public void back(SceneType sceneType) {
-        if (sceneType == SceneType.LOADING) {
-			System.exit(0);
-        } else if (sceneType == SceneType.TITLE) {
-			System.exit(0);
-        } else if(sceneType == SceneType.CHARACTER) {
-            mSceneStack.clearPush(mTitleScene);
-        } else if(sceneType == SceneType.MAP_CHOOSE) {
-            mSceneStack.clearPush(mCharacterChooseScene);
-        } else if (sceneType == SceneType.GAME) {
-			mSceneStack.clearPush(mMapChooseScene);
-        } else if (sceneType == SceneType.OPTION) {
-
-        } else if (sceneType == SceneType.OVER) {
-
-        } else if (sceneType == SceneType.CREDIT) {
-
-        } else {
-
-        }
-    }
-
-	public void next(SceneType sceneType, int parameter) {
-        if(sceneType == SceneType.LOADING) {
-            mSceneStack.clearPush(mTitleScene);
-        } else if(sceneType == SceneType.TITLE) {
-            TitleScene.MenuID id = TitleScene.MenuID.values()[parameter];
-            switch (id) {
-                case ADV:
-                    mSceneStack.clearPush(mCharacterChooseScene);
-                    break;
-                case VS:
-                    mSceneStack.clearPush(mCharacterChooseScene);
-                    break;
-                case OPTION:
-                    break;
-                case EXIT:
-                    System.exit(0);
-                    break;
-                default:
-                    break;
-            }
-        } else if(sceneType == SceneType.CHARACTER) {
-            mSceneStack.clearPush(mMapChooseScene);
-		} else if(sceneType == SceneType.MAP_CHOOSE) {
-            Game.getInstance().loadPlayers(mCharacterChooseScene.getPlayerList());
-        	Game.getInstance().loadMap(mMapChooseScene.getSelectedMap());
-        	mSceneStack.clearPush(mGameScene);
-        } else if(sceneType == SceneType.GAME) {
-
-        } else if(sceneType == SceneType.OPTION) {
-
-        } else if(sceneType == SceneType.OVER) {
-
-        } else if(sceneType == SceneType.CREDIT) {
-
-        } else {
-
-        }
-	}
-
-	public void setGameState(Game.State state) {
-		Game.getInstance().setState(state);
 	}
 
 	private void loadConfig() {
