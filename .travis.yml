@@ -14,6 +14,7 @@ before_install:
 script:
 - cd MultiHero
 - chmod +x ./gradlew
+- yes | sudo sdkmanager --licenses
 - echo  > /home/travis/.android/repositories.cfg
 - "./gradlew :app:assembleRelease"
 deploy:
