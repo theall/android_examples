@@ -232,32 +232,32 @@ public class Player extends Widget implements Stepable, Renderable {
             boolean leftDown = mController.isButtonDown(Button.LEFT);
             boolean rightDown = mController.isButtonDown(Button.RIGHT);
             Action.ID actionID = Action.ID.READY;
-            if(mController.isButtonDown(Button.DOWN)) {
-                if (mController.isButtonPressed(Button.ATTACK)) {
-                    actionID = Action.ID.LOW_KICK;
-                } else {
-                    actionID = Action.ID.DUCK;
+            if(mHero.isOnGround()) {
+                if(mController.isButtonDown(Button.DOWN)) {
+                    if (mController.isButtonPressed(Button.ATTACK)) {
+                        actionID = Action.ID.LOW_KICK;
+                    } else {
+                        actionID = Action.ID.DUCK;
+                    }
+                } else if(mController.isButtonPressed(Button.ATTACK)) {
+                    actionID = Action.ID.PUNCH;
+                } else if(mController.isButtonDown(Button.BLOCKING)) {
+                    actionID = Action.ID.BLOCKING;
+                } else if(leftDown || rightDown) {
+                    actionID = Action.ID.WALK;
                 }
             } else if(leftDown || rightDown) {
-                Action.ID currentActionId = currentAction.getId();
-                if(currentActionId!=Action.ID.JUMP2 && mController.isButtonPressed(Button.JUMP)) {
-                    if(currentAction.getId() == Action.ID.JUMP) {
-                        actionID = Action.ID.JUMP2;
-                    } else {
-                        actionID = Action.ID.JUMP;
-                    }
-                } else {
-                    if(mHero.isOnGround()) {
-                        actionID = Action.ID.WALK;
-                    } else {
-                        actionID = Action.ID.WALK_IN_AIR;
-                    }
-                }
-            } else if(mController.isButtonPressed(Button.ATTACK)) {
-                actionID = Action.ID.PUNCH;
-            } else if(mController.isButtonDown(Button.BLOCKING)) {
-                actionID = Action.ID.BLOCKING;
+                actionID = Action.ID.WALK_IN_AIR;
             }
+            if(mController.isButtonPressed(Button.JUMP)) {
+                Action.ID currentActionId = currentAction.getId();
+                if(currentActionId == Action.ID.JUMP) {
+                    actionID = Action.ID.JUMP2;
+                } else {
+                    actionID = Action.ID.JUMP;
+                }
+            }
+
             if(leftDown) {
                 mHero.setFaceDir(FaceDir.LEFT);
             } else if(rightDown) {

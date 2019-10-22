@@ -204,6 +204,7 @@ public abstract class Hero extends AnimationSprite {
         boolean dirChanged = super.setFaceDir(faceDir);
         if(dirChanged) {
             mCurrentAction.reset();
+            sx = 0;
         }
         return dirChanged;
     }
