@@ -90,12 +90,13 @@ public class Ryu extends Hero {
         // Jump
         action = getAction(Action.ID.JUMP);
         bmpSet = character.getBitmapList(Character.SetID.FLIP);
-        action.add(20, bmpSet.get(0));
+        action.add(1, bmpSet.get(0));
         action.setVector(0, -6.0f);
         action = getAction(Action.ID.JUMP2);
         action.add(10, bmpSet.get(1));
         action.add(10, bmpSet.get(2));
         action.add(10, bmpSet.get(3));
+        action.setVector(0, -4.6f);
 
         // Falling
         action = getAction(Action.ID.WALK_IN_AIR);

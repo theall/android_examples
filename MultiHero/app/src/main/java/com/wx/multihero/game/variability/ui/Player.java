@@ -246,15 +246,19 @@ public class Player extends Widget implements Stepable, Renderable {
                 } else if(leftDown || rightDown) {
                     actionID = Action.ID.WALK;
                 }
-            } else if(leftDown || rightDown) {
-                actionID = Action.ID.WALK_IN_AIR;
-            }
-            if(mController.isButtonPressed(Button.JUMP)) {
-                Action.ID currentActionId = currentAction.getId();
-                if(currentActionId == Action.ID.JUMP) {
-                    actionID = Action.ID.JUMP2;
+            } else {
+                if(leftDown || rightDown) {
+                    actionID = Action.ID.WALK_IN_AIR;
                 } else {
+                    actionID = Action.ID.AIR;
+                }
+            }
+
+            if(mController.isButtonPressed(Button.JUMP)) {
+                if(mHero.isOnGround()) {
                     actionID = Action.ID.JUMP;
+                } else {
+                    actionID = Action.ID.JUMP2;
                 }
             }
 

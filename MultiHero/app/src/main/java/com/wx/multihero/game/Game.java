@@ -11,13 +11,19 @@ import com.wx.multihero.game.base.Renderable;
 import com.wx.multihero.game.base.SceneType;
 import com.wx.multihero.game.base.Stepable;
 import com.wx.multihero.game.base.Utils;
+import com.wx.multihero.game.entity.CharacterManager;
+import com.wx.multihero.game.entity.Map;
+import com.wx.multihero.game.entity.ModManager;
 import com.wx.multihero.game.ui.BaseScene;
 import com.wx.multihero.game.ui.CharacterChooseScene;
 import com.wx.multihero.game.ui.GameScene;
 import com.wx.multihero.game.ui.LoadingScene;
 import com.wx.multihero.game.ui.MapChooseScene;
 import com.wx.multihero.game.ui.TitleScene;
+import com.wx.multihero.game.variability.ui.Player;
 import com.wx.multihero.os.TouchState;
+
+import java.util.ArrayList;
 
 public class Game implements BaseScene.Notify, Renderable, Stepable {
     private static final int FPS = 60;
@@ -108,7 +114,20 @@ public class Game implements BaseScene.Notify, Renderable, Stepable {
 
     public void next(SceneType sceneType, int parameter) {
         if(sceneType == SceneType.LOADING) {
-            mSceneStack.clearPush(mTitleScene);
+            if(Utils.DEBUG) {
+                ArrayList<Player> players = new ArrayList<Player>();
+                Player player = new Player();
+                player.setTeam(Player.Team.BLUE);
+                player.setType(Player.Type.CPU);
+                player.setCharacter(CharacterManager.getInstance().getCharacter(0));
+                players.add(player);
+
+                Map defMap = ModManager.getInstance().getMap(0);
+                mGameScene.setMap(defMap, players);
+                mSceneStack.clearPush(mGameScene);
+            } else {
+                mSceneStack.clearPush(mTitleScene);
+            }
         } else if(sceneType == SceneType.TITLE) {
             TitleScene.MenuID id = TitleScene.MenuID.values()[parameter];
             switch (id) {

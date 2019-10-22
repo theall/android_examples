@@ -84,6 +84,17 @@ public class ModManager {
         return mModList.get(mCurrentModIndex);
     }
 
+    public Map getMap(int index) {
+        Map map = null;
+        Mod mod = getCurrentMod();
+        if(mod!=null) {
+            MapSet mapSet = mod.getVsMaps();
+            if(mapSet != null)
+                map = mapSet.getMap(index);
+        }
+        return map;
+    }
+
     private void recycleIndex() {
         int lastIndex = mModList.size() - 1;
         if(mCurrentModIndex < 0)

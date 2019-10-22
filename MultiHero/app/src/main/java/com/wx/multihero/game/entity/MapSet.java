@@ -50,6 +50,13 @@ public class MapSet {
         return mMapList.size();
     }
 
+    public Map getMap(int index) {
+        Map map = null;
+        if(index>=0 && index<mMapList.size())
+            map = mMapList.get(index);
+        return map;
+    }
+
     public int getCurrentMapIndex() {
         return mCurrentMapIndex;
     }

@@ -173,8 +173,8 @@ public class Sprite implements Renderable, Stepable {
         mFaceDir = faceDir;
         setFlipHorizontal(mFaceDir==FaceDir.LEFT);
 
-        float sx = Math.abs(this.sx);
-        setSpeedX(mFaceDir==FaceDir.LEFT?-sx:sx);
+//        float sx = Math.abs(this.sx);
+//        setSpeedX(mFaceDir==FaceDir.LEFT?-sx:sx);
         return true;
     }
 

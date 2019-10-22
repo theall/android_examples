@@ -44,6 +44,7 @@ public class Action extends SerializedFrames {
         THROW,
         WALK,
         WALK_IN_AIR,
+        AIR,
         DUCK
     }
     private int mValue;

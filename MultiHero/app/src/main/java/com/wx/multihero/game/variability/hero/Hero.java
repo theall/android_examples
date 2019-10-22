@@ -103,12 +103,25 @@ public abstract class Hero extends AnimationSprite {
 
         if(mCurrentAction != null) {
             mCurrentAction.reset();
-            stop();
+
+            if(mPlat != null) {
+                // on ground
+                stop();
+            } else {
+                // in the air
+
+            }
+
         }
         mCurrentAction = action;
         if(action != null) {
             setSerializedFrames(action);
-            setVector(action.getVector());
+
+            if(mPlat != null) {
+                setVector(action.getVector());
+            } else {
+                addVector(action.getVector());
+            }
         }
     }
 
@@ -204,7 +217,7 @@ public abstract class Hero extends AnimationSprite {
         boolean dirChanged = super.setFaceDir(faceDir);
         if(dirChanged) {
             mCurrentAction.reset();
-            sx = 0;
+            //sx = 0;
         }
         return dirChanged;
     }
