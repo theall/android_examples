@@ -104,24 +104,24 @@ public abstract class Hero extends AnimationSprite {
         if(mCurrentAction != null) {
             mCurrentAction.reset();
 
-            if(mPlat != null) {
-                // on ground
-                stop();
-            } else {
-                // in the air
-
-            }
+//            if(mPlat != null) {
+//                // on ground
+//                stop();
+//            } else {
+//                // in the air
+//
+//            }
 
         }
         mCurrentAction = action;
         if(action != null) {
             setSerializedFrames(action);
-
-            if(mPlat != null) {
-                setVector(action.getVector());
-            } else {
-                addVector(action.getVector());
-            }
+            setVector(action.getVector());
+//            if(mPlat != null) {
+//                setVector(action.getVector());
+//            } else {
+//                addVector(action.getVector());
+//            }
         }
     }
 

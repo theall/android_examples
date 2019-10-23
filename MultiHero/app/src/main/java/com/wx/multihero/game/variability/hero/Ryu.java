@@ -19,6 +19,8 @@
 package com.wx.multihero.game.variability.hero;
 
 import android.graphics.Bitmap;
+
+import com.wx.multihero.game.base.VectorF;
 import com.wx.multihero.game.entity.Character;
 import java.util.ArrayList;
 
@@ -91,18 +93,23 @@ public class Ryu extends Hero {
         action = getAction(Action.ID.JUMP);
         bmpSet = character.getBitmapList(Character.SetID.FLIP);
         action.add(1, bmpSet.get(0));
-        action.setVector(0, -6.0f);
+        action.setVector(0, VectorF.Type.RELATIVE, -6.0f, VectorF.Type.ABSOLUTE);
         action = getAction(Action.ID.JUMP2);
         action.add(10, bmpSet.get(1));
         action.add(10, bmpSet.get(2));
         action.add(10, bmpSet.get(3));
-        action.setVector(0, -4.6f);
+        action.add(10, bmpSet.get(0));
+        action.setVector(0, VectorF.Type.RELATIVE, -4.0f, VectorF.Type.ABSOLUTE);
 
         // Falling
+        action = getAction(Action.ID.AIR);
+        action.add(1, bmpSet.get(0));
+        action.setVectorType(VectorF.Type.RELATIVE);
+
         action = getAction(Action.ID.WALK_IN_AIR);
         bmpSet = character.getBitmapList(Character.SetID.AIR);
         action.add(5, bmpSet.get(0));
-        action.setVector(1.5f, 0);
+        action.setVector(1.5f, VectorF.Type.ABSOLUTE, 0, VectorF.Type.RELATIVE);
         action.setBreakable(true);
     }
 

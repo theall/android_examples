@@ -23,8 +23,8 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 
-import com.wx.multihero.game.base.PointF;
 import com.wx.multihero.game.base.Renderable;
+import com.wx.multihero.game.base.VectorF;
 import com.wx.multihero.os.SoundPlayer;
 import com.wx.multihero.game.base.Stepable;
 
@@ -183,9 +183,9 @@ public class Sprite implements Renderable, Stepable {
         sy += y;
     }
 
-    public void addVector(PointF vector) {
-        sx += vector.x;
-        sy += vector.y;
+    public void addVector(VectorF vector) {
+        sx += vector.x.value;
+        sy += vector.y.value;
     }
 
     public void setVector(float x, float y) {
@@ -193,8 +193,17 @@ public class Sprite implements Renderable, Stepable {
         sy = y;
     }
 
-    public void setVector(PointF vector) {
-        sx = vector.x;
-        sy = vector.y;
+    public void setVector(VectorF vector) {
+        if(vector.x.type == VectorF.Type.ABSOLUTE) {
+            sx = vector.x.value;
+        } else if(vector.x.type == VectorF.Type.RELATIVE) {
+            sx += vector.x.value;
+        }
+
+        if(vector.y.type == VectorF.Type.ABSOLUTE) {
+            sy = vector.y.value;
+        } else if(vector.y.type == VectorF.Type.RELATIVE) {
+            sy += vector.y.value;
+        }
     }
 }
