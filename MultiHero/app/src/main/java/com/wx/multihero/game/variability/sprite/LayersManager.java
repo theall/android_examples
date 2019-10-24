@@ -91,13 +91,13 @@ public class LayersManager implements Renderable, Stepable {
     }
 
     public void step() {
-        mMainLayer.step();
         if(mQuakeFrames > 0) {
             mQuakeFrames--;
         }
         for(TilesLayer tilesLayer : mBackgroundLayerList) {
             tilesLayer.step();
         }
+        mMainLayer.step();
         for(TilesLayer tilesLayer : mForegroundLayerList) {
             tilesLayer.step();
         }

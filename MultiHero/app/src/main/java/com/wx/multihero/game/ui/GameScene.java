@@ -20,13 +20,13 @@ package com.wx.multihero.game.ui;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.view.MotionEvent;
 
 import com.wx.multihero.game.base.GameState;
 import com.wx.multihero.game.base.SceneType;
+import com.wx.multihero.game.base.Utils;
 import com.wx.multihero.game.entity.Map;
 import com.wx.multihero.game.variability.Game;
-import com.wx.multihero.game.variability.ui.Debug;
+import com.wx.multihero.game.variability.ui.DebugWidget;
 import com.wx.multihero.game.variability.ui.Player;
 import com.wx.multihero.os.TouchState;
 
@@ -35,7 +35,7 @@ import java.util.ArrayList;
 public class GameScene extends BaseScene {
     private ControllerScene mControllerScene;
     private boolean mShowController;
-    private Debug mDebug = new Debug(null);
+    private DebugWidget mDebugWidget = new DebugWidget(null);
     private Game mGame;
     public GameScene(SceneType sceneType, Notify notify) {
         super(sceneType, notify);
@@ -43,20 +43,23 @@ public class GameScene extends BaseScene {
         mShowController = false;
         mControllerScene = new ControllerScene();
         mGame = Game.getInstance();
-        mDebug.moveTo(400, 10);
     }
 
     public void render(Canvas canvas, Paint paint) {
         mGame.render(canvas, paint);
-        mDebug.render(canvas, paint);
 
-        if(mShowController)
+        if(Utils.DEBUG) {
+            mDebugWidget.render(canvas, paint);
+        }
+
+        if(mShowController) {
             mControllerScene.render(canvas, paint);
+        }
     }
 
     public boolean processTouchState(TouchState touchState) {
         mControllerScene.processTouchState(touchState);
-        mDebug.processTouchState(touchState);
+        mDebugWidget.processTouchState(touchState);
         return false;
     }
 
@@ -70,7 +73,10 @@ public class GameScene extends BaseScene {
 
     public void loadAssets() {
         mControllerScene.loadAssets();
-        mDebug.loadAssets();
+
+        if(Utils.DEBUG) {
+            mDebugWidget.loadAssets();
+        }
     }
 
     public boolean ismShowController() {
@@ -88,5 +94,9 @@ public class GameScene extends BaseScene {
 
     public void step() {
         mGame.step();
+
+        if(Utils.DEBUG) {
+            mDebugWidget.step();
+        }
     }
 }

@@ -28,6 +28,7 @@ public class Action extends SerializedFrames {
         BLOCKING,
         JUMP,
         JUMP2,
+        JUMP_DOWN,
         PUNCH,
         FLYING_KICK,
         LOW_KICK,
@@ -45,12 +46,12 @@ public class Action extends SerializedFrames {
         WALK,
         WALK_IN_AIR,
         AIR,
+        FALLING,
         DUCK
     }
     private int mValue;
     private int mDistance;
     private boolean mBreakable;
-    private VectorF mVector = new VectorF();
     private ID mId;
 
     public Action(ID id) {
@@ -89,51 +90,5 @@ public class Action extends SerializedFrames {
     @Override
     public void reset() {
         super.reset();
-    }
-
-    public VectorF getVector() {
-        return mVector;
-    }
-
-    public void setVectorType(VectorF.Type type) {
-        mVector.setType(type);
-    }
-
-    public void setVectorType(VectorF.Type tx, VectorF.Type ty) {
-        mVector.setType(tx, ty);
-    }
-
-    public void setVectorValue(float x, float y) {
-        mVector.setValue(x, y);
-    }
-
-    public void setVector(float dx, float dy) {
-        mVector.x.value = dx;
-        mVector.x.type = VectorF.Type.ABSOLUTE;
-        mVector.y.value = dy;
-        mVector.y.type = VectorF.Type.ABSOLUTE;
-    }
-
-    public void setVector(float dx, float dy, VectorF.Type type) {
-        mVector.x.value = dx;
-        mVector.y.value = dy;
-        mVector.x.type = type;
-        mVector.y.type = type;
-    }
-
-    public void setVector(float dx, VectorF.Type tx, float dy, VectorF.Type ty) {
-        mVector.x.value = dx;
-        mVector.y.value = dy;
-        mVector.x.type = tx;
-        mVector.y.type = ty;
-    }
-
-    public void setVector(VectorF.Item x, VectorF.Item y) {
-        mVector.x.copyFrom(x);
-        mVector.y.copyFrom(y);
-    }
-
-    public void setVector(VectorF vector) {
-        mVector.copyFrom(vector);
     }
 }

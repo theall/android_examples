@@ -27,7 +27,8 @@ import java.util.ArrayList;
 
 public class Game implements BaseScene.Notify, Renderable, Stepable {
     private static final int FPS = 60;
-    private int mFps;
+    private int mTargetFps;
+    private int mCurrentFps;
     private boolean mShowFPS = true;
 
     // scene
@@ -40,7 +41,7 @@ public class Game implements BaseScene.Notify, Renderable, Stepable {
     private BigFont mBigFont = new BigFont();
 
     public Game() {
-
+        mTargetFps = FPS;
     }
 
     public void start() {
@@ -78,7 +79,7 @@ public class Game implements BaseScene.Notify, Renderable, Stepable {
         if(canvas != null) {
             int oldColor = paint.getColor();
             paint.setColor(Color.GREEN);
-            canvas.drawText(String.format("FPS:%2d", mFps),
+            canvas.drawText(String.format("FPS:%2d", mCurrentFps),
                     Utils.getRealWidth(10),
                     Utils.getRealHeight(20),
                     paint);
@@ -186,5 +187,21 @@ public class Game implements BaseScene.Notify, Renderable, Stepable {
         }
         mSceneStack.processTouchState(TouchState.getInstance());
         mSceneStack.step();
+    }
+
+    public int getTargetFps() {
+        return mTargetFps;
+    }
+
+    public void setTargetFps(int fps) {
+        mTargetFps = fps;
+    }
+
+    public int getCurrentFps() {
+        return mCurrentFps;
+    }
+
+    public void setCurrentFps(int currentFps) {
+        mCurrentFps = currentFps;
     }
 }

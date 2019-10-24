@@ -73,6 +73,8 @@ public class MainLayer extends TilesLayer {
         }
 
         if(Utils.DEBUG) {
+            Paint.Style oldStyle = paint.getStyle();
+            int oldColor = paint.getColor();
             paint.setStyle(Paint.Style.STROKE);
             for (Platform plat : mMap.getPlatformList()) {
                 paint.setColor(Color.RED);
@@ -84,6 +86,8 @@ public class MainLayer extends TilesLayer {
                 canvas.drawRect(wall.x, wall.y, wall.w+wall.x, wall.h+wall.y+1, paint);
                 canvas.drawText("wall", wall.x, wall.y, paint);
             }
+            paint.setStyle(oldStyle);
+            paint.setColor(oldColor);
         }
     }
 

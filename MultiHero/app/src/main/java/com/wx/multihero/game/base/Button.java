@@ -9,5 +9,6 @@ public enum Button {
     JUMP,
     BLOCKING,
     THROW,
+    SPECIAL,
     COUNT
 }

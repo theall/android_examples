@@ -12,6 +12,9 @@ public class Collide {
     }
 
     public static boolean test(Hero hero, Plat plat) {
+        if(hero.virtualized || plat.virtualized)
+            return false;
+
         RectF footRect = hero.getFootRect();
         boolean r = false;
         if((footRect.left>=plat.x && footRect.left<=plat.right) || (footRect.right>=plat.x && footRect.right<=plat.right)) {

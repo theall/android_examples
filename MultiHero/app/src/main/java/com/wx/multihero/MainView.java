@@ -175,10 +175,29 @@ public class MainView extends SurfaceView implements
 
 	public void run() {
 		try {
+			long startTime = System.currentTimeMillis();
+			long lastFrameStartTime = startTime;
+			int counter = 0;
+			int sleepSeconds = 1;
 			while (true) {
+				long currentFrameStartTime = System.currentTimeMillis();
 				update();
 				drawing();
-				Thread.sleep(1);
+				counter++;
+				float realTimeFps = 1000.0f / (currentFrameStartTime - lastFrameStartTime);
+				lastFrameStartTime = currentFrameStartTime;
+				int targetFps = mGame.getTargetFps();
+				int fpsDiff = Math.round(realTimeFps - targetFps);
+				if(fpsDiff>1 && sleepSeconds<33) {
+					sleepSeconds++;
+				} else if(fpsDiff<-1 && sleepSeconds>1){
+					sleepSeconds--;
+				}
+				if(currentFrameStartTime - startTime > 1000) {
+					startTime = currentFrameStartTime;
+					mGame.setCurrentFps((int)realTimeFps);
+				}
+				Thread.sleep(sleepSeconds);
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -199,6 +218,14 @@ public class MainView extends SurfaceView implements
 
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		KeyboardState.getInstance().setKeyState(keyCode, true);
+
+		if(Utils.DEBUG) {
+			if(keyCode == KeyEvent.KEYCODE_SPACE) {
+				mGame.setTargetFps(1);
+			} else if(keyCode == KeyEvent.KEYCODE_P) {
+				mGame.setTargetFps(60);
+			}
+		}
 		return false;
 	}
 

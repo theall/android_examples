@@ -42,13 +42,15 @@ public class Sprite implements Renderable, Stepable {
     public float gravity;
     public int sound;
     private boolean mFlipHorizontal;
-
+    public boolean ignoreGravity;
     public enum Anchor {
         LEFT_TOP,
         CENTER,
         CENTER_BOTTOM
     }
     private Anchor mAnchor;
+    public boolean virtualized = false;
+
     public Sprite() {
         init();
     }
@@ -65,6 +67,7 @@ public class Sprite implements Renderable, Stepable {
         sound = -1;
         mAnchor = Anchor.LEFT_TOP;
         mFaceDir = FaceDir.NONE;
+        ignoreGravity = false;
     }
 
     public void step() {
@@ -72,7 +75,8 @@ public class Sprite implements Renderable, Stepable {
         _y = this.y;
 
         sx += accx;
-        sy += gravity;
+        if(!ignoreGravity)
+            sy += gravity;
         if(mFaceDir == FaceDir.LEFT) {
             x -= sx;
         } else {
@@ -194,6 +198,9 @@ public class Sprite implements Renderable, Stepable {
     }
 
     public void setVector(VectorF vector) {
+        if(vector.isEmpty())
+            return;
+
         if(vector.x.type == VectorF.Type.ABSOLUTE) {
             sx = vector.x.value;
         } else if(vector.x.type == VectorF.Type.RELATIVE) {

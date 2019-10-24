@@ -95,7 +95,7 @@ public class Character {
 
 		loadBitmapList("flip", SetID.FLIP);
 		loadBitmapList("blow", SetID.BLOW);
-		loadBitmapList("upspecial", SetID.UPSPECIAL);
+		loadBitmapList("uspecial", SetID.UPSPECIAL);
 		loadBitmapList("flykick", SetID.FLYKICK);
 		loadBitmapList("lowkick", SetID.LOWKICK);
 		loadBitmapList("special", SetID.SPECIAL);

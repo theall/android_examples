@@ -31,8 +31,14 @@ public class SerializedFrames implements Stepable {
     private int mTotalFrameDuration;
     private int mRecycleTimes;
 
+    private int mTimes;
+    private int mCurrentTimes;
+    private boolean mIsKey;
+
+    public static final int DEFAULT_TIMES = 1;
     public SerializedFrames() {
         mTotalFrameDuration = 0;
+        mTimes = DEFAULT_TIMES;
         reset();
     }
 
@@ -40,14 +46,19 @@ public class SerializedFrames implements Stepable {
         mCurrentIndex = -1;
         mCurrentFrame = null;
         mRecycleTimes = 0;
+        mCurrentTimes = 0;
     }
 
-    public void add(Bitmap bitmap) {
-        add(new Frame(bitmap));
+    public Frame add(Bitmap bitmap) {
+        Frame frame = new Frame(bitmap);
+        add(frame);
+        return frame;
     }
 
-    public void add(int duration, Bitmap bitmap) {
-        add(new Frame(duration, bitmap));
+    public Frame add(int duration, Bitmap bitmap) {
+        Frame frame = new Frame(duration, bitmap);
+        add(frame);
+        return frame;
     }
 
     public void add(Frame frame) {
@@ -62,14 +73,23 @@ public class SerializedFrames implements Stepable {
         }
         mCurrentIndex++;
         if(mCurrentIndex >= mTotalFrameDuration) {
-            mRecycleTimes++;
-            mCurrentIndex = -1;
-            mCurrentFrame = mFrameList.get(0);
+            mCurrentTimes++;
+            if(mCurrentTimes >= mTimes) {
+                mRecycleTimes++;
+                mCurrentIndex = -1;
+                mCurrentFrame = null;
+            } else {
+                mCurrentIndex = 0;
+                mCurrentFrame = mFrameList.get(0);
+            }
+
         } else {
             int frameCounter = mCurrentIndex;
             for (Frame frame : mFrameList) {
                 int duration = frame.getDuration();
                 if (frameCounter < duration) {
+                    if(frameCounter == 0)
+                        mIsKey = true;
                     mCurrentFrame = frame;
                     break;
                 }
@@ -94,5 +114,45 @@ public class SerializedFrames implements Stepable {
 
     public boolean isEnd() {
         return mFrameList.isEmpty() || (mRecycleTimes>0 && mCurrentIndex<0);
+    }
+
+    public int getTimes() {
+        return mTimes;
+    }
+
+    public void setTimes(int times) {
+        mTimes = times;
+    }
+
+    public int getCurrentTimes() {
+        return mCurrentTimes;
+    }
+
+    public void setCurrentTimes(int currentTimes) {
+        mCurrentTimes = currentTimes;
+    }
+
+    public void setIgnoreGravity(boolean ignoreGravity) {
+        for(Frame frame : mFrameList) {
+            frame.ignoreGravity = ignoreGravity;
+        }
+    }
+
+    public boolean isKeyFrame() {
+        return mIsKey;
+    }
+
+    public boolean isCloneFrame() {
+        return !mIsKey;
+    }
+
+    public boolean isFalseFrame() {
+        return mCurrentTimes>0;
+    }
+
+    public void setVirtualized(boolean virtualized) {
+        for(Frame frame : mFrameList) {
+            frame.virtualized = virtualized;
+        }
     }
 }

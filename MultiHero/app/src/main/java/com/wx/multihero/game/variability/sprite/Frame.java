@@ -20,22 +20,32 @@ package com.wx.multihero.game.variability.sprite;
 
 import android.graphics.Bitmap;
 
+import com.wx.multihero.game.base.VectorF;
+
 public class Frame {
     public int duration;
     public Bitmap bitmap;
-    
+    private VectorF mVector = new VectorF();
+    public boolean ignoreGravity;
+    public boolean virtualized = false;
+    public enum Type {
+        KEY,
+        CLONE
+    }
     public Frame() {
         duration = -1;
     }
 
     public Frame(Bitmap bitmap) {
-        this.duration = 0;
+        this.duration = 1;
         this.bitmap = bitmap;
+        ignoreGravity =false;
     }
 
     public Frame(int duration, Bitmap bitmap) {
         this.duration = duration;
         this.bitmap = bitmap;
+        ignoreGravity =false;
     }
 
     public void setDuration(int duration) {
@@ -52,5 +62,51 @@ public class Frame {
 
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
+    }
+
+    public VectorF getVector() {
+        return mVector;
+    }
+
+    public void setVectorType(VectorF.Type type) {
+        mVector.setType(type);
+    }
+
+    public void setVectorType(VectorF.Type tx, VectorF.Type ty) {
+        mVector.setType(tx, ty);
+    }
+
+    public void setVectorValue(float x, float y) {
+        mVector.setValue(x, y);
+    }
+
+    public void setVector(float dx, float dy) {
+        mVector.x.value = dx;
+        mVector.x.type = VectorF.Type.ABSOLUTE;
+        mVector.y.value = dy;
+        mVector.y.type = VectorF.Type.ABSOLUTE;
+    }
+
+    public void setVector(float dx, float dy, VectorF.Type type) {
+        mVector.x.value = dx;
+        mVector.y.value = dy;
+        mVector.x.type = type;
+        mVector.y.type = type;
+    }
+
+    public void setVector(float dx, VectorF.Type tx, float dy, VectorF.Type ty) {
+        mVector.x.value = dx;
+        mVector.y.value = dy;
+        mVector.x.type = tx;
+        mVector.y.type = ty;
+    }
+
+    public void setVector(VectorF.Item x, VectorF.Item y) {
+        mVector.x.copyFrom(x);
+        mVector.y.copyFrom(y);
+    }
+
+    public void setVector(VectorF vector) {
+        mVector.copyFrom(vector);
     }
 }

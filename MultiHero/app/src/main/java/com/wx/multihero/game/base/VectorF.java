@@ -29,6 +29,10 @@ public class VectorF {
             value = item.value;
             type = item.type;
         }
+
+        public boolean isEmpty() {
+            return value==0 && type==Type.RELATIVE;
+        }
     }
 
     public VectorF() {
@@ -39,6 +43,10 @@ public class VectorF {
     public VectorF(float x, float y) {
         this.x.value = x;
         this.y.value = y;
+    }
+
+    public boolean isEmpty() {
+        return x.isEmpty() && y.isEmpty();
     }
 
     public void copyFrom(VectorF vector) {

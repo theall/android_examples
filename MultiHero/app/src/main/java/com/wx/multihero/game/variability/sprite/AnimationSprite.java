@@ -22,9 +22,11 @@ import android.graphics.Bitmap;
 
 public class AnimationSprite extends Sprite {
     private SerializedFrames mSerializedFrames;
+    private Frame mCurrentFrame;
 
     public AnimationSprite() {
         mSerializedFrames = new SerializedFrames();
+        mCurrentFrame = null;
     }
 
     public SerializedFrames getSerializedFrames() {
@@ -53,14 +55,22 @@ public class AnimationSprite extends Sprite {
 
     @Override
     public void step() {
-        super.step();
-
         mSerializedFrames.step();
         Frame currentFrame = mSerializedFrames.getCurrentFrame();
-        if(currentFrame != null) {
-            setBitmap(currentFrame.getBitmap());
+        if(currentFrame == mCurrentFrame) {
+            super.step();
+            return;
         }
-
+        mCurrentFrame = currentFrame;
+        if(mCurrentFrame != null) {
+            if(!mSerializedFrames.isFalseFrame()) {
+                setVector(mCurrentFrame.getVector());
+                ignoreGravity = mCurrentFrame.ignoreGravity;
+                virtualized = mCurrentFrame.virtualized;
+            }
+            setBitmap(mCurrentFrame.getBitmap());
+        }
+        super.step();
     }
 
     public Frame getCurrentFrame() {

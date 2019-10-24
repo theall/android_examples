@@ -20,6 +20,7 @@ public class KeyboardController extends Controller {
         mButtonKeyMap.put(Button.ATTACK, KeyEvent.KEYCODE_J);
         mButtonKeyMap.put(Button.JUMP, KeyEvent.KEYCODE_K);
         mButtonKeyMap.put(Button.BLOCKING, KeyEvent.KEYCODE_SHIFT_LEFT);
+        mButtonKeyMap.put(Button.SPECIAL, KeyEvent.KEYCODE_U);
         mButtonKeyMap.put(Button.THROW, KeyEvent.KEYCODE_U);
     }
 

@@ -234,12 +234,12 @@ public class Player extends Widget implements Stepable, Renderable {
             Action.ID actionID = Action.ID.READY;
             if(mHero.isOnGround()) {
                 if(mController.isButtonDown(Button.DOWN)) {
-                    if (mController.isButtonPressed(Button.ATTACK)) {
+                    if (mController.isButtonDown(Button.ATTACK)) {
                         actionID = Action.ID.LOW_KICK;
                     } else {
                         actionID = Action.ID.DUCK;
                     }
-                } else if(mController.isButtonPressed(Button.ATTACK)) {
+                } else if(mController.isButtonDown(Button.ATTACK)) {
                     actionID = Action.ID.PUNCH;
                 } else if(mController.isButtonDown(Button.BLOCKING)) {
                     actionID = Action.ID.BLOCKING;
@@ -250,13 +250,36 @@ public class Player extends Widget implements Stepable, Renderable {
                 if(leftDown || rightDown) {
                     actionID = Action.ID.WALK_IN_AIR;
                 } else {
-                    actionID = Action.ID.AIR;
+                    if(mHero.sy < 0) {
+                        actionID = Action.ID.AIR;
+                    } else {
+                        actionID = Action.ID.FALLING;
+                    }
+                }
+            }
+
+            // up blow
+            if(mController.isButtonDown(Button.UP) && mController.isButtonDown(Button.ATTACK)) {
+                actionID = Action.ID.HIGH_KICK;
+            }
+
+            if(mController.isButtonDown(Button.SPECIAL)) {
+                if(mController.isButtonDown(Button.UP)) {
+                    actionID = Action.ID.UPPERCUT;
+                } else if(mController.isButtonDown(Button.DOWN)) {
+                    actionID = Action.ID.DOWN_SPECIAL;
+                } else {
+                    actionID = Action.ID.SPECIAL;
                 }
             }
 
             if(mController.isButtonPressed(Button.JUMP)) {
                 if(mHero.isOnGround()) {
-                    actionID = Action.ID.JUMP;
+                    if(currentAction.getId() == Action.ID.DUCK) {
+                        actionID = Action.ID.JUMP_DOWN;
+                    } else {
+                        actionID = Action.ID.JUMP;
+                    }
                 } else {
                     actionID = Action.ID.JUMP2;
                 }
@@ -266,6 +289,10 @@ public class Player extends Widget implements Stepable, Renderable {
                 mHero.setFaceDir(FaceDir.LEFT);
             } else if(rightDown) {
                 mHero.setFaceDir(FaceDir.RIGHT);
+            }
+            if(currentAction.getId()==actionID && currentAction.isEnd()) {
+                // Reset current action
+                mHero.setCurrentAction(Action.ID.READY);
             }
             mHero.setCurrentAction(actionID);
         }
