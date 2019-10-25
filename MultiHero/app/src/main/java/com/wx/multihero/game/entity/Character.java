@@ -45,6 +45,7 @@ public class Character {
 		UPBLOW,
 		GRAB,
 		SUPER,
+		DODGE,
 		READY
 	}
 	private Bitmap mIcon;

@@ -67,6 +67,6 @@ public class ModSwitchButton extends SwitchMenu {
         Bitmap arrow1 = AssetsLoader.getInstance().loadBitmap("gfx/ui/arrow1.png");
         Bitmap arrow2 = AssetsLoader.getInstance().loadBitmap("gfx/ui/arrow2.png");
         setBitmaps(buttonBackground, arrow1, arrow2);
-        setTouchedSoundEffect(AssetsLoader.getInstance().loadSound("sound/click.mp3"));
+        setTouchedSoundEffect(AssetsLoader.getInstance().loadSound("click"));
     }
 }

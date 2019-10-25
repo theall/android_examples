@@ -8,6 +8,7 @@ public enum Button {
     ATTACK,
     JUMP,
     BLOCKING,
+    GRAB,
     THROW,
     SPECIAL,
     COUNT

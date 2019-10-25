@@ -16,18 +16,38 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package com.wx.multihero.game.ui;
+package com.wx.multihero.game.ui.scene;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.view.MotionEvent;
 
 import com.wx.multihero.game.base.SceneType;
 import com.wx.multihero.os.TouchState;
 
-public class QuestionScene extends BaseScene {
-    public QuestionScene(SceneType sceneType, Notify notify) {
+public class ExitScene extends BaseScene {
+    private boolean mIsOk = false;
+
+    public ExitScene(SceneType sceneType, Notify notify) {
         super(sceneType, notify);
+    }
+
+    public void processTouchState(int x, int y) {
+        
+    }
+
+    public boolean isOK() {
+        return mIsOk;
+    }
+
+    public void render(Canvas canvas, Paint paint) {
+        if(mIsOk)
+        {
+            mIsOk = false;
+        }
+    }
+
+    public boolean processTouchState(TouchState touchState) {
+        return  false;
     }
 
     public void shiftIn() {
@@ -40,14 +60,6 @@ public class QuestionScene extends BaseScene {
 
     public void loadAssets() {
 
-    }
-
-    public void render(Canvas canvas, Paint paint) {
-
-    }
-
-    public boolean processTouchState(TouchState touchState) {
-        return false;
     }
 
     public void step() {

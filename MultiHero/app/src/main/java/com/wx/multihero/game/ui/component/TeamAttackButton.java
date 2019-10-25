@@ -43,7 +43,7 @@ public class TeamAttackButton extends Button {
     public void loadAssets() {
         Bitmap buttonBackground = AssetsLoader.getInstance().loadBitmap("gfx/ui/but_ta.png");
         setBitmap(buttonBackground);
-        setTouchedSoundEffect(AssetsLoader.getInstance().loadSound("sound/click.mp3"));
+        setTouchedSoundEffect(AssetsLoader.getInstance().loadSound("click"));
         update();
     }
 

@@ -84,7 +84,7 @@ public class TeamBrick extends Widget implements Renderable,TouchableWidget.Call
         rect.top += paddingV;
         rect.bottom -= paddingV;
         mBtnColor.setBoundingRect(rect);
-        mBtnColor.setTouchedSoundEffect(AssetsLoader.getInstance().loadSound("sound/click.mp3"));
+        mBtnColor.setTouchedSoundEffect(AssetsLoader.getInstance().loadSound("click"));
 
         mTextNone.setBoundingRect(rect);
         mTextNone.setText(Utils.getStringFromResourceId(R.string.none));

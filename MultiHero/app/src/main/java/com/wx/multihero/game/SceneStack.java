@@ -22,13 +22,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 
 import com.wx.multihero.game.base.Renderable;
 import com.wx.multihero.game.base.SceneType;
 import com.wx.multihero.game.base.Stepable;
 import com.wx.multihero.game.ui.widget.Touchable;
-import com.wx.multihero.game.ui.BaseScene;
+import com.wx.multihero.game.ui.scene.BaseScene;
 import com.wx.multihero.os.TouchState;
 
 import java.util.Stack;

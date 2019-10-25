@@ -36,6 +36,6 @@ public class ForwardButton extends Button {
         mBoundingRect.offsetTo(Utils.getScreenWidth() - nextBitmap.getWidth() - Utils.getRealWidth(10),
                 Utils.getScreenHeight() - nextBitmap.getHeight() - Utils.getRealHeight(40));
 
-        setTouchedSoundEffect(AssetsLoader.getInstance().loadSound("sound/click.mp3"));
+        setTouchedSoundEffect(AssetsLoader.getInstance().loadSound("click"));
     }
 }

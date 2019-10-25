@@ -120,4 +120,22 @@ public class Utils {
 	public static float getGoldenWidth() {
 		return mScreenWidth * mScreenWidth * GOLD_LINE / BASE_SCREEN_WIDTH;
 	}
+
+	public static String getFileName(String fullName) {
+		int index = fullName.lastIndexOf('\\');
+		if(index < 0)
+			index = fullName.lastIndexOf('/');
+		if(index < 0)
+			return fullName;
+
+		return fullName.substring(index+1, fullName.length());
+	}
+
+	public static String getBaseName(String fileName) {
+		fileName = getFileName(fileName);
+		int index = fileName.lastIndexOf('.');
+		if(index > 0)
+			fileName = fileName.substring(0, index);
+		return fileName;
+	}
 }

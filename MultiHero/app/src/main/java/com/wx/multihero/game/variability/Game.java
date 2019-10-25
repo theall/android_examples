@@ -67,9 +67,12 @@ public class Game implements Stepable, Renderable {
     private ArrayList<Player> mTeamBlue = new ArrayList<Player>();
     private ArrayList<Player> mTeamGreen = new ArrayList<Player>();
     private Map mCurrentMap;
+    private SoundPlayer mSoundPlayer;
+    private SoundRender mSoundRender;
     private Game() {
         mState = GameState.PREPARING;
-
+        mSoundPlayer = SoundPlayer.getInstance();
+        mSoundRender = SoundRender.getInstance();
         for(int i=0;i<PLAYER_COUNT;i++) {
             Player player = new Player();
             player.setTag(i);
@@ -86,7 +89,7 @@ public class Game implements Stepable, Renderable {
 
     public void loadMap(Map map) {
         mMapLoading = true;
-        mBackgroundMusic = AssetsLoader.getInstance().loadSound(String.format("sound/music%d.mp3",map.getMusicN1()));
+        mBackgroundMusic = AssetsLoader.getInstance().loadSound(String.format("music%d",map.getMusicN1()));
         mLayersManager.setMap(map, mPlayers);
         mCurrentMap = map;
         mMapLoading = false;
@@ -132,9 +135,9 @@ public class Game implements Stepable, Renderable {
     public void setState(GameState state) {
         mState = state;
         if(state == GameState.PAUSED) {
-            SoundPlayer.stopAudio();
+            SoundPlayer.getInstance().stopAudio();
         } else if(state == GameState.RUNNING) {
-            SoundPlayer.playAudio(mBackgroundMusic);
+            SoundPlayer.getInstance().playAudio(mBackgroundMusic);
         }
     }
     
@@ -146,6 +149,7 @@ public class Game implements Stepable, Renderable {
             player.step();
 
         mLayersManager.step();
+        mSoundRender.step();
     }
 
     private void autoPilot() {
@@ -164,6 +168,8 @@ public class Game implements Stepable, Renderable {
                 player.render(canvas, paint);
             }
         }
+
+        mSoundRender.render(mSoundPlayer);
     }
 
     public ArrayList<Player> getPlayerList() {

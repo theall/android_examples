@@ -16,7 +16,7 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package com.wx.multihero.game.ui;
+package com.wx.multihero.game.ui.scene;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

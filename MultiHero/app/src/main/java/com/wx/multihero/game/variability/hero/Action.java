@@ -25,6 +25,7 @@ public class Action extends SerializedFrames {
     public enum ID {
         NULL,
         READY,
+        LAND,
         BLOCKING,
         JUMP,
         JUMP2,
@@ -47,6 +48,8 @@ public class Action extends SerializedFrames {
         WALK_IN_AIR,
         AIR,
         FALLING,
+        GRABING,
+        GRABED,
         DUCK
     }
     private int mValue;

@@ -100,7 +100,7 @@ public class PlayerTypeButton extends Button implements Player.TypeChangedCallba
         mActorCpu = AssetsLoader.getInstance().loadBitmap("gfx/ui/butCPU.png");
         mActorHumen = AssetsLoader.getInstance().loadBitmap("gfx/ui/butHum.png");
         mActorUnknown = AssetsLoader.getInstance().loadBitmap("gfx/ui/butNA.png");
-        setTouchedSoundEffect(AssetsLoader.getInstance().loadSound("sound/click.mp3"));
+        setTouchedSoundEffect(AssetsLoader.getInstance().loadSound("click"));
         update();
     }
 

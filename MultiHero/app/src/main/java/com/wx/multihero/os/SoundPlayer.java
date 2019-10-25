@@ -24,37 +24,41 @@ import android.media.SoundPool;
 public class SoundPlayer {
     private static SoundPool mSoundPool = null;
     private static int mBackgroundStreamId = -1;
+    private static SoundPlayer mSoundPlayer;
 
-    public SoundPlayer() {
-
+    private SoundPlayer() {
+        mSoundPool = new SoundPool(400, AudioManager.STREAM_MUSIC, 100);
     }
 
-    public static SoundPool initialize() {
-        if(mSoundPool == null) {
-            mSoundPool = new SoundPool(400, AudioManager.STREAM_MUSIC, 100);
-        }
+    public static SoundPlayer getInstance() {
+        if(mSoundPlayer == null)
+            mSoundPlayer = new SoundPlayer();
+        return mSoundPlayer;
+    }
+    
+    public SoundPool getSoundPool() {
         return mSoundPool;
     }
 
-    public static void pauseAudio() {
+    public void pauseAudio() {
         if(mBackgroundStreamId != -1) {
             mSoundPool.pause(mBackgroundStreamId);
         }
     }
 
-    public static void resumeAudio() {
+    public void resumeAudio() {
         if(mBackgroundStreamId != -1) {
             mSoundPool.resume(mBackgroundStreamId);
         }
     }
 
-    public static void stopAudio() {
+    public void stopAudio() {
         if(mBackgroundStreamId != -1) {
             mSoundPool.stop(mBackgroundStreamId);
         }
     }
 
-    public static void playAudio(int id) {
+    public void playAudio(int id) {
         if (id != -1) {
             if(mBackgroundStreamId  != -1) {
                 mSoundPool.pause(mBackgroundStreamId);
@@ -63,7 +67,7 @@ public class SoundPlayer {
         }
     }
     
-    public static void playSound(int id) {
+    public void playSound(int id) {
         mSoundPool.play(id, 1.0f, 1.0f, 100, 0, 1f);
     }    
 }

@@ -14,12 +14,12 @@ import com.wx.multihero.game.base.Utils;
 import com.wx.multihero.game.entity.CharacterManager;
 import com.wx.multihero.game.entity.Map;
 import com.wx.multihero.game.entity.ModManager;
-import com.wx.multihero.game.ui.BaseScene;
-import com.wx.multihero.game.ui.CharacterChooseScene;
-import com.wx.multihero.game.ui.GameScene;
-import com.wx.multihero.game.ui.LoadingScene;
-import com.wx.multihero.game.ui.MapChooseScene;
-import com.wx.multihero.game.ui.TitleScene;
+import com.wx.multihero.game.ui.scene.BaseScene;
+import com.wx.multihero.game.ui.scene.CharacterChooseScene;
+import com.wx.multihero.game.ui.scene.GameScene;
+import com.wx.multihero.game.ui.scene.LoadingScene;
+import com.wx.multihero.game.ui.scene.MapChooseScene;
+import com.wx.multihero.game.ui.scene.TitleScene;
 import com.wx.multihero.game.variability.ui.Player;
 import com.wx.multihero.os.TouchState;
 
@@ -123,8 +123,8 @@ public class Game implements BaseScene.Notify, Renderable, Stepable {
                 player.setCharacter(CharacterManager.getInstance().getCharacter(0));
                 players.add(player);
 
-                Map defMap = ModManager.getInstance().getMap(0);
-                mGameScene.setMap(defMap, players);
+                Map defaultMap = ModManager.getInstance().getMap(0);
+                mGameScene.setMap(defaultMap, players);
                 mSceneStack.clearPush(mGameScene);
             } else {
                 mSceneStack.clearPush(mTitleScene);

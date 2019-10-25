@@ -241,6 +241,12 @@ public class Player extends Widget implements Stepable, Renderable {
                     }
                 } else if(mController.isButtonDown(Button.ATTACK)) {
                     actionID = Action.ID.PUNCH;
+                } else if(mController.isButtonDown(Button.GRAB)) {
+                    if(mHero.getEnemyGrab() == null) {
+                        actionID = Action.ID.GRABING;
+                    } else {
+                        actionID = Action.ID.THROW;
+                    }
                 } else if(mController.isButtonDown(Button.BLOCKING)) {
                     actionID = Action.ID.BLOCKING;
                 } else if(leftDown || rightDown) {
@@ -285,6 +291,9 @@ public class Player extends Widget implements Stepable, Renderable {
                 }
             }
 
+            if(mHero.isInAir() && mController.isButtonPressed(Button.ATTACK)) {
+                actionID = Action.ID.FLYING_KICK;
+            }
             if(leftDown) {
                 mHero.setFaceDir(FaceDir.LEFT);
             } else if(rightDown) {
@@ -296,7 +305,9 @@ public class Player extends Widget implements Stepable, Renderable {
             }
             mHero.setCurrentAction(actionID);
         }
-
+        if(mHero.landEventOcour()) {
+            mHero.setCurrentAction(Action.ID.LAND);
+        }
         mHpBar.setProgress((float)mHero.hp / 100);
         mEnergyBar.setProgress((float)mHero.sp / 100);
     }

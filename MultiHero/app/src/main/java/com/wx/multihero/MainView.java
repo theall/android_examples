@@ -75,7 +75,7 @@ public class MainView extends SurfaceView implements
 		Utils.setContext(context);
 
 		AssetsLoader.getInstance().setAssetManager(this.getContext().getAssets());
-		AssetsLoader.getInstance().setSoundPool(SoundPlayer.initialize());
+		AssetsLoader.getInstance().setSoundPool(SoundPlayer.getInstance().getSoundPool());
 
 		mSurfaceHolder = getHolder();
         mSurfaceHolder.addCallback(this);

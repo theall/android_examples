@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -38,6 +37,8 @@ public class AssetsLoader implements Runnable {
     private static SoundPool mSoundPool = null;
     private static final String ASSETS_GFX = "gfx";
     private static final String ASSETS_SOUND = "sound";
+    private static final String SOUND_EXT = ".mp3";
+    private static final String GFX_EXT = ".png";
     private static final String ASSETS_MAPS = "maps";
     private int mAssetsTotalCount = 0;
     private int mAssetsLoadedCount = 0;
@@ -73,8 +74,8 @@ public class AssetsLoader implements Runnable {
         try {
             String fileNames[] = mAssetManager.list(path);
             for(String fileName : fileNames) {
-                String fileFullName = path + "/" + fileName;
-                if(fileName.endsWith("mp3") || fileName.endsWith("png")) {
+                String fileFullName = Utils.adjustDir(path) + fileName;
+                if(fileName.endsWith(SOUND_EXT) || fileName.endsWith(GFX_EXT)) {
                     fileList.add(fileFullName);
                 } else if(!fileName.contains(".")) {
                     findFiles(fileList, fileFullName);
@@ -126,12 +127,7 @@ public class AssetsLoader implements Runnable {
     public int loadSound(String fileName) {
         if(mSoundPool==null || mAssetManager==null)
             return -1;
-        String actualFileName = fileName;
-//        String soundPrefix = ASSETS_SOUND + "/";
-//        if(!fileName.startsWith(soundPrefix))
-//        	actualFileName = soundPrefix + actualFileName;
-//        if(!fileName.endsWith(".mp3"))
-//        	actualFileName += ".mp3";
+        String actualFileName = getSoundName(fileName);
         Integer soundIdObject = mStringSoundMap.get(actualFileName);
         if(soundIdObject != null)
             return soundIdObject.intValue();
@@ -139,7 +135,7 @@ public class AssetsLoader implements Runnable {
         try {
             soundId = mSoundPool.load(mAssetManager.openFd(actualFileName), 1);
             if(soundId >= 0) {
-                mStringSoundMap.put(actualFileName, Integer.valueOf(soundId));
+                mStringSoundMap.put(actualFileName, soundId);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -156,11 +152,7 @@ public class AssetsLoader implements Runnable {
 
     public Bitmap loadBitmap(String fileName) {
     	String actualFileName = fileName;
-//    	String gfxPrefix = ASSETS_GFX + "/";
-//        if(!fileName.startsWith(gfxPrefix))
-//        	actualFileName = gfxPrefix + actualFileName;
-//        if(!fileName.endsWith(".png"))
-//        	actualFileName += ".png";
+
         Bitmap bmp = mStringBitmapMap.get(actualFileName);
         if(bmp != null)
             return bmp;
@@ -202,14 +194,10 @@ public class AssetsLoader implements Runnable {
             findFiles(fileList, ASSETS_MAPS);
             mAssetsTotalCount = fileList.size();
             for(String fileName : fileList) {
-                if(fileName.endsWith("mp3")) {
-                    if(Utils.DEBUG == false) {
-                        int id = loadSound(fileName);
-                        mStringSoundMap.put(fileName, id);
-                    }
-                } else if(fileName.endsWith("png")) {
-                    Bitmap bitmap = loadBitmap(fileName);
-                    mStringBitmapMap.put(fileName, bitmap);
+                if(fileName.endsWith(SOUND_EXT)) {
+                    loadSound(fileName);
+                } else if(fileName.endsWith(GFX_EXT)) {
+                    loadBitmap(fileName);
                 }
 
                 if(Utils.DEBUG == false) {
@@ -223,5 +211,23 @@ public class AssetsLoader implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private String getRealName(String fileName, String prefix, String suffix) {
+        StringBuffer actualFileName = new StringBuffer(fileName);
+        prefix = Utils.adjustDir(prefix);
+        if(!fileName.startsWith(prefix))
+            actualFileName.insert(0, prefix);
+        if(!fileName.endsWith(suffix))
+            actualFileName.append(suffix);
+        return actualFileName.toString();
+    }
+
+    private String getSoundName(String fileName) {
+        return getRealName(fileName, ASSETS_SOUND, SOUND_EXT);
+    }
+
+    private String getGfxName(String fileName) {
+        return getRealName(fileName, ASSETS_GFX, GFX_EXT);
     }
 }

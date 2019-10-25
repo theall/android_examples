@@ -33,8 +33,8 @@ public class RoundIntroduction extends Chunk {
         add(100, 2, 1);
         add(140, 2, 2);
         AssetsLoader assetsLoader = AssetsLoader.getInstance();
-        mSoundReady = assetsLoader.loadSound("sound/ready.mp3");
-        mSoundFight = assetsLoader.loadSound("sound/fight.mp3");
+        mSoundReady = assetsLoader.loadSound("ready");
+        mSoundFight = assetsLoader.loadSound("fight");
         mFrameSeg = 0;
         mStepY = Utils.getRealHeight(10);
     }
@@ -47,9 +47,9 @@ public class RoundIntroduction extends Chunk {
         if(mFrameSeg<30) {
 
         } else if(mFrameSeg==30) {
-            SoundPlayer.playAudio(mSoundReady);
+            SoundPlayer.getInstance().playAudio(mSoundReady);
         } else if(mFrameSeg==180) {
-            SoundPlayer.playAudio(mSoundFight);
+            SoundPlayer.getInstance().playAudio(mSoundFight);
         }
     }
 }

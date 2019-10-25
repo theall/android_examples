@@ -21,7 +21,8 @@ public class KeyboardController extends Controller {
         mButtonKeyMap.put(Button.JUMP, KeyEvent.KEYCODE_K);
         mButtonKeyMap.put(Button.BLOCKING, KeyEvent.KEYCODE_SHIFT_LEFT);
         mButtonKeyMap.put(Button.SPECIAL, KeyEvent.KEYCODE_U);
-        mButtonKeyMap.put(Button.THROW, KeyEvent.KEYCODE_U);
+        mButtonKeyMap.put(Button.THROW, KeyEvent.KEYCODE_L);
+        mButtonKeyMap.put(Button.GRAB, KeyEvent.KEYCODE_L);
     }
 
     public void fillState(int[] mState) {

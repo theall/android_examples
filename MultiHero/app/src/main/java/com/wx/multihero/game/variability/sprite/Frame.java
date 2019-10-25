@@ -28,6 +28,8 @@ public class Frame {
     private VectorF mVector = new VectorF();
     public boolean ignoreGravity;
     public boolean virtualized = false;
+
+    private SoundItem mSoundItem;
     public enum Type {
         KEY,
         CLONE
@@ -40,12 +42,14 @@ public class Frame {
         this.duration = 1;
         this.bitmap = bitmap;
         ignoreGravity =false;
+        mSoundItem = new SoundItem();
     }
 
     public Frame(int duration, Bitmap bitmap) {
         this.duration = duration;
         this.bitmap = bitmap;
         ignoreGravity =false;
+        mSoundItem = new SoundItem();
     }
 
     public void setDuration(int duration) {
@@ -108,5 +112,23 @@ public class Frame {
 
     public void setVector(VectorF vector) {
         mVector.copyFrom(vector);
+    }
+
+    public SoundItem getSoundItem() {
+        return mSoundItem;
+    }
+
+    public void setSound(SoundItem soundItem) {
+        mSoundItem.copy(soundItem);
+    }
+
+    public void setSound(int id) {
+        mSoundItem.id = id;
+        mSoundItem.delay = 0;
+    }
+
+    public void setSound(int id, int delay) {
+        mSoundItem.id = id;
+        mSoundItem.delay = delay;
     }
 }

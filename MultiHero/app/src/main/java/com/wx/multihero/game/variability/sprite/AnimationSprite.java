@@ -20,6 +20,8 @@ package com.wx.multihero.game.variability.sprite;
 
 import android.graphics.Bitmap;
 
+import com.wx.multihero.game.variability.SoundRender;
+
 public class AnimationSprite extends Sprite {
     private SerializedFrames mSerializedFrames;
     private Frame mCurrentFrame;
@@ -67,6 +69,9 @@ public class AnimationSprite extends Sprite {
                 setVector(mCurrentFrame.getVector());
                 ignoreGravity = mCurrentFrame.ignoreGravity;
                 virtualized = mCurrentFrame.virtualized;
+                SoundItem soundItem = mCurrentFrame.getSoundItem();
+                if(soundItem.isValid())
+                    SoundRender.getInstance().add(soundItem);
             }
             setBitmap(mCurrentFrame.getBitmap());
         }

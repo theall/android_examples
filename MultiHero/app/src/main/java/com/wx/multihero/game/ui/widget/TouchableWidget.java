@@ -85,7 +85,7 @@ public abstract class TouchableWidget extends Widget implements Touchable {
         if(touchTest(x, y)) {
             if(touchState.isPressed()) {
                 if(mTouchedSoundEffect != -1) {
-                    SoundPlayer.playSound(mTouchedSoundEffect);
+                    SoundPlayer.getInstance().playSound(mTouchedSoundEffect);
                 }
             } else if(touchState.isReleased()) {
                 touched();

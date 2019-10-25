@@ -16,7 +16,7 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package com.wx.multihero.game.ui;
+package com.wx.multihero.game.ui.scene;
 
 import com.wx.multihero.game.base.AssetsLoader;
 import com.wx.multihero.game.base.SceneType;
@@ -41,7 +41,6 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 
 import java.util.ArrayList;
 

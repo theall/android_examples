@@ -72,7 +72,7 @@ public class ActorBoard extends TouchableWidget {
             mForeground.setBoundingRect(r);
             setBoundingRect(r);
         }
-        setTouchedSoundEffect(AssetsLoader.getInstance().loadSound("sound/BHit.mp3"));
+        setTouchedSoundEffect(AssetsLoader.getInstance().loadSound("BHit"));
     }
 
     public void render(Canvas canvas, Paint paint) {

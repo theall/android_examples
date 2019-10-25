@@ -55,8 +55,11 @@ public abstract class Hero extends AnimationSprite {
     private boolean mIsActioning;
     private boolean mIsGrabbed;
     private Plat mPlat;
+    private Plat mLastPlat;
     private Action mCurrentAction;
     private Hero mTarget;
+    private Hero mEnemyGrab;
+    
     private RectF mFootRect = new RectF();
 
     public interface Instruction {
@@ -232,6 +235,27 @@ public abstract class Hero extends AnimationSprite {
     }
 
     public void setPlat(Plat plat) {
+        mLastPlat = mPlat;
         mPlat = plat;
+    }
+
+    public boolean landEventOcour() {
+        return mLastPlat==null && mPlat!=null;
+    }
+
+    public Hero getTarget() {
+        return mTarget;
+    }
+
+    public void setTarget(Hero target) {
+        this.mTarget = target;
+    }
+
+    public Hero getEnemyGrab() {
+        return mEnemyGrab;
+    }
+
+    public void setEnemyGrab(Hero enemyGrab) {
+        this.mEnemyGrab = enemyGrab;
     }
 }

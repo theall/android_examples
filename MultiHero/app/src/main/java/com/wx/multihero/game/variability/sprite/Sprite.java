@@ -134,7 +134,7 @@ public class Sprite implements Renderable, Stepable {
             canvas.drawBitmap(bitmap, m, paint);
         }
         if(sound != -1) {
-            SoundPlayer.playAudio(sound);
+            SoundPlayer.getInstance().playAudio(sound);
         }
     }
 

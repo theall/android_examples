@@ -16,7 +16,7 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package com.wx.multihero.game.ui;
+package com.wx.multihero.game.ui.scene;
 
 import android.graphics.RectF;
 
@@ -57,10 +57,10 @@ public abstract class BaseScene implements Renderable, Touchable, Stepable {
 
     public void playBackgoundSound(boolean interrupt) {
         if(interrupt) {
-            SoundPlayer.stopAudio();
+            SoundPlayer.getInstance().stopAudio();
         }
 
-        SoundPlayer.playAudio(mBackgroundSound);
+        SoundPlayer.getInstance().playAudio(mBackgroundSound);
     }
 
     public void step() {

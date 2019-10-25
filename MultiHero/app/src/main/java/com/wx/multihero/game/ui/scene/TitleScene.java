@@ -16,14 +16,12 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package com.wx.multihero.game.ui;
+package com.wx.multihero.game.ui.scene;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
 
 import com.wx.multihero.game.base.AssetsLoader;
 import com.wx.multihero.game.base.BigFont;
@@ -56,7 +54,7 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
 
 	public TitleScene(SceneType sceneType, Notify notify) {
 		super(sceneType, notify);
-		mBackgroundSound = AssetsLoader.getInstance().loadSound("sound/title.mp3");
+		mBackgroundSound = AssetsLoader.getInstance().loadSound("title");
 	}
 
 	public void loadAssets() {
@@ -89,7 +87,7 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
 		rect.right = rect.left + maxStringWidth;
 		rect.top = titleStubHeight;
 		rect.bottom = rect.top + memuHeight;
-		int soundId = AssetsLoader.getInstance().loadSound("sound/blocked.mp3");
+		int soundId = AssetsLoader.getInstance().loadSound("blocked");
 		for(int i=0;i<5;i++) {
 			MenuItem mi = new MenuItem(mMenuList[i], this, null);
 			mi.setTag(i);
