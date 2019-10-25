@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -133,7 +134,13 @@ public class AssetsLoader implements Runnable {
             return soundIdObject.intValue();
         int soundId = -1;
         try {
-            soundId = mSoundPool.load(mAssetManager.openFd(actualFileName), 1);
+            AssetFileDescriptor assetFileDescriptor = mAssetManager.openFd(actualFileName);
+            if(Utils.DEBUG) {
+                if(assetFileDescriptor.getLength() > 1024*5) {
+                    return -1;
+                }
+            }
+            soundId = mSoundPool.load(assetFileDescriptor, 1);
             if(soundId >= 0) {
                 mStringSoundMap.put(actualFileName, soundId);
             }

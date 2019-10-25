@@ -100,6 +100,7 @@ public class Ryu extends Hero {
         action = getAction(Action.ID.JUMP);
         bmpSet = character.getBitmapList(Character.SetID.FLIP);
         action.add(10, bmpSet.get(0)).setVector(0, VectorF.Type.RELATIVE, -6.0f, VectorF.Type.ABSOLUTE);
+        action.setBreakable(true);
         action = getAction(Action.ID.JUMP2);
         action.add(10, bmpSet.get(1)).setVector(0, VectorF.Type.RELATIVE, -4.0f, VectorF.Type.ABSOLUTE);
         action.add(10, bmpSet.get(2)).setVectorType(VectorF.Type.RELATIVE);

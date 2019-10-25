@@ -18,7 +18,9 @@
 
 package com.wx.multihero.game.variability.hero;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
@@ -52,16 +54,13 @@ public abstract class Hero extends AnimationSprite {
     private boolean mIsShield;
     private boolean mCanFly;
     private boolean mIsBlocking;
-    private boolean mIsActioning;
+    private boolean mIsBlowing;
     private boolean mIsGrabbed;
-    private Plat mPlat;
-    private Plat mLastPlat;
     private Action mCurrentAction;
     private Hero mTarget;
     private Hero mEnemyGrab;
     
     private RectF mFootRect = new RectF();
-
     public interface Instruction {
         Action.ID next();
     }
@@ -146,6 +145,7 @@ public abstract class Hero extends AnimationSprite {
         getAction(actionID).setDistance(distance);
     }
 
+    @Override
     public void step() {
         super.step();
 
@@ -190,6 +190,16 @@ public abstract class Hero extends AnimationSprite {
     @Override
     public void render(Canvas canvas, Paint paint) {
         super.render(canvas, paint);
+
+        if(Utils.DEBUG) {
+            Paint.Style oldStyle = paint.getStyle();
+            int oldColor = paint.getColor();
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setColor(Color.YELLOW);
+            canvas.drawRect(rect.left, rect.top, rect.right, rect.bottom, paint);
+            paint.setStyle(oldStyle);
+            paint.setColor(oldColor);
+        }
     }
 
     public void add(Action action) {
@@ -215,15 +225,15 @@ public abstract class Hero extends AnimationSprite {
         mFootRect.right = x + 8;
         mFootRect.top = y - 0.5f;
         mFootRect.bottom = y + 0.5f;
-        return  mFootRect;
+        return mFootRect;
     }
 
     public RectF getLastFootRect() {
-        mFootRect.left = _x - 8;
-        mFootRect.right = _x + 8;
-        mFootRect.top = _y - 0.5f;
-        mFootRect.bottom = _y + 0.5f;
-        return  mFootRect;
+        mFootRect.left = lastRect.left;
+        mFootRect.right = lastRect.right;
+        mFootRect.top = lastRect.top;
+        mFootRect.bottom = lastRect.bottom;
+        return mFootRect;
     }
 
     public boolean isOnGround() {
@@ -232,15 +242,6 @@ public abstract class Hero extends AnimationSprite {
 
     public boolean isInAir() {
         return mPlat==null;
-    }
-
-    public void setPlat(Plat plat) {
-        mLastPlat = mPlat;
-        mPlat = plat;
-    }
-
-    public boolean landEventOcour() {
-        return mLastPlat==null && mPlat!=null;
     }
 
     public Hero getTarget() {

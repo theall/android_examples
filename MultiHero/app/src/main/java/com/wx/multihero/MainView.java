@@ -187,13 +187,20 @@ public class MainView extends SurfaceView implements
 				float realTimeFps = 1000.0f / (currentFrameStartTime - lastFrameStartTime);
 				lastFrameStartTime = currentFrameStartTime;
 				int targetFps = mGame.getTargetFps();
-				int fpsDiff = Math.round(realTimeFps - targetFps);
-				if(fpsDiff>1 && sleepSeconds<33) {
-					sleepSeconds++;
-				} else if(fpsDiff<-1 && sleepSeconds>1){
-					sleepSeconds--;
+				if(targetFps == 1) {
+					sleepSeconds = 999;
+				} else {
+					int fpsDiff = Math.round(targetFps - realTimeFps);
+					if(fpsDiff>=10) {
+						sleepSeconds /= 2;
+					}
+					if(fpsDiff<-1 && sleepSeconds<33) {
+						sleepSeconds++;
+					} else if(fpsDiff>1 && sleepSeconds>1){
+						sleepSeconds--;
+					}
 				}
-				if(currentFrameStartTime - startTime > 1000) {
+				if(currentFrameStartTime - startTime > 500) {
 					startTime = currentFrameStartTime;
 					mGame.setCurrentFps((int)realTimeFps);
 				}

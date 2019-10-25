@@ -66,7 +66,7 @@ public class ModManager {
         for(Mod mod : mModList) {
             modNames.add(mod.getName());
         }
-        return  modNames;
+        return modNames;
     }
 
     public Mod getModByName(String name) {

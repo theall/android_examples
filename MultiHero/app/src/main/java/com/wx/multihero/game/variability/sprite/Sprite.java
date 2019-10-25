@@ -23,23 +23,22 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 
+import com.wx.multihero.game.base.RectF;
 import com.wx.multihero.game.base.Renderable;
 import com.wx.multihero.game.base.VectorF;
 import com.wx.multihero.os.SoundPlayer;
 import com.wx.multihero.game.base.Stepable;
 
 public class Sprite implements Renderable, Stepable {
-    private Bitmap bitmap;
+    public Bitmap bitmap;
     public float x;
-    public float _x;
     public float y;
-    public float _y;
     public float sx;
     public float sy;
     private FaceDir mFaceDir;
     public float accx;
     public float accy;
-    public float gravity;
+    public static float gravity;
     public int sound;
     private boolean mFlipHorizontal;
     public boolean ignoreGravity;
@@ -50,16 +49,20 @@ public class Sprite implements Renderable, Stepable {
     }
     private Anchor mAnchor;
     public boolean virtualized = false;
-
+    private int bitmapHalfWidth;
+    private int bitmapHeight;
+    public RectF rect;
+    public RectF lastRect;
+    protected Sprite mPlat;
+    protected Sprite mLastPlat;
+    private boolean mLandEvent;
     public Sprite() {
         init();
     }
 
     public void init() {
         x = 0;
-        _x = 0;
         y = 0;
-        _y = 0;
         sx = 0;
         sy = 0;
         accx = 0;
@@ -68,21 +71,23 @@ public class Sprite implements Renderable, Stepable {
         mAnchor = Anchor.LEFT_TOP;
         mFaceDir = FaceDir.NONE;
         ignoreGravity = false;
+        rect = new RectF();
+        lastRect = new RectF();
     }
 
     public void step() {
-        _x = this.x;
-        _y = this.y;
+        lastRect.copyFrom(rect);
 
         sx += accx;
-        if(!ignoreGravity)
+        if(mPlat==null && !ignoreGravity) {
             sy += gravity;
-        if(mFaceDir == FaceDir.LEFT) {
-            x -= sx;
-        } else {
-            x += sx;
         }
+
+        float realSx = mFaceDir==FaceDir.LEFT?-sx:sx;
+        x += realSx;
         y += sy;
+
+        rect.offset(realSx, sy);
     }
 
     public Anchor getAnchor() {
@@ -94,21 +99,39 @@ public class Sprite implements Renderable, Stepable {
     }
 
     public void moveTo(float x, float y) {
-        _x = this.x;
-        _y = this.y;
+        lastRect.copyFrom(rect);
         this.x = x;
         this.y = y;
+        rect.left = x - bitmapHalfWidth;
+        rect.right = x + bitmapHalfWidth;
+        rect.bottom = y;
+        rect.top = y - bitmapHeight;
     }
 
     public void move(float dx, float dy) {
-        _x = this.x;
-        _y = this.y;
+        lastRect.copyFrom(rect);
         this.x += dx;
         this.y += dy;
+        rect.offset(dx, dy);
     }
 
     public void setBitmap(Bitmap bitmap) {
+        if(this.bitmap == bitmap)
+            return;
+
         this.bitmap = bitmap;
+        if(bitmap != null) {
+            bitmapHalfWidth = bitmap.getWidth()/2;
+            bitmapHeight = bitmap.getHeight();
+        } else {
+            bitmapHalfWidth = 0;
+            bitmapHeight = 0;
+        }
+        lastRect.copyFrom(rect);
+        rect.left = x - bitmapHalfWidth;
+        rect.right = x + bitmapHalfWidth;
+        rect.top = y - bitmapHeight;
+        rect.bottom = y;
     }
 
     public void render(Canvas canvas, Paint paint) {
@@ -212,5 +235,25 @@ public class Sprite implements Renderable, Stepable {
         } else if(vector.y.type == VectorF.Type.RELATIVE) {
             sy += vector.y.value;
         }
+    }
+
+    public void setPlat(Sprite plat) {
+        mLastPlat = mPlat;
+        mLandEvent = (mPlat==null) && plat!=null;
+        mPlat = plat;
+        if(plat != null)
+            sy = 0.0f;
+    }
+
+    public boolean landEventOcour() {
+        if(mLandEvent) {
+            mLandEvent = false;
+            return true;
+        }
+        return false;
+    }
+
+    public float getSpeedX() {
+        return mFaceDir==FaceDir.LEFT?-sx:sx;
     }
 }

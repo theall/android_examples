@@ -155,4 +155,8 @@ public class SerializedFrames implements Stepable {
             frame.virtualized = virtualized;
         }
     }
+
+    public ArrayList<Frame> getFramesList() {
+        return mFrameList;
+    }
 }

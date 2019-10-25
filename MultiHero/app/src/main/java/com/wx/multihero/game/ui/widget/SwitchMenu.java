@@ -78,7 +78,7 @@ public class SwitchMenu extends TouchableWidget implements TouchableWidget.Callb
         boolean r = false;
         r |= mBtnLeft.processTouchState(touchState);
         r |= mBtnRight.processTouchState(touchState);
-        return  r;
+        return r;
     }
 
     public void selected(int id, Bundle parameters) {

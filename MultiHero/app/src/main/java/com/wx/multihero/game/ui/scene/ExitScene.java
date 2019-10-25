@@ -47,7 +47,7 @@ public class ExitScene extends BaseScene {
     }
 
     public boolean processTouchState(TouchState touchState) {
-        return  false;
+        return false;
     }
 
     public void shiftIn() {

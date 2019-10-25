@@ -27,6 +27,7 @@ public class AnimationSprite extends Sprite {
     private Frame mCurrentFrame;
 
     public AnimationSprite() {
+        super();
         mSerializedFrames = new SerializedFrames();
         mCurrentFrame = null;
     }
@@ -84,5 +85,11 @@ public class AnimationSprite extends Sprite {
 
     public boolean isRecycled() {
         return mSerializedFrames.isRecycled();
+    }
+
+    public void setIgnoreGravity() {
+        for(Frame frame : mSerializedFrames.getFramesList()) {
+            frame.ignoreGravity = true;
+        }
     }
 }

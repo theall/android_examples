@@ -26,6 +26,7 @@ import com.wx.multihero.R;
 import com.wx.multihero.game.base.AssetsLoader;
 import com.wx.multihero.game.base.GameState;
 import com.wx.multihero.game.base.Renderable;
+import com.wx.multihero.game.variability.sprite.Sprite;
 import com.wx.multihero.os.SoundPlayer;
 import com.wx.multihero.game.base.Stepable;
 import com.wx.multihero.game.base.Utils;
@@ -93,6 +94,9 @@ public class Game implements Stepable, Renderable {
         mLayersManager.setMap(map, mPlayers);
         mCurrentMap = map;
         mMapLoading = false;
+
+        if(map != null)
+            Sprite.gravity = map.gravity;
     }
 
     public Map getCurrentMap() {

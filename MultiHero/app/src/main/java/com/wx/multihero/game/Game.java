@@ -123,7 +123,7 @@ public class Game implements BaseScene.Notify, Renderable, Stepable {
                 player.setCharacter(CharacterManager.getInstance().getCharacter(0));
                 players.add(player);
 
-                Map defaultMap = ModManager.getInstance().getMap(0);
+                Map defaultMap = ModManager.getInstance().getMod(1).getVsMaps().getMap(13);
                 mGameScene.setMap(defaultMap, players);
                 mSceneStack.clearPush(mGameScene);
             } else {

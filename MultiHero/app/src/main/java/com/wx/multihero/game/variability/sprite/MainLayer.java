@@ -53,7 +53,7 @@ public class MainLayer extends TilesLayer {
             Hero hero = player.getHero();
             if(hero == null)
                 continue;
-            hero.move(pp.start.x, pp.start.y);
+            hero.moveTo(pp.start.x, pp.start.y);
             mHeroList.add(hero);
         }
 
@@ -71,16 +71,13 @@ public class MainLayer extends TilesLayer {
         for(Hero hero : mHeroList) {
             hero.render(canvas, paint);
         }
-
+        for(Plat plat : mPlatList) {
+            plat.render(canvas, paint);
+        }
         if(Utils.DEBUG) {
             Paint.Style oldStyle = paint.getStyle();
             int oldColor = paint.getColor();
             paint.setStyle(Paint.Style.STROKE);
-            for (Platform plat : mMap.getPlatformList()) {
-                paint.setColor(Color.RED);
-                canvas.drawRect(plat.x, plat.y, plat.width+plat.x, plat.height+plat.y+1, paint);
-                canvas.drawText("plat", plat.x, plat.y, paint);
-            }
             for (Wall wall : mMap.getWallList()) {
                 paint.setColor(Color.YELLOW);
                 canvas.drawRect(wall.x, wall.y, wall.w+wall.x, wall.h+wall.y+1, paint);
@@ -108,23 +105,46 @@ public class MainLayer extends TilesLayer {
             }
         }
         for(Hero hero : mHeroList) {
-            Plat heroPlat = null;
-            for(Plat plat : mPlatList) {
-                boolean isCollided = Collide.test(hero, plat);
-                if(isCollided) {
-                    hero.y = plat.y;
-                    heroPlat = plat;
-                    break;
+            boolean vCheck = false;
+            Plat vPlat = null;
+            // hero was on platform from last frame, check is still on it
+            if(hero.mPlat==null || Collide.testFly(hero, (Plat)hero.mPlat)) {
+                hero.setPlat(null);
+                for (Plat plat : mPlatList) {
+                    if (Collide.testLand(hero, plat)) {
+                        hero.move(0, plat.y - hero.rect.bottom);
+                        hero.setPlat(plat);
+                        vPlat = plat;
+                        vCheck = true;
+                        break;
+                    } else if(Collide.testMoveUp(hero, plat)) {
+                        hero.move(0, plat.rect.bottom - hero.rect.top);
+                        hero.sy = -hero.sy;
+                        vPlat = plat;
+                        vCheck = true;
+                        break;
+                    }
                 }
+            } else {
+                vPlat = (Plat)hero.mPlat;
+                vCheck = true;
             }
 
-            // In the air
-            if(heroPlat == null) {
-                hero.gravity = Game.getInstance().getCurrentMap().gravity;
-            } else if(hero.isInAir()){
-                hero.gravity = 0;
+            boolean hCheck = false;
+            for(Plat plat : mPlatList) {
+                if(plat == vPlat)
+                    continue;
+
+                if(Collide.testMoveLeft(hero, plat)) {
+                    hero.move(plat.rect.right-hero.rect.left, 0);
+                    hCheck = true;
+                } else if(Collide.testMoveRight(hero, plat)) {
+                    hero.move(plat.x-hero.rect.right, 0);
+                    hCheck = true;
+                }
             }
-            hero.setPlat(heroPlat);
+            if(vCheck & hCheck)
+                break;
         }
     }
 }

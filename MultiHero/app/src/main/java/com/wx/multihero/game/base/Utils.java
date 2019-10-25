@@ -51,7 +51,7 @@ public class Utils {
 		mScreenHeight = height;
 	}
 	public static float getRealWidth(float width) {
-		return  width * mScreenWidth / BASE_SCREEN_WIDTH;
+		return width * mScreenWidth / BASE_SCREEN_WIDTH;
 	}
 
 	public static float getWidthRadio() {

@@ -29,6 +29,7 @@ import java.util.ArrayList;
 
 public class TileSprite extends AnimationSprite {
     public TileSprite() {
+        super();
     }
 
     public void loadFromTile(Tile tile) {
@@ -44,6 +45,7 @@ public class TileSprite extends AnimationSprite {
                 tile = tile.nextTile;
             } while (tile.nextTile!=null && !existTileList.contains(tile));
         }
+        setIgnoreGravity();
     }
 
     private Bitmap getBitmapFromTile(Tile tile) {

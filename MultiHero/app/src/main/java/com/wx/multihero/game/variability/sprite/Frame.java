@@ -41,7 +41,7 @@ public class Frame {
     public Frame(Bitmap bitmap) {
         this.duration = 1;
         this.bitmap = bitmap;
-        ignoreGravity =false;
+        ignoreGravity = false;
         mSoundItem = new SoundItem();
     }
 
