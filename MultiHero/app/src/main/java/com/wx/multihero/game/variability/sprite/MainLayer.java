@@ -38,6 +38,7 @@ import java.util.ArrayList;
 public class MainLayer extends TilesLayer {
     private ArrayList<Hero> mHeroList = new ArrayList<Hero>();
     private ArrayList<Plat> mPlatList = new ArrayList<Plat>();
+    private ChunkManager mChunkManager = ChunkManager.getInstance();
     private Map mMap;
     public MainLayer() {
 
@@ -74,6 +75,7 @@ public class MainLayer extends TilesLayer {
         for(Plat plat : mPlatList) {
             plat.render(canvas, paint);
         }
+        mChunkManager.render(canvas, paint);
         if(Utils.DEBUG) {
             Paint.Style oldStyle = paint.getStyle();
             int oldColor = paint.getColor();
@@ -96,6 +98,7 @@ public class MainLayer extends TilesLayer {
         for(Plat plat : mPlatList) {
             plat.step();
         }
+        mChunkManager.step();
 
         // Check if is death
         for(Hero hero : mHeroList) {

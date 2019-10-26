@@ -22,8 +22,8 @@ public class RyuBlueBallImpact extends Chunk {
     public RyuBlueBallImpact() {
         super(Type.RYU_BLUE_BALL_IMPACT);
 
-        add(10, 3, 1);
+        add(10, 3, 1).setVector(5.0f, 0.0f);
         add(10, 3, 2);
-
+        setTimes(20);
     }
 }

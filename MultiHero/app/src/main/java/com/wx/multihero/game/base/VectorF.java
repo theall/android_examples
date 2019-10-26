@@ -1,6 +1,6 @@
 package com.wx.multihero.game.base;
 
-public class VectorF {
+public class VectorF implements Cloneable {
     public Item x = new Item();
     public Item y = new Item();
 
@@ -38,6 +38,11 @@ public class VectorF {
     public VectorF() {
         this.x.value = 0;
         this.y.value = 0;
+    }
+
+    @Override
+    protected java.lang.Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     public VectorF(float x, float y) {

@@ -24,7 +24,7 @@ import com.wx.multihero.game.base.Stepable;
 
 import java.util.ArrayList;
 
-public class SerializedFrames implements Stepable {
+public class SerializedFrames implements Stepable, Cloneable {
     private ArrayList<Frame> mFrameList = new ArrayList<Frame>();
     private Frame mCurrentFrame;
     private int mCurrentIndex;
@@ -158,5 +158,10 @@ public class SerializedFrames implements Stepable {
 
     public ArrayList<Frame> getFramesList() {
         return mFrameList;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

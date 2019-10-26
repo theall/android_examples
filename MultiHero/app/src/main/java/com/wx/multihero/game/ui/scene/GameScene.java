@@ -26,6 +26,8 @@ import com.wx.multihero.game.base.SceneType;
 import com.wx.multihero.game.base.Utils;
 import com.wx.multihero.game.entity.Map;
 import com.wx.multihero.game.variability.Game;
+import com.wx.multihero.game.variability.chunk.ChunkFactory;
+import com.wx.multihero.game.variability.hero.HeroFactory;
 import com.wx.multihero.game.variability.ui.DebugWidget;
 import com.wx.multihero.game.variability.ui.Player;
 import com.wx.multihero.os.TouchState;

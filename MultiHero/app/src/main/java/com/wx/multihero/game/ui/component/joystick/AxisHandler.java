@@ -211,7 +211,7 @@ public class AxisHandler extends TouchableWidget {
         if (tr <= insideBgDis) {
             onBallMove(x, y);
         } else {
-            double dotCenterOnShow[] =calPointLocationByAngle(
+            double dotCenterOnShow[] = calPointLocationByAngle(
                     mContentCenterX, mContentCenterY, x, y, insideBgDis);
             onBallMove((float) dotCenterOnShow[0], (float) dotCenterOnShow[1]);
         }

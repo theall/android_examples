@@ -21,15 +21,16 @@ package com.wx.multihero.game.variability.sprite;
 import android.graphics.Bitmap;
 
 import com.wx.multihero.game.base.VectorF;
+import com.wx.multihero.game.variability.chunk.Chunk;
 
-public class Frame {
+public class Frame implements Cloneable{
     public int duration;
     public Bitmap bitmap;
     private VectorF mVector = new VectorF();
     public boolean ignoreGravity;
     public boolean virtualized = false;
-
-    private SoundItem mSoundItem;
+    private Chunk.Item mChunk = new Chunk.Item();
+    private SoundItem mSoundItem = new SoundItem();
     public enum Type {
         KEY,
         CLONE
@@ -42,14 +43,37 @@ public class Frame {
         this.duration = 1;
         this.bitmap = bitmap;
         ignoreGravity = false;
-        mSoundItem = new SoundItem();
     }
 
     public Frame(int duration, Bitmap bitmap) {
         this.duration = duration;
         this.bitmap = bitmap;
-        ignoreGravity =false;
-        mSoundItem = new SoundItem();
+        ignoreGravity = false;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        Frame frame = (Frame)super.clone();
+        VectorF vector = frame.getVector();
+        if(!vector.isEmpty()) {
+            frame.setVector(vector);
+        }
+        return frame;
+    }
+
+    public Chunk.Item getChunk() {
+        return mChunk;
+    }
+
+    public void setChunk(Chunk.Type chunk) {
+        mChunk.type = chunk;
+    }
+
+    public void setChunk(Chunk.Type chunk, float dx, float dy) {
+        mChunk.type = chunk;
+        mChunk.dx = dx;
+        mChunk.dy = dy;
+        mChunk.attach = null;
     }
 
     public void setDuration(int duration) {

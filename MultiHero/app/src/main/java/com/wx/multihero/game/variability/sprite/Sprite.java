@@ -29,7 +29,7 @@ import com.wx.multihero.game.base.VectorF;
 import com.wx.multihero.os.SoundPlayer;
 import com.wx.multihero.game.base.Stepable;
 
-public class Sprite implements Renderable, Stepable {
+public class Sprite implements Renderable, Stepable, Cloneable {
     public Bitmap bitmap;
     public float x;
     public float y;

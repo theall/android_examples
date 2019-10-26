@@ -136,7 +136,7 @@ public class AssetsLoader implements Runnable {
         try {
             AssetFileDescriptor assetFileDescriptor = mAssetManager.openFd(actualFileName);
             if(Utils.DEBUG) {
-                if(assetFileDescriptor.getLength() > 1024*5) {
+                if(assetFileDescriptor.getLength() > 1024*100) {
                     return -1;
                 }
             }

@@ -21,8 +21,9 @@ package com.wx.multihero.game.variability.sprite;
 import android.graphics.Bitmap;
 
 import com.wx.multihero.game.variability.SoundRender;
+import com.wx.multihero.game.variability.chunk.Chunk;
 
-public class AnimationSprite extends Sprite {
+public class AnimationSprite extends Sprite implements Cloneable {
     private SerializedFrames mSerializedFrames;
     private Frame mCurrentFrame;
 
@@ -44,12 +45,16 @@ public class AnimationSprite extends Sprite {
         mSerializedFrames.reset();
     }
 
-    public void add(Bitmap bitmap) {
-        add(new Frame(bitmap));
+    public Frame add(Bitmap bitmap) {
+        Frame frame = new Frame(bitmap);
+        add(frame);
+        return frame;
     }
 
-    public void add(int n, Bitmap bitmap) {
-        add(new Frame(n, bitmap));
+    public Frame add(int n, Bitmap bitmap) {
+        Frame frame = new Frame(n, bitmap);
+        add(frame);
+        return frame;
     }
 
     public void add(Frame frame) {
@@ -70,9 +75,19 @@ public class AnimationSprite extends Sprite {
                 setVector(mCurrentFrame.getVector());
                 ignoreGravity = mCurrentFrame.ignoreGravity;
                 virtualized = mCurrentFrame.virtualized;
+
+                // attach chunk
+                Chunk.Item chunk = mCurrentFrame.getChunk();
+                if(chunk!=null && !chunk.isNull()) {
+                    chunk.owner = this;
+                    ChunkManager.getInstance().makeChunk(chunk);
+                }
+
+                // Sound
                 SoundItem soundItem = mCurrentFrame.getSoundItem();
-                if(soundItem.isValid())
+                if(soundItem.isValid()) {
                     SoundRender.getInstance().add(soundItem);
+                }
             }
             setBitmap(mCurrentFrame.getBitmap());
         }
@@ -91,5 +106,19 @@ public class AnimationSprite extends Sprite {
         for(Frame frame : mSerializedFrames.getFramesList()) {
             frame.ignoreGravity = true;
         }
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        AnimationSprite animationSprite = (AnimationSprite)super.clone();
+        SerializedFrames serializedFrames = animationSprite.getSerializedFrames();
+        if(serializedFrames != null) {
+            animationSprite.setSerializedFrames((SerializedFrames)serializedFrames.clone());
+        }
+        return animationSprite;
+    }
+
+    public void setTimes(int times) {
+        mSerializedFrames.setTimes(times);
     }
 }

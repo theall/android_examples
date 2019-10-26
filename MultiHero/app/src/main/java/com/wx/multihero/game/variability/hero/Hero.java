@@ -18,7 +18,6 @@
 
 package com.wx.multihero.game.variability.hero;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -26,8 +25,8 @@ import android.graphics.RectF;
 
 import com.wx.multihero.game.base.Utils;
 import com.wx.multihero.game.entity.Character;
-import com.wx.multihero.game.variability.chunk.ChunkManager;
-import com.wx.multihero.game.variability.object.Plat;
+import com.wx.multihero.game.variability.chunk.Chunk;
+import com.wx.multihero.game.variability.sprite.ChunkManager;
 import com.wx.multihero.game.variability.sprite.AnimationSprite;
 import com.wx.multihero.game.variability.sprite.FaceDir;
 import com.wx.multihero.game.variability.sprite.SerializedFrames;
@@ -156,7 +155,7 @@ public abstract class Hero extends AnimationSprite {
             if(seed == 2) {
                 float x = Utils.getRandWidth(-10, 10);
                 float y = Utils.getRandHeight(-40, 0);
-                ChunkManager.getInstance().makeChunk(x, y);
+                ChunkManager.getInstance().makeChunk(x, y, Chunk.Type.WHITE_STAR_HIT);
             }
         }
         if(mAntiPlatFrames > 0) {

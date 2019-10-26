@@ -23,6 +23,5 @@ public class AirTrailGoingUp extends Chunk {
         super(Type.AIR_TRAIL_GOING_UP);
 
         add(14, 1, 2);
-
     }
 }

@@ -23,6 +23,7 @@ import android.graphics.Bitmap;
 import com.wx.multihero.game.base.AssetsLoader;
 import com.wx.multihero.game.base.VectorF;
 import com.wx.multihero.game.entity.Character;
+import com.wx.multihero.game.variability.chunk.Chunk;
 import com.wx.multihero.game.variability.sprite.Frame;
 
 import java.util.ArrayList;
@@ -127,10 +128,10 @@ public class Ryu extends Hero {
         // Special
         action = getAction(Action.ID.SPECIAL);
         bmpSet = character.getBitmapList(Character.SetID.SPECIAL);
-        frame = action.add(10, bmpSet.get(0));
-        frame.setSound(assetsLoader.loadSound("ryuBall"));
+        action.add(10, bmpSet.get(0)).setSound(assetsLoader.loadSound("ryuBall"));
         action.add(10, bmpSet.get(1));
-        action.add(10, bmpSet.get(2));
+        action.add(10, bmpSet.get(2)).setChunk(Chunk.Type.RYU_BLUE_BALL_IMPACT, 30, -32);
+
         action.add(10, bmpSet.get(1));
         action.add(10, bmpSet.get(0));
 

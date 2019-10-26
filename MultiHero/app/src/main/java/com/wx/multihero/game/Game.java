@@ -20,6 +20,7 @@ import com.wx.multihero.game.ui.scene.GameScene;
 import com.wx.multihero.game.ui.scene.LoadingScene;
 import com.wx.multihero.game.ui.scene.MapChooseScene;
 import com.wx.multihero.game.ui.scene.TitleScene;
+import com.wx.multihero.game.variability.chunk.ChunkFactory;
 import com.wx.multihero.game.variability.ui.Player;
 import com.wx.multihero.os.TouchState;
 
@@ -62,12 +63,6 @@ public class Game implements BaseScene.Notify, Renderable, Stepable {
 
     private void loadAssets() {
         AssetsLoader.getInstance().asycLoad();
-        mBigFont.loadAssets();
-        mLoadingScene.loadAssets();
-        mTitleScene.loadAssets();
-        mCharacterChooseScene.loadAssets();
-        mMapChooseScene.loadAssets();
-        mGameScene.loadAssets();
     }
 
     public void setResolution(int width, int height) {
@@ -115,6 +110,15 @@ public class Game implements BaseScene.Notify, Renderable, Stepable {
 
     public void next(SceneType sceneType, int parameter) {
         if(sceneType == SceneType.LOADING) {
+            // Load other scenes's assets after title scene end
+            ChunkFactory.getInstance().loadAssets();
+            mBigFont.loadAssets();
+            mLoadingScene.loadAssets();
+            mTitleScene.loadAssets();
+            mCharacterChooseScene.loadAssets();
+            mMapChooseScene.loadAssets();
+            mGameScene.loadAssets();
+
             if(Utils.DEBUG) {
                 ArrayList<Player> players = new ArrayList<Player>();
                 Player player = new Player();

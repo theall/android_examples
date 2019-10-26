@@ -48,6 +48,8 @@ public abstract class AbstractProgressBar extends Widget {
 
     public void setProgress(float progress) {
         mProgress = progress;
+        if(mProgress > 1.0f)
+            mProgress = 1.0f;
     }
 
     public void positionChanged(float dx, float dy) {

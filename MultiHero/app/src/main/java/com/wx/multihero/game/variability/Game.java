@@ -173,6 +173,9 @@ public class Game implements Stepable, Renderable {
             }
         }
 
+        // Chunk render
+
+        // Sound render
         mSoundRender.render(mSoundPlayer);
     }
 

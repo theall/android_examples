@@ -66,7 +66,6 @@ public class ColorProgressBar extends AbstractProgressBar {
         mDrawingRect.bottom -= adjusted;
     }
 
-    @Override
     public void render(Canvas canvas, Paint paint) {
         Paint.Style oldStyle = paint.getStyle();
         int oldColor = paint.getColor();
