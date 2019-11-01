@@ -20,13 +20,15 @@ import com.wx.multihero.game.ui.scene.GameScene;
 import com.wx.multihero.game.ui.scene.LoadingScene;
 import com.wx.multihero.game.ui.scene.MapChooseScene;
 import com.wx.multihero.game.ui.scene.TitleScene;
+import com.wx.multihero.game.variability.Game;
 import com.wx.multihero.game.variability.chunk.ChunkFactory;
+import com.wx.multihero.game.variability.hero.HeroFactory;
 import com.wx.multihero.game.variability.ui.Player;
 import com.wx.multihero.os.TouchState;
 
 import java.util.ArrayList;
 
-public class Game implements BaseScene.Notify, Renderable, Stepable {
+public class Container implements BaseScene.Notify, Renderable, Stepable {
     private static final int FPS = 60;
     private int mTargetFps;
     private int mCurrentFps;
@@ -41,7 +43,7 @@ public class Game implements BaseScene.Notify, Renderable, Stepable {
     private GameScene mGameScene;
     private BigFont mBigFont = new BigFont();
 
-    public Game() {
+    public Container() {
         mTargetFps = FPS;
     }
 
@@ -120,15 +122,20 @@ public class Game implements BaseScene.Notify, Renderable, Stepable {
             mGameScene.loadAssets();
 
             if(Utils.DEBUG) {
+                // for test hero
                 ArrayList<Player> players = new ArrayList<Player>();
-                Player player = new Player();
+                Player player = Game.getInstance().getPlayer(0);
                 player.setTeam(Player.Team.BLUE);
                 player.setType(Player.Type.CPU);
-                player.setCharacter(CharacterManager.getInstance().getCharacter(0));
+                player.setHero(HeroFactory.create(HeroFactory.ID.RASH));
                 players.add(player);
 
                 Map defaultMap = ModManager.getInstance().getMod(1).getVsMaps().getMap(13);
-                mGameScene.setMap(defaultMap, players);
+                try {
+                    mGameScene.setMap(defaultMap, players);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 mSceneStack.clearPush(mGameScene);
             } else {
                 mSceneStack.clearPush(mTitleScene);
@@ -153,7 +160,11 @@ public class Game implements BaseScene.Notify, Renderable, Stepable {
         } else if(sceneType == SceneType.CHARACTER) {
             mSceneStack.clearPush(mMapChooseScene);
         } else if(sceneType == SceneType.MAP_CHOOSE) {
-            mGameScene.setMap(mMapChooseScene.getSelectedMap(), mCharacterChooseScene.getPlayerList());
+            try {
+                mGameScene.setMap(mMapChooseScene.getSelectedMap(), mCharacterChooseScene.getPlayerList());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             mSceneStack.clearPush(mGameScene);
         } else if(sceneType == SceneType.GAME) {
 

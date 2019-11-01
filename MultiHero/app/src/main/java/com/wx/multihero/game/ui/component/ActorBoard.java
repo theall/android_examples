@@ -28,10 +28,11 @@ import com.wx.multihero.game.entity.Character;
 import com.wx.multihero.game.ui.widget.PictureItem;
 import com.wx.multihero.game.ui.widget.TouchableWidget;
 import com.wx.multihero.game.ui.widget.Widget;
+import com.wx.multihero.game.variability.hero.Hero;
 
 public class ActorBoard extends TouchableWidget {
     private PictureItem mBackground;
-    private Character mCharacter;
+    private Hero mHero;
     private PictureItem mForeground;
 
     public ActorBoard(Callback callback, Widget parent) {
@@ -41,10 +42,10 @@ public class ActorBoard extends TouchableWidget {
         mForeground = new PictureItem(this);
     }
 
-    public void setBindValue(Character value) {
-        mCharacter = value;
-        if(mCharacter != null) {
-            Bitmap background = mCharacter.getPreview();
+    public void setBindValue(Hero value) {
+        mHero = value;
+        if(mHero != null) {
+            Bitmap background = mHero.getPreview();
             if(background != null) {
                 RectF r = new RectF();
                 r.offsetTo(0, 0);
@@ -56,8 +57,8 @@ public class ActorBoard extends TouchableWidget {
         }
     }
 
-    public Character getBindValue() {
-        return mCharacter;
+    public Hero getBindValue() {
+        return mHero;
     }
 
     public void loadAssets() {

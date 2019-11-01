@@ -51,7 +51,7 @@ public class LayersManager implements Renderable, Stepable {
         mMainLayer = new MainLayer();
     }
 
-    public void setMap(Map map, ArrayList<Player> playerList) {
+    public void setMap(Map map, ArrayList<Player> playerList) throws Exception {
         mBackgroundColor = map.getBackgroundColor();
         mOffsetX = map.getXScrStart();
         mOffsetY = map.getYScrStart();

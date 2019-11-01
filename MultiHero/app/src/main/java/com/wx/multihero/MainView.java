@@ -30,7 +30,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.wx.multihero.game.Game;
+import com.wx.multihero.game.Container;
 import com.wx.multihero.game.base.AssetsLoader;
 import com.wx.multihero.game.base.Utils;
 import com.wx.multihero.os.KeyboardState;
@@ -46,7 +46,7 @@ public class MainView extends SurfaceView implements
 	private SurfaceHolder mSurfaceHolder;
 	private Canvas mCanvas;
 
-	private Game mGame;
+	private Container mContainer;
 
 	private class PendingTouch {
 		boolean actived;
@@ -83,13 +83,13 @@ public class MainView extends SurfaceView implements
         setFocusableInTouchMode(true);
         setKeepScreenOn(true);
 
-		mGame = new Game();
+		mContainer = new Container();
         int scrWidth = getResources().getDisplayMetrics().widthPixels;
 		int scrHeight = getResources().getDisplayMetrics().heightPixels;
 		int screenWidth = Math.max(scrWidth, scrHeight);
 		int screenHeight = Math.min(scrWidth, scrHeight);
-		mGame.setResolution(screenWidth, screenHeight);
-		mGame.start();
+		mContainer.setResolution(screenWidth, screenHeight);
+		mContainer.start();
 		Log.i("multihero", "Resolution:" + screenWidth + " " + screenHeight);
 	}
 
@@ -103,7 +103,7 @@ public class MainView extends SurfaceView implements
 			touchAction = mPendingTouch.action;
 		}
 		ts.setAction(touchAction);
-		mGame.step();
+		mContainer.step();
 	}
 
 	public Bundle saveState() {
@@ -133,7 +133,7 @@ public class MainView extends SurfaceView implements
 
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-		mGame.setResolution(w, h);
+		mContainer.setResolution(w, h);
 	}
 
 	private void drawing() {
@@ -141,7 +141,7 @@ public class MainView extends SurfaceView implements
 			mCanvas = mSurfaceHolder.lockCanvas();
 			if(mCanvas==null)
 				return;
-			mGame.render(mCanvas, mPaint);
+			mContainer.render(mCanvas, mPaint);
             mSurfaceHolder.unlockCanvasAndPost(mCanvas);
             mCanvas = null;
 		} catch (Exception e) {
@@ -186,7 +186,7 @@ public class MainView extends SurfaceView implements
 				counter++;
 				float realTimeFps = 1000.0f / (currentFrameStartTime - lastFrameStartTime);
 				lastFrameStartTime = currentFrameStartTime;
-				int targetFps = mGame.getTargetFps();
+				int targetFps = mContainer.getTargetFps();
 				if(targetFps == 1) {
 					sleepSeconds = 999;
 				} else {
@@ -202,7 +202,7 @@ public class MainView extends SurfaceView implements
 				}
 				if(currentFrameStartTime - startTime > 500) {
 					startTime = currentFrameStartTime;
-					mGame.setCurrentFps((int)realTimeFps);
+					mContainer.setCurrentFps((int)realTimeFps);
 				}
 				Thread.sleep(sleepSeconds);
 			}
@@ -216,7 +216,7 @@ public class MainView extends SurfaceView implements
 	}
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-		mGame.setResolution(width, height);
+		mContainer.setResolution(width, height);
 	}
 
 	public void surfaceDestroyed(SurfaceHolder holder) {
@@ -228,9 +228,9 @@ public class MainView extends SurfaceView implements
 
 		if(Utils.DEBUG) {
 			if(keyCode == KeyEvent.KEYCODE_SPACE) {
-				mGame.setTargetFps(1);
+				mContainer.setTargetFps(1);
 			} else if(keyCode == KeyEvent.KEYCODE_P) {
-				mGame.setTargetFps(60);
+				mContainer.setTargetFps(60);
 			}
 		}
 		return false;
@@ -239,7 +239,7 @@ public class MainView extends SurfaceView implements
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		KeyboardState.getInstance().setKeyState(keyCode, false);
 		if(keyCode == KeyEvent.KEYCODE_BACK)
-			mGame.back();
+			mContainer.back();
 		return false;
 	}
 

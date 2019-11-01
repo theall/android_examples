@@ -51,6 +51,8 @@ public class DebugWidget extends Widget implements TouchableWidget.Callback, Ste
     public void step() {
         Player player = Game.getInstance().getPlayer(0);
         Hero hero = player.getHero();
-        mSwitch.setText(hero.getCurrentAction().getId().name());
+        if(hero != null) {
+            mSwitch.setText(hero.getCurrentAction().getId().name());
+        }
     }
 }

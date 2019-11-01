@@ -28,12 +28,13 @@ import com.wx.multihero.game.base.AssetsLoader;
 import com.wx.multihero.game.entity.Character;
 import com.wx.multihero.game.ui.widget.PictureItem;
 import com.wx.multihero.game.ui.widget.Widget;
+import com.wx.multihero.game.variability.hero.Hero;
 import com.wx.multihero.os.TouchState;
 
 public class Stage extends Widget {
     private PictureItem mStageBitmap;
     private PictureItem mForegroundBitmap;
-    private Character mBindValue;
+    private Hero mBindValue;
 
     public Stage(Widget parent) {
         super(parent);
@@ -42,12 +43,12 @@ public class Stage extends Widget {
         mForegroundBitmap = new PictureItem(this);
     }
 
-    public void setBindValue(Character value) {
-        mBindValue = value;
+    public void setBindValue(Hero hero) {
+        mBindValue = hero;
         if(mBindValue==null) {
             mForegroundBitmap.setBitmap(null);
         } else {
-            mForegroundBitmap.setBitmap(value.getPreview());
+            mForegroundBitmap.setBitmap(hero.getPreview());
         }
     }
 

@@ -26,6 +26,7 @@ import android.view.MotionEvent;
 import com.wx.multihero.game.base.Utils;
 import com.wx.multihero.game.entity.Character;
 import com.wx.multihero.game.ui.widget.Widget;
+import com.wx.multihero.game.variability.hero.Hero;
 import com.wx.multihero.game.variability.ui.Player;
 import com.wx.multihero.os.TouchState;
 
@@ -49,7 +50,7 @@ public class CharacterPlatform extends Widget implements Player.CharacterChanged
             mBindValue.setCharacterCallback(this);
         }
         mRoundBoard.setBindValue(bindValue);
-        mStage.setBindValue(bindValue.getCharacter());
+        mStage.setBindValue(bindValue.getHero());
     }
 
     public Player getBindValue() {
@@ -86,7 +87,7 @@ public class CharacterPlatform extends Widget implements Player.CharacterChanged
         return false;
     }
 
-    public void characterChanged(Character oldCharacter, Character newCharacter) {
-        mStage.setBindValue(newCharacter);
+    public void characterChanged(Hero oldHero, Hero newHero) {
+        mStage.setBindValue(newHero);
     }
 }

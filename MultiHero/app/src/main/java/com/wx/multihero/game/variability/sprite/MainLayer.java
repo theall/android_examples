@@ -21,6 +21,7 @@ package com.wx.multihero.game.variability.sprite;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 
 import com.wx.multihero.game.base.Utils;
 import com.wx.multihero.game.entity.Map;
@@ -44,18 +45,24 @@ public class MainLayer extends TilesLayer {
 
     }
 
-    public void loadMap(Map map, ArrayList<Player> playerList) {
+    public void loadMap(Map map, ArrayList<Player> playerList) throws Exception {
         ArrayList<PawnPoint> pawnPoints = map.getPawnPointList();
         int pawnCount = pawnPoints.size();
         mHeroList.clear();
+        int index = 0;
         for(Player player : playerList) {
-            int index = player.getTag() % pawnCount;
-            PawnPoint pp = pawnPoints.get(index);
+            int pawnIndex = player.getTag() % pawnCount;
+            if(pawnIndex<0 || pawnIndex>pawnCount) {
+                Log.e("MULTIHERO", String.format("%s%d", "Invalid tag value: ", player.getTag()));
+                pawnIndex = index;
+            }
+            PawnPoint pp = pawnPoints.get(pawnIndex);
             Hero hero = player.getHero();
             if(hero == null)
                 continue;
             hero.moveTo(pp.start.x, pp.start.y);
             mHeroList.add(hero);
+            index++;
         }
 
         mPlatList.clear();

@@ -20,13 +20,13 @@ package com.wx.multihero.game.variability.hero;
 
 import com.wx.multihero.game.entity.Character;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.wx.multihero.game.variability.hero.HeroFactory.ID.RYU;
 
 public class HeroFactory {
     public enum ID {
-        UNKNNOWN,
         RYU,
         RASH,
         SPIDERMAN,
@@ -40,51 +40,82 @@ public class HeroFactory {
         YUN,
         JIMMY
     }
-    private static final HashMap<Integer, ID> ID_MAP = new HashMap<Integer, ID>();
-    static {
-        ID_MAP.put(0, RYU);
+    private static final HashMap<ID, Hero> ID_HERO_MAP = new HashMap<ID, Hero>();
+    public static Hero create(ID id) {
+        return ID_HERO_MAP.get(id);
     }
-    public static Hero create(Character character) {
-        int id = character.getId();
-        ID heroId = ID.values()[id];
-        Hero hero = null;
-        switch (heroId) {
-            case RYU:
-                hero = new Ryu(character);
-            case RASH:
-                hero = new Rash(character);
-                break;
-            case SPIDERMAN:
 
-                break;
-            case MARIO:
-
-                break;
-            case MIKEY:
-
-                break;
-            case NINYA:
-
-                break;
-            case BATMAN:
-
-                break;
-            case ALIEN:
-
-                break;
-            case GOKU:
-
-                break;
-            case BELMONT:
-
-                break;
-            case YUN:
-
-                break;
-            case JIMMY:
-
-                break;
+    public static void create(ArrayList<Character> characters) throws CloneNotSupportedException {
+        for(Character character : characters) {
+            create(character);
         }
-        return new Ryu(character);
+    }
+
+    /**
+     * Retreive object of hero
+     * @param index
+     * @return hero object
+     */
+    public static Hero getHero(int index) {
+        ID[] idList = ID.values();
+        if(index<0 || index>=idList.length)
+            return null;
+
+        ID heroId = idList[index];
+        return create(heroId);
+    }
+
+    private static Hero create(Character character) throws CloneNotSupportedException {
+        int index = character.getId()-1;
+        ID[] idList = ID.values();
+        if(index<0 || index>=idList.length)
+            return null;
+
+        ID heroId = idList[index];
+        Hero hero = ID_HERO_MAP.get(heroId);
+        if(hero == null) {
+            switch (heroId) {
+                case RYU:
+                    hero = new Ryu(character);
+                    break;
+                case RASH:
+                    hero = new Rash(character);
+                    break;
+                case SPIDERMAN:
+
+                    break;
+                case MARIO:
+
+                    break;
+                case MIKEY:
+
+                    break;
+                case NINYA:
+
+                    break;
+                case BATMAN:
+
+                    break;
+                case ALIEN:
+
+                    break;
+                case GOKU:
+
+                    break;
+                case BELMONT:
+
+                    break;
+                case YUN:
+
+                    break;
+                case JIMMY:
+
+                    break;
+            }
+            ID_HERO_MAP.put(heroId, hero);
+        }
+        if(hero != null)
+            hero = (Hero)hero.clone();
+        return hero;
     }
 }

@@ -18,6 +18,7 @@
 
 package com.wx.multihero.game.variability.hero;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -33,7 +34,7 @@ import com.wx.multihero.game.variability.sprite.SerializedFrames;
 
 import java.util.HashMap;
 
-public abstract class Hero extends AnimationSprite {
+public abstract class Hero extends AnimationSprite implements Cloneable {
     public int hp;
     public int sp;
     public int mLifes;
@@ -60,12 +61,12 @@ public abstract class Hero extends AnimationSprite {
     private Hero mEnemyGrab;
     
     private RectF mFootRect = new RectF();
+    private Character mCharacter;
     public interface Instruction {
         Action.ID next();
     }
 
     public HashMap<Action.ID, Action> mActionMap = new HashMap<Action.ID, Action>();
-
     public Hero(Character character) {
         mFrameCounter = 0;
         mCurrentAction = null;
@@ -75,17 +76,30 @@ public abstract class Hero extends AnimationSprite {
             mActionMap.put(actionId, new Action(actionId));
         }
 
+        mCharacter = character;
         load(character);
         setCurrentAction(Action.ID.READY);
     }
 
     public abstract void load(Character character);
 
+    public Character getCharacter() {
+        return mCharacter;
+    }
+
     public abstract void go();
 
     public void setCurrentAction(Action.ID blow) {
         Action action = mActionMap.get(blow);
         setCurrentAction(action);
+    }
+
+    public Bitmap getIcon() {
+        return mCharacter!=null?mCharacter.getIcon():null;
+    }
+
+    public Bitmap getPreview() {
+        return mCharacter!=null?mCharacter.getPreview():null;
     }
 
     public Action getAction(Action.ID actionID) {
@@ -172,6 +186,11 @@ public abstract class Hero extends AnimationSprite {
         go();
 
         mFrameCounter++;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     public void setShield() {

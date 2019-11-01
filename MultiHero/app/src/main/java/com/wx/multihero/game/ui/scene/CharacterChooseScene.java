@@ -37,6 +37,7 @@ import com.wx.multihero.game.ui.component.UseItemButton;
 import com.wx.multihero.game.ui.widget.SelectedBorder;
 import com.wx.multihero.game.ui.widget.TouchableWidget;
 import com.wx.multihero.game.variability.Game;
+import com.wx.multihero.game.variability.hero.HeroFactory;
 import com.wx.multihero.game.variability.ui.Player;
 import com.wx.multihero.os.TouchState;
 
@@ -189,7 +190,13 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
 
         CharacterManager characterManager = CharacterManager.getInstance();
         characterManager.loadAssets();
-        Game.getInstance().getPlayer(0).setCharacter(characterManager.getCharacter(0));
+        try {
+            HeroFactory.create(characterManager.getCharacterList());
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        Game.getInstance().getPlayer(0).setHero(HeroFactory.create(HeroFactory.ID.RYU));
         int validCharacterCount = Math.min(BOARD_COUNT, characterManager.getCharacterCount());
         for(int i=0;i<BOARD_COUNT;i++) {
             ActorBoard b = mBoards.get(i);
@@ -199,7 +206,7 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
         // set bind character
         for(int i=0;i<validCharacterCount;i++) {
             ActorBoard b = mBoards.get(i);
-            b.setBindValue(characterManager.getCharacter(i));
+            b.setBindValue(HeroFactory.getHero(i));
         }
 
         // compute total width of board list
@@ -260,7 +267,7 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
             ActorBoard board = mBoards.get(boardId);
             CharacterPlatform host = (CharacterPlatform)mSelectBorder.getHost();
             if(host!=null && board!=null) {
-                host.getBindValue().setCharacter(board.getBindValue());
+                host.getBindValue().setHero(board.getBindValue());
             }
         }
     }

@@ -89,9 +89,8 @@ public class GameScene extends BaseScene {
         mShowController = showController;
     }
 
-    public void setMap(Map map, ArrayList<Player> players) {
-        mGame.loadPlayers(players);
-        mGame.loadMap(map);
+    public void setMap(Map map, ArrayList<Player> players) throws Exception {
+        mGame.loadMap(map, players);
     }
 
     public void step() {

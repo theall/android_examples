@@ -88,10 +88,10 @@ public class Game implements Stepable, Renderable {
         mBackgroundMusic = -1;
     }
 
-    public void loadMap(Map map) {
+    public void loadMap(Map map, ArrayList<Player> players) throws Exception {
         mMapLoading = true;
         mBackgroundMusic = AssetsLoader.getInstance().loadSound(String.format("music%d",map.getMusicN1()));
-        mLayersManager.setMap(map, mPlayers);
+        mLayersManager.setMap(map, players);
         mCurrentMap = map;
         mMapLoading = false;
 
