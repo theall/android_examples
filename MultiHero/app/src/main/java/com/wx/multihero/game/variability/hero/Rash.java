@@ -119,14 +119,18 @@ public class Rash extends Hero {
         action.add(8, bmpSet.get(1));
         action.add(8, bmpSet.get(0));
 
-        // ryu keen
-        //不知道怎么按出来
+        // ryu keen//动作还非常不流畅
         action = getAction(Action.ID.UPPERCUT);
         bmpSet = character.getBitmapList(Character.SetID.UPSPECIAL);
-        //frame = action.add(5, bmpSet.get(0));
-        //frame.setSound(assetsLoader.loadSound(""));
-        action.add(4, bmpSet.get(1));
-        action.add(30, bmpSet.get(2)).setVector(3.0f, -5.5f);
+        action.add(8, bmpSet.get(0));
+        action.add(8, bmpSet.get(1));
+        action.add(8, bmpSet.get(2)).setVector(3.0f, -5.5f);
+        action.add(8, bmpSet.get(0));
+        action.add(8, bmpSet.get(1));
+        action.add(8, bmpSet.get(2)).setVector(3.0f, -5.5f);
+        action.add(8, bmpSet.get(0));
+        action.add(8, bmpSet.get(1));
+        action.add(15, bmpSet.get(2));
 
         // down special
 

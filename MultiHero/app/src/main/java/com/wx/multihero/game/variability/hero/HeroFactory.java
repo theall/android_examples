@@ -85,7 +85,7 @@ public class HeroFactory {
                     hero = new SpiderMan(character);
                     break;
                 case MARIO:
-
+                    hero = new Mario(character);
                     break;
                 case MIKEY:
 
