@@ -17,11 +17,15 @@ script:
 - chmod +x ./gradlew
 - echo  > /home/travis/.android/repositories.cfg
 - "./gradlew :app:assembleRelease"
+- jarsigner -verbose -keystore multihero.jks -storepass $KEYSTORE_PWD -tsa http://sha256timestamp.ws.symantec.com/sha256/timestamp -signedjar app/build/outputs/apk/app-signed.apk app-release-signed.apk $KEY_ALIAS
+- jarsigner -verify ./app-release-signed.apk
+- "${ANDROID_HOME}/build-tools/28.0.3/zipalign -v 4 app-release-unsigned.apk app-release.apk"
+
 deploy:
   provider: releases
   api_key:
     secure: 3wOLxxHvSxFBOlugP8A9GJbWaTnINF6/ZRukEtoNIzNaGlHJo+y5Y21lNMYZc8b9Ok5hJEFyk8zSyf1qoZ0D/mW2xwhM8lIT1KKgXaRIV9plIgyBq2qJmbIx5HQWiiejfXlpCMdEYEz9jH8ddVTGAAICaniInLDRFoClUl33o+LDTDtuNpNFyaLMRrK3M6QO26HJ0sLfyRa4bHMxtwPLLMz3Dkd9bXFohnZpE3Q7fd9CQpO18qX3HZL/VfBDC9m3A5WneRy6te8fhUOkkoZO7K3rQuBCU9vNUomWCZyiloU2Sbty2B/1iRPj6iLyfiUQTmZCwdNCrJuh321aLEGh3UD1Y/DrHeYWU058KC6dUrNt1bP5eGcbEWCrOuFsxdQDGMzXwilwY59z7pvQU9IdG4w0OsQj5IMihST3ZqTkT0x2nYrnvH+2+SkCKG3pbXdSDdD/DyzLUqcKQAyfc/ImEPi25ApIlqmZU7NZVcOOGvpkJmnkEvEuvN36PXvoGQyqdQiaX2cWYO5cxv+8BqOc9DlmEvb244iW0fxnsFHSSY7J/WRItIdb08CFzqD7P77J3NLgGhK/XHb9orb2IYByocYeY+jJ6GlPoM2HHexHc2Dg8nQC/M6zY2uSUJD8R4ImdthAEKkfZvQvFreBt9Mz7x7VCBxkoxLaLcmjB/j26qM=
-  file: ./app/build/outputs/apk/release/app-release-unsigned.apk
+  file: ./app-release.apk
   draft: true
   skip_cleanup: true
   tag: false
@@ -30,5 +34,5 @@ deploy:
 after_deploy:
 - pwd
 - find ./ -name *.apk
-- fir p ./app/build/outputs/apk/release/app-release-unsinged.apk -T $FIR_TOKEN -c
+- fir p ./app-release.apk -T $FIR_TOKEN -c
   "`git cat-file tag $TRAVIS_TAG`"

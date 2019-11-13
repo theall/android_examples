@@ -1,6 +1,5 @@
 /**
- * Copyright (C) Bilge Theall, wazcd_1608@qq.com
- * 850781307   850781307@qq.com
+ * Copyright (C) 850781307, 850781307@qq.com
  * <p>
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -139,16 +138,16 @@ public class Mikey extends Hero {
         // down special蹲下大招
         action = getAction(Action.ID.DOWN_SPECIAL);
         bmpSet = character.getBitmapList(Character.SetID.DSPECIAL);
-        action.add(5, bmpSet.get(0)).setVector(2.0f, -2f);
-        action.add(5, bmpSet.get(1)).setVectorType(VectorF.Type.RELATIVE);
+        action.add(15, bmpSet.get(0)).setVector(1.2f, -1f);
         action.add(5, bmpSet.get(1)).setVectorType(VectorF.Type.RELATIVE);
         //frame.setVector(4f, -1f);
+        bmpSet = character.getBitmapList(Character.SetID.FLIP);
+        action.add(5, bmpSet.get(0)).setVector(3.2f, -3.5f);
         action.add(5, bmpSet.get(1)).setVectorType(VectorF.Type.RELATIVE);
-        action.add(5, bmpSet.get(1)).setVectorType(VectorF.Type.RELATIVE);
-        action.add(5, bmpSet.get(1)).setVectorType(VectorF.Type.RELATIVE);
-        action.add(10, bmpSet.get(1));
-        action.add(5, bmpSet.get(1));
-        action.setIgnoreGravity(true);
+        action.add(5, bmpSet.get(2)).setVectorType(VectorF.Type.RELATIVE);
+        action.add(10, bmpSet.get(3));
+        action.setBreakable(false);
+        //action.setIgnoreGravity(true);
         //bug是第1段跳无法落地
 
 

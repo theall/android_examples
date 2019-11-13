@@ -1,0 +1,1 @@
+jarsigner -verbose -keystore multihero.jks -storepass 123456 -tsa http://sha256timestamp.ws.symantec.com/sha256/timestamp -signedjar app-signed.apk app-release-unsigned.apk 2dcombat

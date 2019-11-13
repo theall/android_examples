@@ -1,0 +1,1 @@
+keytool -genkey -alias 2dcombat -keyalg RSA -validity 2000 -keystore multihero.jks
