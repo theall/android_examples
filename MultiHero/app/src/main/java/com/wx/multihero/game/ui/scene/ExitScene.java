@@ -24,7 +24,7 @@ import android.graphics.Paint;
 import com.wx.multihero.game.base.SceneType;
 import com.wx.multihero.os.TouchState;
 
-public class ExitScene extends BaseScene {
+public class ExitScene extends BaseScene {  //退出场景
     private boolean mIsOk = false;
 
     public ExitScene(SceneType sceneType, Notify notify) {

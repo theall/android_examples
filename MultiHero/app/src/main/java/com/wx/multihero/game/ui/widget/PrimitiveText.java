@@ -23,6 +23,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+//原始文本控件
 public class PrimitiveText extends AbstractText {
     private int mColor;
     private int mFontSize;

@@ -33,7 +33,8 @@ import com.wx.multihero.os.TouchState;
 
 import java.util.ArrayList;
 
-public class TitleScene extends BaseScene implements MenuItem.Callback {
+//implements 容器用于存放底层标题
+public class TitleScene extends BaseScene implements MenuItem.Callback {    //标题类
 	private PictureItem mTitlePicture;
 	private static final String mMenuList[] = {"ADVENTURE MODE","VS MODE","OPTIONS","CREDITS","EXIT"};
 
@@ -41,7 +42,7 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
 
 	}
 
-	public enum MenuID {
+	public enum MenuID {    //枚举用法
 	    ADV,
         VS,
         OPTION,
@@ -49,7 +50,7 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
         EXIT
     }
     
-	private static final float MENU_DEFAULT_SPACE = 20.0f;
+	private static final float MENU_DEFAULT_SPACE = 20.0f; //标题居中
 	private ArrayList<MenuItem> mMenuItems = new ArrayList<MenuItem>();
 
 	public TitleScene(SceneType sceneType, Notify notify) {
@@ -60,15 +61,15 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
 	public void loadAssets() {
 		float screenWidth = mScreenRect.width();
 		float screenHeight = mScreenRect.height();
-		float titleStubHeight = screenHeight*(1-Utils.GOLD_LINE);
+		float titleStubHeight = screenHeight*(1-Utils.GOLD_LINE); //黄金分割线
 
 		if(mTitlePicture == null)
         {
             mTitlePicture = new PictureItem(null);
-            mTitlePicture.setBoundingRect(new RectF(0,0, screenWidth, titleStubHeight));
+            mTitlePicture.setBoundingRect(new RectF(0,0, screenWidth, titleStubHeight));//高宽
             mTitlePicture.setBitmap(AssetsLoader.getInstance().loadBitmap("gfx/ui/title.png"));
             mTitlePicture.center();
-        }
+        } //上面写的是字母图片的大小位子
 		float remainHeight = screenHeight - titleStubHeight;
 		float menuTotalHeight = remainHeight / mMenuList.length;
 		float menuActualSpace = MENU_DEFAULT_SPACE * screenHeight / Utils.BASE_SCREEN_HEIGHT;
@@ -104,7 +105,7 @@ public class TitleScene extends BaseScene implements MenuItem.Callback {
         }
 	}
 
-	public boolean processTouchState(TouchState touchState) {
+	public boolean processTouchState(TouchState touchState) { //对字符串进行触摸判断
 		for(MenuItem mi : mMenuItems) {
 			mi.processTouchState(touchState);
 		}

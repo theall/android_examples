@@ -31,29 +31,29 @@ import com.wx.multihero.game.ui.widget.ColorProgressBar;
 import com.wx.multihero.game.ui.widget.PrimitiveText;
 import com.wx.multihero.os.TouchState;
 
-public class LoadingScene extends BaseScene implements AssetsLoader.LoadNotify {
-    private ColorProgressBar mProgressBar;
-    private PrimitiveText mLoadingText;
+public class LoadingScene extends BaseScene implements AssetsLoader.LoadNotify {      //加载场景
+    private ColorProgressBar mProgressBar;//设置步进栏颜色
+    private PrimitiveText mLoadingText; //准备界面的主题
 
-    public LoadingScene(SceneType sceneType, Notify notify) {
+    public LoadingScene(SceneType sceneType, Notify notify) {  //场景类型，通告上级
         super(sceneType, notify);
-        mLoadingText = new PrimitiveText(null);
+        mLoadingText = new PrimitiveText(null);//P是ML的类，这里是将Pr类NEW出来ML调用构造函数
         mLoadingText.setText(Utils.getStringFromResourceId(R.string.loading));
 
         float pbWidth = mScreenRect.width() * Utils.GOLD_LINE;
         float pbHeight = pbWidth / 20;
         RectF rect = new RectF(0, 0, pbWidth, pbHeight);
         rect.offset((mScreenRect.width() - pbWidth) / 2, (mScreenRect.height() - pbHeight) / 2);
-        mProgressBar = new ColorProgressBar(null);
-        mProgressBar.setBoundingRect(rect);
-        mProgressBar.setColor(Color.GREEN, Color.RED);
-        mLoadingText.setColor(Color.WHITE);
+        mProgressBar = new ColorProgressBar(null); //new出颜色渐进栏对象方便调用
+        mProgressBar.setBoundingRect(rect); //设置边界Rect
+        mProgressBar.setColor(Color.GREEN, Color.RED);//设置步进栏颜色
+        mLoadingText.setColor(Color.WHITE); //设置准备进入的背景颜色
         mLoadingText.moveTo((mScreenRect.width()-mLoadingText.getBoundingRect().width())/2,
-                rect.top-mLoadingText.getBoundingRect().height()-Utils.getRealHeight(10));
+                rect.top-mLoadingText.getBoundingRect().height()-Utils.getRealHeight(10)); //移动
     }
 
-    public void render(Canvas canvas, Paint paint) {
-        canvas.drawColor(Color.BLACK);
+    public void render(Canvas canvas, Paint paint) {        //render使什么 paint绘图 Canvas 描绘
+        canvas.drawColor(Color.BLACK);              //这个render构造方法写的是调用P，C方法，进行描绘界面颜色
         mLoadingText.render(canvas, paint);
         mProgressBar.render(canvas, paint);
     }
@@ -62,26 +62,26 @@ public class LoadingScene extends BaseScene implements AssetsLoader.LoadNotify {
         return false;
     }
 
-    public void onProgress(int loadedSize, int totalSize) {
+    public void onProgress(int loadedSize, int totalSize) { //触摸状态
         mProgressBar.setProgress((float)loadedSize / totalSize);
         if(loadedSize==totalSize && mNotify!=null) {
             mNotify.next(mSceneType, 0);
         }
     }
 
-    public void shiftIn() {
+    public void shiftIn() { //移位
 
     }
 
-    public void shiftOut() {
+    public void shiftOut() { //转换
 
     }
 
-    public void loadAssets() {
+    public void loadAssets() {  //加载资源
 
     }
 
-    public void step() {
+    public void step() {  //递进
 
     }
 }

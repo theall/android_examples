@@ -26,11 +26,11 @@ import com.wx.multihero.game.ui.widget.Touchable;
 import com.wx.multihero.game.base.Renderable;
 import com.wx.multihero.game.base.SceneType;
 
-public abstract class BaseScene implements Renderable, Touchable, Stepable {
-    protected SceneType mSceneType;
+public abstract class BaseScene implements Renderable, Touchable, Stepable {         //基础场景
+    protected SceneType mSceneType; //场景类型
     protected static RectF mScreenRect;
-    protected Notify mNotify;
-    protected int mBackgroundSound = -1;
+    protected Notify mNotify;   //通告
+    protected int mBackgroundSound = -1;//背景音乐     protected 受保护的修饰符号
 
     public interface Notify {
         void back(SceneType sceneType);

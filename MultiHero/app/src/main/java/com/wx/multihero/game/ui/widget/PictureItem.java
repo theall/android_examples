@@ -23,7 +23,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 
-public class PictureItem extends Widget {
+public class PictureItem extends Widget {   //控件单元
     private Bitmap mBitmap;
     private Alignment mAlignment = new Alignment();
     private Matrix mMatrix = null;

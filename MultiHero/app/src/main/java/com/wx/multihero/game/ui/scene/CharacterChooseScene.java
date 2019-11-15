@@ -43,7 +43,7 @@ import com.wx.multihero.os.TouchState;
 
 import java.util.ArrayList;
 
-public class CharacterChooseScene extends BaseScene implements TouchableWidget.Callback {
+public class CharacterChooseScene extends BaseScene implements TouchableWidget.Callback {   //角色选择场景
     private TeamAttackButton mBtnTeamAttack;
 	private UseItemButton mBtnUseItems;
 	private BackwardButton mBtnBack;
@@ -130,7 +130,7 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
 	}
 
 	public boolean processTouchState(TouchState touchState) {
-	    // process select border
+	    // process select border 处理选择边框
         float x = touchState.getX();
         float y = touchState.getY();
         CharacterPlatform host = (CharacterPlatform)mSelectBorder.getHost();
@@ -203,13 +203,13 @@ public class CharacterChooseScene extends BaseScene implements TouchableWidget.C
             b.loadAssets();
         }
 
-        // set bind character
+        // set bind character 设置绑定字符
         for(int i=0;i<validCharacterCount;i++) {
             ActorBoard b = mBoards.get(i);
             b.setBindValue(HeroFactory.getHero(i));
         }
 
-        // compute total width of board list
+        // compute total width of board list  计算板列表总宽度
         float boardWidth = mBoards.get(0).getBoundingRect().width();
         float actorBoardTotalWidth = BOARD_COUNT * boardWidth;
         r.left = (mScreenRect.width() - actorBoardTotalWidth) / 2;

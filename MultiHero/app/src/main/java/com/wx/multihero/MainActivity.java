@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        // Pause the game along with the activity
+        // Pause the game along with the activity 暂停游戏和选项
         mMainView.pause();
     }
 

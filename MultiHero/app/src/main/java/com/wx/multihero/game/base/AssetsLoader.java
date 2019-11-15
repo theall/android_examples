@@ -31,7 +31,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.SoundPool;
 
-public class AssetsLoader implements Runnable {
+public class AssetsLoader implements Runnable { //资源加载器
     private static Map<String, Bitmap> mStringBitmapMap = new HashMap<String, Bitmap>();
     private static Map<String, Integer> mStringSoundMap = new HashMap<String, Integer>();
     private static AssetManager mAssetManager = null;
@@ -44,7 +44,7 @@ public class AssetsLoader implements Runnable {
     private int mAssetsTotalCount = 0;
     private int mAssetsLoadedCount = 0;
     private static AssetsLoader mInstance = null;
-    public interface LoadNotify {
+    public interface LoadNotify { //加载通知接口
         void onProgress(int loadedSize, int totalSize);
     }
     LoadNotify mNotify = null;

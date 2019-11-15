@@ -34,7 +34,7 @@ import com.wx.multihero.os.TouchState;
 
 import java.util.ArrayList;
 
-public class GameScene extends BaseScene {
+public class GameScene extends BaseScene {     //游戏场景
     private ControllerScene mControllerScene;
     private boolean mShowController;
     private DebugWidget mDebugWidget = new DebugWidget(null);

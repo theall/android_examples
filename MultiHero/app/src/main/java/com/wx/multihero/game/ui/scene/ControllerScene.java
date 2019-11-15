@@ -25,7 +25,7 @@ import com.wx.multihero.game.base.SceneType;
 import com.wx.multihero.game.ui.component.JoyStick;
 import com.wx.multihero.os.TouchState;
 
-public class ControllerScene extends BaseScene {
+public class ControllerScene extends BaseScene {        //控制器场景
     public static final int KEY_SHOT    = 0;
     public static final int KEY_JUMP    = 1;
     public static final int KEY_SPECIAL = 2;

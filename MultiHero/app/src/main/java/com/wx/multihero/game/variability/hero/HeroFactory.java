@@ -52,9 +52,9 @@ public class HeroFactory {
     }
 
     /**
-     * Retreive object of hero
+     * Retreive object of hero //返回英雄的对象
      * @param index
-     * @return hero object
+     * @return hero object//英雄对象
      */
     public static Hero getHero(int index) {
         ID[] idList = ID.values();

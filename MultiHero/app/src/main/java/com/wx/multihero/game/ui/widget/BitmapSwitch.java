@@ -23,13 +23,13 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
-public class Switch extends TouchableWidget {
+public class BitmapSwitch extends TouchableWidget {   //开关
     private boolean mIsOn = true;
     private PictureItem mBackgroundPicture;
     private PictureItem mSliderPicture;
     private static float MARGIN = 5.0f;
 
-    public Switch(Callback callback, Widget parent) {
+    public BitmapSwitch(Callback callback, Widget parent) {
         super(callback, parent);
 
         mBackgroundPicture = new PictureItem(this);

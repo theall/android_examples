@@ -44,7 +44,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-public class MapChooseScene extends BaseScene implements TouchableWidget.Callback {
+public class MapChooseScene extends BaseScene implements TouchableWidget.Callback { //地图选择场景
 	private ArrayList<PictureItem> mMapThumbList = new ArrayList<PictureItem>();
     private BitmapText mModName;
     private SelectedBorder mSelectBorder;
@@ -109,7 +109,7 @@ public class MapChooseScene extends BaseScene implements TouchableWidget.Callbac
             Log.e("MultiHero","Can not find any thumb bitmaps in map set!");
             return;
         }
-        // precompute the real width
+        // precompute the real width  预计实际宽度
         int colsPerRow = Math.round((validWidth+spaceColumn) / (bmpWidth+spaceColumn));
         float widthPerRow = colsPerRow * (bmpWidth+spaceColumn) - spaceColumn;
         float leftBound = (screenWidth - widthPerRow) / 2;

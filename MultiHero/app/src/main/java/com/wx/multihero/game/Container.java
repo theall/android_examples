@@ -19,6 +19,7 @@ import com.wx.multihero.game.ui.scene.CharacterChooseScene;
 import com.wx.multihero.game.ui.scene.GameScene;
 import com.wx.multihero.game.ui.scene.LoadingScene;
 import com.wx.multihero.game.ui.scene.MapChooseScene;
+import com.wx.multihero.game.ui.scene.OptionScene;
 import com.wx.multihero.game.ui.scene.TitleScene;
 import com.wx.multihero.game.variability.Game;
 import com.wx.multihero.game.variability.chunk.ChunkFactory;
@@ -28,7 +29,7 @@ import com.wx.multihero.os.TouchState;
 
 import java.util.ArrayList;
 
-public class Container implements BaseScene.Notify, Renderable, Stepable {
+public class Container implements BaseScene.Notify, Renderable, Stepable { //容器
     private static final int FPS = 60;
     private int mTargetFps;
     private int mCurrentFps;
@@ -37,6 +38,7 @@ public class Container implements BaseScene.Notify, Renderable, Stepable {
     // scene
     private SceneStack mSceneStack = new SceneStack();
     private LoadingScene mLoadingScene;
+    private OptionScene mOptionScene; //选项场景
     private TitleScene mTitleScene;
     private CharacterChooseScene mCharacterChooseScene;
     private MapChooseScene mMapChooseScene;
@@ -57,6 +59,8 @@ public class Container implements BaseScene.Notify, Renderable, Stepable {
         AssetsLoader.getInstance().setLoadNotify(mLoadingScene);
 
         mTitleScene = new TitleScene(SceneType.TITLE, this);
+
+        mOptionScene = new OptionScene(SceneType.OPTION, this);
         mCharacterChooseScene = new CharacterChooseScene(SceneType.CHARACTER, this);
         mMapChooseScene = new MapChooseScene(SceneType.MAP_CHOOSE, this);
         mGameScene = new GameScene(SceneType.GAME, this);
@@ -93,6 +97,8 @@ public class Container implements BaseScene.Notify, Renderable, Stepable {
             System.exit(0);
         } else if (sceneType == SceneType.TITLE) {
             System.exit(0);
+        } else if(sceneType == SceneType.OPTION) {
+            mSceneStack.clearPush(mTitleScene);//按esc就退出界面
         } else if(sceneType == SceneType.CHARACTER) {
             mSceneStack.clearPush(mTitleScene);
         } else if(sceneType == SceneType.MAP_CHOOSE) {
@@ -117,6 +123,7 @@ public class Container implements BaseScene.Notify, Renderable, Stepable {
             mBigFont.loadAssets();
             mLoadingScene.loadAssets();
             mTitleScene.loadAssets();
+            mOptionScene.loadAssets();//
             mCharacterChooseScene.loadAssets();
             mMapChooseScene.loadAssets();
             mGameScene.loadAssets();
@@ -136,7 +143,7 @@ public class Container implements BaseScene.Notify, Renderable, Stepable {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                mSceneStack.clearPush(mGameScene);
+                mSceneStack.clearPush(mTitleScene);
             } else {
                 mSceneStack.clearPush(mTitleScene);
             }
@@ -149,7 +156,8 @@ public class Container implements BaseScene.Notify, Renderable, Stepable {
                 case VS:
                     mSceneStack.clearPush(mCharacterChooseScene);
                     break;
-                case OPTION:
+                case OPTION: //创建OPtion场景
+                    mSceneStack.clearPush(mOptionScene);
                     break;
                 case EXIT:
                     System.exit(0);

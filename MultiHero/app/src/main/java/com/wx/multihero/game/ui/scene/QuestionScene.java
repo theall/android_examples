@@ -24,9 +24,9 @@ import android.graphics.Paint;
 import com.wx.multihero.game.base.SceneType;
 import com.wx.multihero.os.TouchState;
 
-public class QuestionScene extends BaseScene {
+public class QuestionScene extends BaseScene {      //质疑
     public QuestionScene(SceneType sceneType, Notify notify) {
-        super(sceneType, notify);
+        super(sceneType, notify);  //调用其他类的场景方法
     }
 
     public void shiftIn() {

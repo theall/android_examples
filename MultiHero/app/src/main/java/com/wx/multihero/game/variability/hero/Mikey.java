@@ -44,7 +44,7 @@ public class Mikey extends Hero {
         Frame frame = null;
         AssetsLoader assetsLoader = AssetsLoader.getInstance();
 
-        // Ready C
+        // Ready 准备开始  C
         action = getAction(Action.ID.READY);
         for(Bitmap bitmap : character.getReadyList()) {
             action.add(bitmap);
@@ -89,12 +89,12 @@ public class Mikey extends Hero {
         // Jump跳
         action = getAction(Action.ID.JUMP);
         bmpSet = character.getBitmapList(Character.SetID.FLIP);
-        action.add(7, bmpSet.get(0)).setVector(0, VectorF.Type.RELATIVE, -4.0f, VectorF.Type.ABSOLUTE);
+        action.add(7, bmpSet.get(0)).setVector(0, VectorF.Type.RELATIVE, -5.0f, VectorF.Type.ABSOLUTE);
         action.setBreakable(true);
 
         //二段跳
-        action = getAction(Action.ID.JUMP2);
-        action.add(10, bmpSet.get(1)).setVector(0, VectorF.Type.RELATIVE, -4.0f, VectorF.Type.ABSOLUTE);
+        action = getAction(Action.ID.JUMP2);//跳跃起来帧数越高，跳跃越高，Y轴负数越高，跳的越高
+        action.add(11, bmpSet.get(1)).setVector(0, VectorF.Type.RELATIVE, -5.0f, VectorF.Type.ABSOLUTE);
         action.add(10, bmpSet.get(2)).setVectorType(VectorF.Type.RELATIVE);
         action.add(10, bmpSet.get(3)).setVectorType(VectorF.Type.RELATIVE);
         //bug是停止不了
