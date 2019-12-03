@@ -23,8 +23,6 @@ import com.wx.multihero.game.entity.Character;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.wx.multihero.game.variability.hero.HeroFactory.ID.RYU;
-
 public class HeroFactory {
     public enum ID {
         RYU,
@@ -94,7 +92,7 @@ public class HeroFactory {
                     hero = new Ninya(character);
                     break;
                 case BATMAN:
-
+                    hero = new Batman(character);
                     break;
                 case ALIEN:
 
